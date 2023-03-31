@@ -30,7 +30,7 @@
 #### 用户头像显示1.0: 图片传输(downloadImg)
 ##### commit示例: feat(front):downloadImg add API /getUserAvatar to get img only  
 
-|    接口名    |  setUserAvatar  |    |
+|    接口名    |  getUserAvatar  |    |
 | ---------- | ---------- | -------- |
 |  方法  |  POST  |    |
 |  功能  |  设置用户头像  |    |
@@ -78,4 +78,5 @@
 #### （3）注释
 基本功能的完成需要使用统一的注释，比如
 - 前端完成与后端交互的函数，注释模版为“add API to post/get”。具体的使用例子为"add API '/login' to post user info"
+- README添加借口信息，注释模版为“add API info for XXX”。具体的使用例子为"add API info for getUserAvatar"
 【【【【【【自己写一下自己的模版自己写一下自己的模版！！！！】】】】】】
