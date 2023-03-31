@@ -105,7 +105,7 @@
               :prefix-icon=" 1 ? 'MessageBox' : ''"
             ></el-input>
           </el-form-item>
-            <ValidCode @input="createValidCode" />
+            <ValidCode  class="code" @input="createValidCode" />
         </el-row>
 
         <el-row>
@@ -452,7 +452,7 @@ h1{
 /*外包装框*/
 #register .wrap {
   width: 550px;
-  height: 430px;
+  height: 100%;
   padding: 0 10px 0 30px;
   line-height: 100px;
   position: relative;
@@ -526,5 +526,9 @@ h1{
   color:#999;
   cursor: pointer;
   float:right;
+}
+
+.code{
+  font-family: 'Courier New', Courier, monospace;
 }
 </style>

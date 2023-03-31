@@ -100,7 +100,7 @@
                   :prefix-icon=" 1 ? 'MessageBox' : ''"
                 ></el-input>
               </el-form-item>
-                <ValidCode @input="createValidCode" />
+                <ValidCode class="validcode" @input="createValidCode" />
             </el-row>
 
             <el-row>
@@ -378,4 +378,8 @@ const idnumValidator = (rule, value, callback) => {
   margin-left:50px;
   text-decoration:underline;
 }
+.validcode{
+  margin-top:30px;
+}
+
 </style>
