@@ -24,11 +24,36 @@
 |  前端测试路径  |  localhost:端口/UploadImg  |    
 |  测试方法  |  点击上传文件后，确定后端数据库是否成功收到图片数据  |   
 
+<br>
+
+### 头像显示
+#### 用户头像显示1.0: 图片传输(downloadImg)
+##### commit示例: feat(front):downloadImg add API /getUserAvatar to get img only  
+
+|    接口名    |  setUserAvatar  |    |
+| ---------- | ---------- | -------- |
+|  方法  |  POST  |    |
+|  功能  |  设置用户头像  |    |
+|  参数列表 front->back  |  |  |
+|  参数名  |  含义  |  类型&备注  |
+|  username  |  用户名  |    |
+|  参数列表 back->front  |  |  |
+|  参数名  |  含义  |  类型&备注  |
+|  state  |  是否有头像  |    |
+|  avatar  |  dataform形式的图像数据  |  具体来说，二进制数据应该储存在avatar的'image'中  |
+
+
+|   测试   |  确定图像传输成功  |  
+| ---------- | ---------- | 
+|  前端测试路径  |  localhost:端口/UploadImg  |    
+|  测试方法  |  将UploadImg.vue:34 的username赋值成指定的username，如果页面显示该用户的头像，则传输成功  | 
+
 ## 版本管理
 
 |   功能名称   |  备注  |  
 | ---------- | ---------- | 
 |  uploadImg  | 图片从前端传输至后端 |  
+|  downloadImg  | 图片从后端传输至前端 |  
 
 
 

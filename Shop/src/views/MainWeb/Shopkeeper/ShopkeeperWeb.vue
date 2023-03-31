@@ -29,10 +29,11 @@ import SearchTop from '../../../components/MainWeb/Components/SearchU.vue'
 </template>
 
 <script>
-import { interceptor } from "../../../interceptor";
+import { interceptor, shopkeeperInterceptor } from "../../../interceptor";
 export default {
     created(){
         interceptor(this);
+        shopkeeperInterceptor(this);
     }
 }
 </script>

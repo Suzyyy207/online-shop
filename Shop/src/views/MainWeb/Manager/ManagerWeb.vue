@@ -29,10 +29,11 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <script>
-import { interceptor } from "../../../interceptor";
+import { interceptor, managerInterceptor } from "../../../interceptor";
 export default {
     created(){
         interceptor(this);
+        managerInterceptor(this);
     }
 }
 </script>

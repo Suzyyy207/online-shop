@@ -32,10 +32,11 @@ const select = ref('')
 </template>
 
 <script>
-import { interceptor } from "../../../interceptor";
+import { interceptor, userInterceptor } from "../../../interceptor";
 export default {
     created(){
         interceptor(this);
+        userInterceptor(this);
     }
 }
 </script>

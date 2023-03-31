@@ -28,7 +28,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <script>
 import "../../../constant.js";
-import { interceptor } from "../../../interceptor";
+import { interceptor, shopkeeperInterceptor } from "../../../interceptor";
 export default {
     props: ['shop_id'],
     data() {
@@ -50,6 +50,7 @@ export default {
     },
     created (){
         interceptor(this);
+        shopkeeperInterceptor(this);
         this.getMyShopInfo();
         this.toModify();
     },
