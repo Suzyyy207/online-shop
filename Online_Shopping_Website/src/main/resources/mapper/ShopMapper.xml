@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.online_shopping_website.mapper.ShopMapper">
+    <resultMap id="ShopMap" type="com.example.online_shopping_website.entity.Shop">
+        <result column="uid" property="uid"></result>
+        <result column="shopname" property="shopname"></result>
+        <result column="goodstype" property="goodstype"></result>
+        <result column="IDnum" property="IDnum"></result>
+        <result column="introduction" property="introduction"></result>
+        <result column="address" property="address"></result>
+        <result column="capital" property="capital"></result>
+        <result column="date" property="date"></result>
+        <result column="shopid" property="shopid"></result>
+        <result column="is_admitted" property="is_admitted"></result>
+    </resultMap>
+
+    <update id="updateUserShopID">
+        UPDATE user SET shopid = #{shopid} WHERE uid = #{uid}
+    </update>
+    <insert id="shopOpening" >
+        INSERT INTO shops
+        (uid,shopname,goodstype,IDnum,introduction,address,capital,date,is_admitted)
+        VALUES
+            (#{uid}, #{shopname}, #{goodstype}, #{IDnum}, #{introduction}, #{address}, #{capital}, #{date},#{is_admitted});
+    </insert>
+
+    <select id="SearchByShopname" resultMap="ShopMap">
+        SELECT * FROM shops WHERE shopname = #{shopname}
+    </select>
+
+    <select id="ShopSearchByIdnum" resultMap="ShopMap">
+        SELECT * FROM shops WHERE  idnum = #{idnum}
+    </select>
+
+    <select id="ShopSearchByUid" resultMap="ShopMap">
+        SELECT * FROM shops WHERE  uid = #{uid}
+    </select>
+
+    <update id="updateIsAdmitted">
+        UPDATE shops SET is_admitted = 1 WHERE shopname = #{shopname}
+    </update>
+
+    <select id="ShowAllShop" resultMap="ShopMap">
+        SELECT * FROM shops
+    </select>
+
+    <select id="ShowAllAdmittedShop" resultMap="ShopMap">
+        SELECT * FROM shops WHERE is_admitted = 1
+    </select>
+    <select id="ShowAllNotAdmittedShop" resultMap="ShopMap">
+        SELECT * FROM shops WHERE is_admitted = 0
+    </select>
+    <insert id="InsertGood" >
+        INSERT INTO goodstype
+            (shopid,goodtype)
+        VALUES
+            (#{shopid}, #{goodtype});
+    </insert>
+
+</mapper>
