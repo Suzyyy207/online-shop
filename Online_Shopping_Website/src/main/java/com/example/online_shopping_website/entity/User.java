@@ -35,12 +35,16 @@ public class User extends BaseEntity implements Serializable {
     private int is_delete;
 
     private String salt;
+
     private byte[] avatar;
+
+
+
+
 
     public byte[] getAvatar() {
         return avatar;
     }
-
     public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
     }

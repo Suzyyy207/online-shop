@@ -11,9 +11,11 @@ import com.example.online_shopping_website.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import java.io.IOException;
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
 //@Controller
@@ -142,6 +144,8 @@ public class UserController {
         user.setAvatar(avatarData);
         return result;
     }
+
+
 
 }
 
