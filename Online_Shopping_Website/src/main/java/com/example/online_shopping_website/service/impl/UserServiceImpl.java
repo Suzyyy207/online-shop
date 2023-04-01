@@ -84,4 +84,8 @@ public class UserServiceImpl implements IUserService {
         JsonResult<User> loginResult = new JsonResult<>(state,message,data);
         return loginResult;
     }
+    @Override
+    public void UpdateAvatar(String username,byte[] avatar){
+        userMapper.AvatarUpdate(username,avatar);
+    }
 }

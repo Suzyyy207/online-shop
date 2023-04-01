@@ -18,18 +18,18 @@ public class ShopMapperTests {
     @Test
     public void shopOpening() {
 
-        Shop shop = new Shop("shoptest7","apple;banana", "1234567", "this is shop", "fudan", "100", 6);
+        Shop shop = new Shop("shoptest00","apple;banana", "1234567", "this is shop", "fudan", "100", 6);
         int rows = shopMapper.shopOpening(shop);
         System.out.println(rows);
     }
     @Test
     public void SearchByShopname(){
-        Shop shop = shopMapper.SearchByShopname("shoptest2");
+        Shop shop = shopMapper.SearchByShopname("shoptest00");
         System.out.println(shop);
     }
     @Test
     public void updateIsAdmitted(){
-        shopMapper.updateIsAdmitted("shoptest1");
+        shopMapper.updateIsAdmitted("shoptest00");
     }
     @Test
     public void ShowAllShop(){
@@ -49,7 +49,7 @@ public class ShopMapperTests {
     }
     @Test
     public void GetShopInformationFromUser(){
-        Shop shop =shopMapper.ShopSearchByUid(13);
+        Shop shop =shopMapper.ShopSearchByUid(6);
         System.out.println(shop);
     }
 }

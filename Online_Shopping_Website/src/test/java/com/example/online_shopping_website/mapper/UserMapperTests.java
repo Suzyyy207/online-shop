@@ -29,7 +29,7 @@ public class UserMapperTests {
     @Test
     public void insert() {
         User user = new User();
-        user.setUsername("test11");
+        user.setUsername("test1123");
         user.setPassword("123456");
 
         Integer rows = userMapper.Insert(user);

@@ -1,6 +1,7 @@
 package com.example.online_shopping_website.controller;
 
 import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
+import com.example.online_shopping_website.entity.AvatarLoader;
 import com.example.online_shopping_website.entity.User;
 import com.example.online_shopping_website.service.IUserService;
 import com.example.online_shopping_website.service.ex.*;
@@ -9,6 +10,9 @@ import com.example.online_shopping_website.util.JsonResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
@@ -72,4 +76,28 @@ public class UserController {
 
         return  result;
     }
+    @PostMapping("/api/setUserAvatar")
+
+//    public JsonResult<User> uploadAvatar(@RequestBody AvatarLoader avatarLoader /*@RequestParam("avatar") MultipartFile avatarFile, @RequestParam("username") String username*/) throws IOException {
+//            User user = new User();
+//            MultipartFile avatarFile = avatarLoader.getAvatarFile();
+//            String username = avatarLoader.getUsername();
+//            byte[] avatarData = avatarFile.getBytes();
+//            userService.UpdateAvatar(username,avatarData);
+//            JsonResult result = new JsonResult<User>(OK,"用户头像上传成功");
+//            user.setAvatar(avatarData);
+//            return result;
+//    }
+//
+    public JsonResult<User> uploadAvatar(@RequestParam("avatar") MultipartFile avatarFile, @RequestParam("username") String username) throws IOException {
+        User user = new User();
+        byte[] avatarData = avatarFile.getBytes();
+        userService.UpdateAvatar(username,avatarData);
+        JsonResult result = new JsonResult<User>(OK,"用户头像上传成功");
+        user.setAvatar(avatarData);
+        return result;
+    }
+
 }
+
+
