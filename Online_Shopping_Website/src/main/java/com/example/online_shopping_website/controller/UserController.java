@@ -7,6 +7,7 @@ import com.example.online_shopping_website.service.ex.*;
 import com.example.online_shopping_website.service.impl.UserServiceImpl;
 import com.example.online_shopping_website.util.JsonResult;
 
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,9 +39,10 @@ public class UserController {
             registerResult.addMessage("注册失败：身份证号已被注册&");
         }catch(SQLRegisterInsertException e){
             registerResult.setState(NO);
-            registerResult.addMessage("注册失败：身份证号已被注册&");
+            registerResult.addMessage("注册失败：出现未知错误&");
         }catch(RegisterInfoInvalidException e){
             registerResult.setState(NO);
+            registerResult.addMessage("注册失败：出现未知错误&");
             System.out.println("前端传来的信息（检查过）有误，可能是恶意攻击");
         }
         return registerResult;
@@ -64,12 +66,58 @@ public class UserController {
         return loginResult;
     }
 
-    @RequestMapping("/api/setUserAvatar")
-    public JsonResult setUserAvatar(){
-        JsonResult result = new JsonResult<>(OK,"用户头像上传成功");
+    @RequestMapping("/api/getUserInfo")
+    public JsonResult getUserInfo(@RequestParam String username){
 
-
-
-        return  result;
+        JsonResult getUserInfoResult = new JsonResult<>();
+        try{
+            getUserInfoResult = userService.getUserInfo(username);
+        }catch(UserNotFoundException e){    //正常是不会出现的 用户找不到的情况
+            getUserInfoResult.setState(NO);
+            System.out.println("用户未找到");
+        }catch(UsernameInvalidException e){
+            getUserInfoResult.setState(NO);
+            System.out.println("用户名异常");
+        }
+        return  getUserInfoResult;
     }
+
+    @RequestMapping("/api/userModified")
+    public JsonResult setUserInfo(@RequestParam String username,
+                                  @RequestParam String newusername,
+                                  @RequestParam String phone,
+                                  @RequestParam String idnum,
+                                  @RequestParam String email){
+        JsonResult setUserInfoResult = new JsonResult<>();
+        User NewUserInfo = new User(newusername,phone,email,idnum);
+
+        try{
+            setUserInfoResult = userService.setUserInfo(username, NewUserInfo);
+        }catch(UsernameDuplicatedException e){
+            setUserInfoResult.setState(NO);
+            setUserInfoResult.setMessage("修改失败：用户名已被占用&");
+        }catch(PhoneDuplicatedException e){
+            setUserInfoResult.setState(NO);
+            setUserInfoResult.addMessage("修改失败：手机号已被注册&");
+        }catch(EmailDuplicatedException e){
+            setUserInfoResult.setState(NO);
+            setUserInfoResult.addMessage("修改失败：邮箱已被注册&");
+        }catch(UserIdnumDuplicatedException e){
+            setUserInfoResult.setState(NO);
+            setUserInfoResult.addMessage("修改失败：身份证号已被注册&");
+        }catch(SQLRegisterInsertException e){
+            setUserInfoResult.setState(NO);
+            setUserInfoResult.addMessage("修改失败：出现未知错误&");
+        }catch(RegisterInfoInvalidException e){
+            setUserInfoResult.setState(NO);
+            System.out.println("前端传来的信息（检查过）有误，可能是恶意攻击");
+        }
+
+        return  setUserInfoResult;
+    }
+
+
+
+
+
 }

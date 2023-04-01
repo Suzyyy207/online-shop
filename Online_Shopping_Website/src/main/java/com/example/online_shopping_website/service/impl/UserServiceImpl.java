@@ -5,6 +5,7 @@ import com.example.online_shopping_website.entity.User;
 import com.example.online_shopping_website.service.IUserService;
 import com.example.online_shopping_website.service.ex.*;
 import com.example.online_shopping_website.util.JsonResult;
+import org.apache.ibatis.jdbc.Null;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,5 +84,31 @@ public class UserServiceImpl implements IUserService {
 
         JsonResult<User> loginResult = new JsonResult<>(state,message,data);
         return loginResult;
+    }
+
+    @Override
+    public JsonResult<User> getUserInfo(String username){
+        JsonResult getUserInfoResult = new JsonResult<>(OK);
+
+        if(!InfoVerification.isUsernameValid(username)){
+            throw new UsernameInvalidException("用户名异常");
+        }
+
+        User user = userMapper.SearchByUsername(username);
+        if(user == null){
+            throw new UserNotFoundException("用户未找到");
+        }
+
+        User userInfoPart = new User(user.getPhone(), user.getEmail(), user.getIdnum());
+        getUserInfoResult.setData(userInfoPart);
+
+        return getUserInfoResult;
+    }
+
+    @Override
+    public JsonResult<User> setUserInfo(String oldUsername, User NewUserInfo){
+        JsonResult setUserInfoResult = new JsonResult<>();
+
+        return setUserInfoResult;
     }
 }

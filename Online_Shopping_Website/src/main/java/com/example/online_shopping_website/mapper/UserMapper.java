@@ -20,7 +20,7 @@ public interface UserMapper {
      * @param user
      * @return 插入信息时，影响的行数
      */
-    int Register(User user);
+    Integer Register(User user);
 
     /**
      * 根据 用户名 查询用户
@@ -52,7 +52,6 @@ public interface UserMapper {
      * @return 找到时返回用户数据；没有找到时返回null
      */
     User SearchByIdnum(String idnum);
-
 
 }
 

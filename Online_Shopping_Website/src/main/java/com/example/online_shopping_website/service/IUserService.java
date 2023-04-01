@@ -25,4 +25,8 @@ public interface IUserService {
      * @return 成功返回用户信息，失败返回空
      */
     User SearchByUsername(String username);
+
+    JsonResult<User> getUserInfo(String username);
+
+    JsonResult<User> setUserInfo(String oldUsername, User NewUserInfo);
 }
