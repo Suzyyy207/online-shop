@@ -1,6 +1,50 @@
 # lab_3
 
 ## 个人中心
+### 个人信息显示(userInfo)
+##### commit示例: feat(front):userInfo add API /getUserInfo to get user info
+|    接口名    |  getUserInfo  |    |
+| ---------- | ---------- | -------- |
+|  方法  |  POST  |    |
+|  功能  |  获取用户信息  |    |
+|  参数列表 front->back  |  |  |
+|  参数名  |  含义  |  类型&备注  |
+|  username  |  用户名  |    |
+|  参数列表 back->front  |  |  |
+|  参数名  |  含义  |  类型&备注  |
+|  state  |  传输是否成功  |    |
+|  data  |  user类  |  phone;idnum;email   |
+
+<br>
+
+|   测试   |    |  
+| ---------- | ---------- | 
+|  前端测试路径  |  localhost:端口/UserInfo  |    
+|  测试方法  |  修改UserInfo:93的username为指定用户后，可以在改页面上看到用户个人信息  |   
+<br>
+
+|    接口名    |  setUserInfo  |    |
+| ---------- | ---------- | -------- |
+|  方法  |  POST  |    |
+|  功能  |  修改用户信息  |    |
+|  参数列表 front->back  |  |  |
+|  参数名  |  含义  |  类型&备注  |
+|  username  |  用户名  |    |
+|  newusername  |  新用户名  |    |
+|  phone  |  手机号  |    |
+|  idnum  |  身份证  |    |
+|  email  |  邮箱  |    |
+|  参数列表 back->front  |  |  |
+|  参数名  |  含义  |  类型&备注  |
+|  state  |  传输是否成功  |    |
+|  message  |  提示信息  |  修改失败：用户名/手机号/邮箱/身份证已存在；如果有多种错误，则拼接成同一个字符串，以“；”分割<br>修改成功！   |
+<br>
+
+|   测试   |    |  
+| ---------- | ---------- | 
+|  前端测试路径  |  localhost:端口/UserInfo  |    
+|  测试方法  |  修改UserInfo:93的username为指定用户后，可以在改页面上看到用户个人信息；点击“修改”按钮并修改后，可以正确修改  |  
+
 ### 头像上传
 #### 用户上传头像1.0: 图片传输(uploadImg)
 ##### commit示例: feat(front):uploadImg add API /setUserAvatar to post img only   
