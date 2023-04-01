@@ -11,7 +11,6 @@ import java.lang.annotation.Inherited;
 import java.util.Date;
 import java.util.Objects;
 
-//@Accessors(chain = true)
 
 @Data
 @NoArgsConstructor

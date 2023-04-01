@@ -24,7 +24,7 @@ public class InfoVerification {
         return result;
     }
 
-    /*只检查了手机号是否为数字，因为格式我还不清楚
+    /*只检查了手机号是否为数字，因为格式还不固定
     * */
     public static Boolean isPhoneValid(String phone){
         Boolean result = Boolean.FALSE;
@@ -34,20 +34,17 @@ public class InfoVerification {
         return result;
     }
 
-
     public static Boolean isEmailValid(String email) {
         Pattern pattern = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
-    //暂时不使用，以免测试太复杂
     public static Boolean isIdnumValid(String idnum) {
-        Pattern pattern = Pattern.compile("^[1-9]\\d{5}(19|20)\\d{2}(0\\d|1[0-2])([0-2]\\d|3[0-1])\\d{3}[\\dX]$");
+        Pattern pattern = Pattern.compile("^[0-9]{18}$");
         Matcher matcher = pattern.matcher(idnum);
         return matcher.matches();
     }
-
 
 
 }

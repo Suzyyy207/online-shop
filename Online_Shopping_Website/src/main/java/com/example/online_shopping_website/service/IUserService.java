@@ -1,9 +1,7 @@
 package com.example.online_shopping_website.service;
+
 import com.example.online_shopping_website.entity.User;
 import com.example.online_shopping_website.util.JsonResult;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public interface IUserService {
     /**
@@ -21,6 +19,10 @@ public interface IUserService {
      */
     JsonResult<User> login(String username, String password);
 
-
+    /**
+     * 根据用户名查找用户
+     * @param username
+     * @return 成功返回用户信息，失败返回空
+     */
     User SearchByUsername(String username);
 }

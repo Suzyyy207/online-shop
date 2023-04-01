@@ -15,7 +15,7 @@
 |  avatar  |  头像的二进制数据  |  formData（图像以二进制的形式储存在avatar的'image'中），传输的content-type设置为'multipart/form-data'  |
 |  参数列表 back->front  |  |  |
 |  参数名  |  含义  |  类型&备注  |
-|  state  |  传输是否成功  |    |
+|  state  |  传输是否成功  | 依旧用NO（1）和OK（3）代表失败和成功 |
 |  message  |  提示信息  | 传输成功时：“用户头像上传成功”<br> 传输失败时："上传失败，请重试"   |
 
 |   测试   |  确定图像传输成功  |  

@@ -26,11 +26,11 @@ public class UserServiceImpl implements IUserService {
     public JsonResult<User> register(User user){
 
         JsonResult<User> registerResult = new JsonResult<User>(OK,"", null);
-        //在后端重复检查注册信息
-//        if(InfoVerification.checkAllInfoValid(user)){
-//            registerResult.setState(NO);
-//           System.out.println("前端传来的信息（检查过）有误，可能是恶意攻击");
-//        }
+
+        //对注册信息的双重检查
+        if(!InfoVerification.checkAllInfoValid(user)){
+            throw new RegisterInfoInvalidException("前端传来的信息（检查过）有误，可能是恶意攻击");
+        }
 
         if( userMapper.SearchByUsername(user.getUsername()) != null){
             throw new UsernameDuplicatedException("注册失败：用户名已被占用");
@@ -61,6 +61,7 @@ public class UserServiceImpl implements IUserService {
         User user = userMapper.SearchByUsername(username);
         return user;
     }
+
     @Override
     public JsonResult<User> login(String username, String password) {
 
@@ -70,20 +71,14 @@ public class UserServiceImpl implements IUserService {
 
         User result = userMapper.SearchByUsername(username);
         if(result == null){
-            state = NO;
-            message = "登录失败：用户名不存在！";
-            //throw new UserNotFoundException("登录失败：用户名不存在！");
+            throw new UserNotFoundException("登录失败：用户名不存在！");
         }else{
             String oldPassword = result.getPassword();
             if(!oldPassword.equals(password)){
-                state = NO;
-                message = "登录失败：密码错误！";
-                //throw new PasswordNotMatchException("登录失败：密码错误！");
+                throw new PasswordNotMatchException("登录失败：密码错误！");
+            }else{
+                data = userMapper.SearchByUsername(username);
             }
-        }
-
-        if(state == OK){
-            data = userMapper.SearchByUsername(username);
         }
 
         JsonResult<User> loginResult = new JsonResult<>(state,message,data);
