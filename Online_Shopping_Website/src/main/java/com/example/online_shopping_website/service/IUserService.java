@@ -1,0 +1,26 @@
+package com.example.online_shopping_website.service;
+import com.example.online_shopping_website.entity.User;
+import com.example.online_shopping_website.util.JsonResult;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public interface IUserService {
+    /**
+     * 用户注册功能
+     * @param user 用户的信息，封装在类中
+     * @return 错误信息
+     */
+    JsonResult<User> register(User user);
+
+    /**
+     * 用户登陆功能
+     * @param username 用户名
+     * @param password 用户密码
+     * @return 返回用户数据
+     */
+    JsonResult<User> login(String username, String password);
+
+
+    User SearchByUsername(String username);
+}
