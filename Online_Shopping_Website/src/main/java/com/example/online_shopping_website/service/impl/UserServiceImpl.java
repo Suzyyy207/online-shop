@@ -111,4 +111,9 @@ public class UserServiceImpl implements IUserService {
 
         return setUserInfoResult;
     }
+
+    @Override
+    public void UpdateAvatar(String username,byte[] avatar){
+        userMapper.AvatarUpdate(username,avatar);
+    }
 }

@@ -29,4 +29,6 @@ public interface IUserService {
     JsonResult<User> getUserInfo(String username);
 
     JsonResult<User> setUserInfo(String oldUsername, User NewUserInfo);
+
+    void UpdateAvatar(String username,byte[] avatar);
 }

@@ -53,5 +53,13 @@ public interface UserMapper {
      */
     User SearchByIdnum(String idnum);
 
+    /**
+     * 用户上传头像
+     *
+     * @param username avatar
+     * @return 找到时返回用户数据；没有找到时返回null
+     */
+    void AvatarUpdate(String username,byte[] avatar);
+
 }
 

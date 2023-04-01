@@ -16,7 +16,9 @@
         <result column="idnum" property="idnum"></result>
         <result column="is_delete" property="is_delete"></result>
         <result column="salt" property="salt"></result>
+        <result column="avatar" property="avatar"></result>
     </resultMap>
+
     <insert id="Insert" >
         INSERT INTO users(username, password)
         VALUES (#{username}, #{password});
@@ -43,6 +45,9 @@
         VALUES
             (#{usertype}, #{username} ,#{password}, #{shopid}, #{phone}, #{email}, #{idnum}, #{is_delete}, #{salt});
     </insert>
+    <update id="AvatarUpdate">
+        UPDATE users SET avatar = #{avatar} WHERE username = #{username}
+    </update>
 </mapper>
 
 
