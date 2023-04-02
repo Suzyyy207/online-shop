@@ -76,8 +76,7 @@ commit示例: feat(front):uploadImg add API /setUserAvatar to post img only
 
 | 参数名   | 含义             | 类型&备注                                                    |
 | -------- | ---------------- | ------------------------------------------------------------ |
-| username | 用户名           | 把图片和用户关联起来                                         |
-| avatar   | 头像的二进制数据 | formData（图像以二进制的形式储存在avatar的'image'中），传输的content-type设置为'multipart/form-data' |
+| avatar   | 头像的二进制数据 | formData（图像以二进制的形式储存在avatar的'image'中，username储存在avatar的'username'），传输的content-type设置为'multipart/form-data' |
 
 参数列表 back->front
 
@@ -159,6 +158,8 @@ commit示例: feat(front):downloadImg add API /getUserAvatar to get img only
 
 - 前端完成与后端交互的函数，注释模版为“add API to post/get”。具体的使用例子为"add API '/login' to post user info"
 - README添加接口信息，注释模版为“add API info for XXX”。具体的使用例子为"add API info for getUserAvatar"
+
+
 【【【【【【自己写一下自己的模版自己写一下自己的模版！！！！】】】】】】
 
 
