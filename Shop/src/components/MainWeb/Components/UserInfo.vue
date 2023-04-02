@@ -149,13 +149,119 @@ export default {
         }
       })
     },
-    toModify() {
-      this.usernameDisabled = false,
-      this.phoneDisabled = false,
-      this.idnumDisabled = false,
-      this.emailDisabled = false,
-      this.genderDisabled = false,
-      this.isModified = true
+    created() {
+        this.getUserInfo();
+    },
+    methods: {
+      getUserInfo() {
+        var localStorage = window.localStorage;
+        this.$axios.post('/getUserInfo', {
+            username: localStorage.getItem("username")
+        })
+        .then(res => {
+            const user = res.data.data;
+            /*this.form.gender = user.gender;*/
+            console.log(user);
+            this.form.phone = user.phone;
+            this.form.idnum = user.idnum;
+            this.form.email = user.email;
+        })
+      },
+      reset: function () {
+        ElMessageBox.confirm(
+          '你确定要重置输入信息吗',
+          '', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          })
+          .then(() => {
+            ElMessage({
+              type: 'success',
+              message: '已成功重置',
+            })
+            this.confirmReset();
+          })
+          .catch(() => {
+            ElMessage({
+              type: 'info',
+              message: '已取消',
+            })
+          })
+      },
+      setUserInfo: function(form) {
+        this.$refs[form].validate((valid=>{
+            if(valid) {
+                var localStorage = window.localStorage;
+                this.$axios.post('/setUserInfo', {
+                    username: localStorage.getItem("username"),
+                    newusername: this.form.username,
+                    /*goodstype: this.form.goodstype.join(';'),
+                    gender: this.form.gender,*/
+                    phone: this.form.phone,
+                    idnum: this.form.idnum,
+                    email: this.form.email
+                    /*birthday: this.form.birthday*/
+                })
+                .then(res => {
+                    if(res.data.state == window.SUCCESS){
+                        this.$message.sucess(res.data.message);
+                        var localStorage = window.localStorage;
+                        localStorage.setItem("username", this.form.username);
+                        // TODO：跳转到一个空白页面后跳转回来
+                        this.$router.push({name:'UserInfoBlank'});
+                    } else {
+                        const error_msg = res.data.message.replace(/&$/, '');
+                        const msg = error_msg.split("&");
+                        for(let item of msg) {
+                            this.$message.error(item);
+                        }
+                    }
+                })
+            } else {
+                this.$message.error("修改失败，请按照要求填写所有信息");
+            }
+        }))
+      },
+      onSubmit() {
+        var localStorage = window.localStorage;
+        this.$axios.post('/setUserInfo', {
+            username: localStorage.getItem("username"),
+            newusername: this.form.username,
+            /*goodstype: this.form.goodstype.join(';'),
+            gender: this.form.gender,*/
+            phone: this.form.phone,
+            idnum: this.form.idnum,
+            email: this.form.email
+            /*birthday: this.form.birthday*/
+        })
+        .then(res => {
+            if(res.data.state == window.SUCCESS){
+            this.$message.sucess(res.data.message);
+            var localStorage = window.localStorage;
+            localStorage.setItem("username", this.form.username);
+            // TODO：跳转到一个空白页面后跳转回来
+            this.$router.push({name:'UserInfoBlank'});
+            } else {
+            this.$message.error(res.data.message);
+            }
+        })
+        },
+     toModify() {
+        this.usernameDisabled = false,
+        this.phoneDisabled = false,
+        this.idnumDisabled = false,
+        this.emailDisabled = false,
+        this.isModified = true
+     },
+     createValidCode(data){
+        this.validCode = data;
+    },
+     confirmReset() {
+        this.$refs.form.resetFields(); // 重置表单
+        this.form.usertype="";
+        this.form.agreement="";
+     },
     }
   }
 }

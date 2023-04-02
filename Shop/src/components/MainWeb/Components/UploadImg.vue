@@ -59,9 +59,10 @@ export default {
       var files = file.target.files[0];
       console.log(files.name)
       console.log(files)
-
       var avatar = new FormData();
       avatar.append('image', file.target.files[0])
+      avatar.append('username', "username")
+      // 测试版本： “myUsername”改成指定用户名
       this.$axios.post('/setUserAvatar', avatar, {
         headers: {
           'Content-Type': 'multipart/form-data'
