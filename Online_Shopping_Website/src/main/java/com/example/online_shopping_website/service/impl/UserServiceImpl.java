@@ -110,15 +110,26 @@ public class UserServiceImpl implements IUserService {
             throw new EmailDuplicatedException("新电子邮箱已存在");
         }
 
-        Integer row = 0;
-        if(!NewUserInfo.getUsername().isEmpty())
-            row += userMapper.UpdateNewusernameByOldusername(oldUsername, NewUserInfo.getUsername());
-        if(!NewUserInfo.getPassword().isEmpty())
-            row += userMapper.UpdateNewpasswordByOldusername(oldUsername, NewUserInfo.getPassword());
-        if(!NewUserInfo.getPhone().isEmpty())
-            row += userMapper.UpdateNewphoneByOldusername(oldUsername, NewUserInfo.getPhone());
-        if(!NewUserInfo.getEmail().isEmpty())
-            row += userMapper.UpdateNewemailByOldusername(oldUsername, NewUserInfo.getEmail());
+        int row_real = 0;
+        int row_assumption = 0;
+        if(!NewUserInfo.getUsername().isEmpty()){
+            row_real += userMapper.UpdateNewusernameByOldusername(oldUsername, NewUserInfo.getUsername());
+            row_assumption += 1;
+        }
+        if(!NewUserInfo.getPassword().isEmpty()){
+            row_real += userMapper.UpdateNewpasswordByOldusername(oldUsername, NewUserInfo.getPassword());
+            row_assumption += 1;
+        }
+        if(!NewUserInfo.getPhone().isEmpty()){
+            row_real += userMapper.UpdateNewphoneByOldusername(oldUsername, NewUserInfo.getPhone());
+            row_assumption += 1;
+        }
+        if(!NewUserInfo.getEmail().isEmpty()){
+            row_real += userMapper.UpdateNewemailByOldusername(oldUsername, NewUserInfo.getEmail());
+            row_assumption += 1;
+        }
+        if(row_real != row_assumption)
+            throw new SQLException("插入数据库出现未知错误");
 
         setUserInfoResult.setMessage("修改成功");
         return setUserInfoResult;

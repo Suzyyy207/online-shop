@@ -93,7 +93,10 @@ public class UserController {
 
         try{
             setUserInfoResult = userService.setUserInfo(oldusername, NewUserInfo);
-        }catch(UsernameDuplicatedException e){
+        }catch(UserNotFoundException e){
+            setUserInfoResult.setState(NO);
+            setUserInfoResult.addMessage("修改失败：用户未找到;");
+        } catch(UsernameDuplicatedException e){
             setUserInfoResult.setState(NO);
             setUserInfoResult.addMessage("修改失败：用户名已存在;");
         }catch(PhoneDuplicatedException e){
