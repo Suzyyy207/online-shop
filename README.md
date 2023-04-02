@@ -1,7 +1,6 @@
 # lab_3
 
 ## 个人中心
-
 ### 个人信息显示
 
 commit示例: feat(front):userInfo add API /getUserInfo to get user info
