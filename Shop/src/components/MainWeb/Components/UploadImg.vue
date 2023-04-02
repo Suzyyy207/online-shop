@@ -31,7 +31,7 @@ export default {
       var localStorage = window.localStorage;
 
       this.$axios.post('/getUserAvatar', {
-        // 测试版本：
+        // 测试版本
         username: "数据库存储的username名称"
         // 正式版本：username: localStorage.getItem("username")
       })
@@ -71,7 +71,7 @@ export default {
       }).then(res => {
         if(res.data.state == 3) {
           this.$message.success("上传成功");
-          // this.getUserAvatar();
+          this.getUserAvatar();
         }
         else {
           this.$message.error(res.data.message);

@@ -50,7 +50,7 @@ const router = createRouter({
     {
       path: '/UserInfo',
       name: 'UserInfo',
-      component: () => import('../components/MainWeb/Components/UserInfo.vue')
+      component: () => import('../components/MainWeb/Components/userInfo.vue')
     },
     {
       path: '/UploadImg',

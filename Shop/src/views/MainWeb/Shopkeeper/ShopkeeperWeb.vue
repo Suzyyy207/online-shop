@@ -21,10 +21,11 @@ import Nav from '../../../components/Public/Nav/ShopkeeperNav.vue'
 </template>
 
 <script>
-import { interceptor } from "../../../interceptor";
+import { interceptor, shopkeeperInterceptor } from "../../../interceptor";
 export default {
     created(){
         interceptor(this);
+        shopkeeperInterceptor(this);
     }
 }
 </script>

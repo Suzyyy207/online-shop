@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.online_shopping_website.mapper.UserMapper">
+
+    <resultMap id="UserMap" type="com.example.online_shopping_website.entity.User">
+        <result column="uid" property="uid"></result>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+        <result column="shopid" property="shopid"></result>
+        <result column="phone" property="phone"></result>
+        <result column="email" property="email"></result>
+        <result column="email" property="email"></result>
+        <result column="idnum" property="idnum"></result>
+        <result column="is_delete" property="is_delete"></result>
+        <result column="salt" property="salt"></result>
+        <result column="avatar" property="avatar"></result>
+    </resultMap>
+
+    <insert id="Insert" >
+        INSERT INTO users(username, password)
+        VALUES (#{username}, #{password});
+    </insert>
+    <select id="SearchByUsername" resultMap="UserMap">
+        SELECT * FROM users WHERE username = #{username}
+    </select>
+
+    <select id="SearchByPhone" resultMap="UserMap">
+        SELECT * FROM users WHERE  phone = #{phone}
+    </select>
+
+    <select id="SearchByEmail" resultMap="UserMap">
+        SELECT * FROM users WHERE  email = #{email}
+    </select>
+
+    <select id="SearchByIdnum" resultMap="UserMap">
+        SELECT * FROM users WHERE  idnum = #{idnum}
+    </select>
+
+    <insert id="Register" >
+        INSERT INTO users
+            (usertype,username, password, shopid, phone, email, idnum, is_delete, salt)
+        VALUES
+            (#{usertype}, #{username} ,#{password}, #{shopid}, #{phone}, #{email}, #{idnum}, #{is_delete}, #{salt});
+    </insert>
+    <update id="AvatarUpdate">
+        UPDATE users SET avatar = #{avatar} WHERE username = #{username}
+    </update>
+</mapper>
+
+
+        <!--自定义映射规则（MySQL和Java中的属性映射）
+            id:为映射本身分配唯一的id值
+            type:指定MySQL中的查询结果与哪个类进行映射
+            <result>:实现映射，columns为MySQL中的属性，property为类中属性
+            主建不可以省略 到时候加上
+        -->
+
+        <!--
+        resultMap 指定映射规则
+        <select id="SearchByUsername" resultMap="com.example.online_shopping_website.User">
+        </select>
+        -->
