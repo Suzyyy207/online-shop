@@ -25,7 +25,7 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 
 | 前端测试路径            | 测试方法                                                     |
 | ----------------------- | ------------------------------------------------------------ |
-| localhost:端口/UserInfo | 修改UserInfo:93的username为指定用户后，可以在改页面上看到用户个人信息 |
+| localhost:端口/UserInfo | 修改UserInfo:245的username为指定用户并注释正常版本后，可以在改页面上看到用户个人信息 |
 
 
 
@@ -58,7 +58,7 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 
 | 前端测试路径            | 测试方法                                                     |
 | ----------------------- | ------------------------------------------------------------ |
-| localhost:端口/UserInfo | 修改UserInfo:93的username为指定用户后，可以在改页面上看到用户个人信息；点击“修改”按钮并修改后，可以正确修改 |
+| localhost:端口/UserInfo | 修改UserInfo:245的username为指定用户并注释正常版本后，可以在改页面上看到用户个人信息；点击“修改”按钮并修改后，可以正确修改 |
 
 
 
