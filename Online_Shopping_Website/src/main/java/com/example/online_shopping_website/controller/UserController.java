@@ -21,38 +21,14 @@ public class UserController {
 
     @RequestMapping("/api/userRegister")
     public JsonResult<User> register(@RequestBody User user){
-        JsonResult<User> registerResult = new JsonResult<>();
-
-        try{
-            registerResult = userService.register(user);
-        }catch(UsernameDuplicatedException e){
-            registerResult.setState(NO);
-            registerResult.setMessage("注册失败：用户名已被占用&");
-        }catch(PhoneDuplicatedException e){
-            registerResult.setState(NO);
-            registerResult.addMessage("注册失败：手机号已被注册&");
-        }catch(EmailDuplicatedException e){
-            registerResult.setState(NO);
-            registerResult.addMessage("注册失败：邮箱已被注册&");
-        }catch(UserIdnumDuplicatedException e){
-            registerResult.setState(NO);
-            registerResult.addMessage("注册失败：身份证号已被注册&");
-        }catch(SQLException e){
-            registerResult.setState(NO);
-            registerResult.addMessage("注册失败：出现未知错误&");
-        }catch(InfoInvalidException e){
-            registerResult.setState(NO);
-            registerResult.addMessage("注册失败：出现未知错误&");
-            System.out.println("前端传来的信息（检查过）有误，可能是恶意攻击");
-        }
+        // 不用 try catch
+        JsonResult<User> registerResult = userService.register(user);
         return registerResult;
     }
 
     @RequestMapping("/api/userlogin")
-    public JsonResult<User> login(@RequestParam("username") String username, @RequestParam("password") String password){
+    public JsonResult<User> login(@RequestBody User user){
         JsonResult<User> loginResult = new JsonResult<>();
-        User user = new User(username,password);
-
         try{
             loginResult = userService.login(user.getUsername(), user.getPassword());
         }catch(UserNotFoundException e){
@@ -124,7 +100,7 @@ public class UserController {
 //            String username = avatarLoader.getUsername();
 //            byte[] avatarData = avatarFile.getBytes();
 //            userService.UpdateAvatar(username,avatarData);
-//            JsonResult result = new JsonResult<User>(OK,"用户头像上传成功");
+//            JsonResult result = new JsonResult<User>(YES,"用户头像上传成功");
 //            user.setAvatar(avatarData);
 //            return result;
 //    }
@@ -133,7 +109,7 @@ public class UserController {
         User user = new User();
         byte[] avatarData = avatarFile.getBytes();
         userService.UpdateAvatar(username,avatarData);
-        JsonResult<User> result = new JsonResult<>(OK, "用户头像上传成功");
+        JsonResult<User> result = new JsonResult<>(YES, "用户头像上传成功");
         user.setAvatar(avatarData);
         return result;
     }

@@ -20,31 +20,40 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonResult<User> register(User user){
 
-        JsonResult<User> registerResult = new JsonResult<>(OK, "", null);
-
+        JsonResult<User> registerResult = new JsonResult<>(YES,"");
         //对注册信息的双重检查
-        if(!InfoVerification.checkAllInfoValid(user)){
-            throw new InfoInvalidException("前端传来的信息（检查过）有误，可能是恶意攻击");
-        }
+//        if(!InfoVerification.checkAllInfoValid(user)){
+//            throw new InfoInvalidException("前端传来的信息（检查过）有误，可能是恶意攻击");
+//        }
 
         if( userMapper.SearchByUsername(user.getUsername()) != null){
-            throw new UsernameDuplicatedException("注册失败：用户名已被占用");
+            registerResult.setState(NO);
+            registerResult.setMessage("注册失败：用户名已被占用&");
+            //throw new UsernameDuplicatedException("注册失败：用户名已被占用");
         }
         if( userMapper.SearchByPhone(user.getPhone()) != null){
-            throw new PhoneDuplicatedException("注册失败：手机号已被注册");
+            registerResult.setState(NO);
+            registerResult.addMessage("注册失败：手机号已被注册&");
+            //throw new PhoneDuplicatedException("注册失败：手机号已被注册");
         }
         if( userMapper.SearchByEmail(user.getEmail()) != null){
-            throw new EmailDuplicatedException("注册失败：邮箱已被注册");
+            registerResult.setState(NO);
+            registerResult.addMessage("注册失败：邮箱已被注册&");
+            //throw new EmailDuplicatedException("注册失败：邮箱已被注册");
         }
         if(userMapper.SearchByIdnum(user.getIdnum()) != null){
-            throw new UserIdnumDuplicatedException("注册失败：身份证号已被注册\n");
+            registerResult.setState(NO);
+            registerResult.addMessage("注册失败：身份证号已被注册&");
+            //throw new UserIdnumDuplicatedException("注册失败：身份证号已被注册\n");
         }
 
-        if( registerResult.getState() == OK ){
+        if( registerResult.getState() == YES ){
             int row = userMapper.Register(user);
             registerResult.setMessage("注册成功");
             if (row != 1){
-                throw new SQLException("注册时出现未知错误");
+                registerResult.setState(NO);
+                registerResult.addMessage("注册时出现未知错误;");
+                //throw new SQLException("注册时出现未知错误");
             }
         }
 
@@ -74,13 +83,13 @@ public class UserServiceImpl implements IUserService {
             }
         }
 
-        return new JsonResult<>(OK,message,data);
+        return new JsonResult<>(YES,message,data);
     }
 
     @Override
     public JsonResult<User> getUserInfo(String username){
 
-        JsonResult<User> getUserInfoResult = new JsonResult<>(OK);
+        JsonResult<User> getUserInfoResult = new JsonResult<>(YES);
         if(!InfoVerification.isUsernameValid(username)){
             throw new UsernameInvalidException("用户名异常");
         }
