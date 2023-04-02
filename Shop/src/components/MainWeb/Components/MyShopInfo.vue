@@ -1,4 +1,8 @@
 <!--此组件为商家看到的本店铺的注册信息展示-->
+<script setup>
+import { reactive, ref } from 'vue'
+const dialogTableVisible = ref(false)
+</script>
 
 <template>
   <div class="wrap">
@@ -38,7 +42,25 @@
 
         <div class="info4">
           <el-form-item class="re_btn">
+            <!--需要加身份证不可以改的函数-->
             <el-button type="submit" @click="modifyShopInfo">修改注册信息</el-button>
+          </el-form-item>
+          <el-form-item class="re_btn">
+            <!--点击后弹框，需要根据弹框中点击的内容决定是否给后端发送删除申请-->
+            <el-button type="submit" @click="dialogTableVisible = true">申请删除</el-button>
+            <el-dialog  class="deleteConfirm" v-model="dialogTableVisible" title="删除确认">
+              <p>你确定要删除你的店铺吗？删除后，店铺下的商品也将被清除！</p>
+              <div class="deleteConfirmBtn">
+                <!--弹框的按钮-->
+                <el-button class="delete" type="primary" @click="deleteConfirmed">确认</el-button>
+                <el-button class="delete" @click="deleteCancel">我再想想</el-button>
+              </div>
+            </el-dialog>
+          </el-form-item>
+
+          <el-form-item class="re_btn">
+            <!--配置路由，跳转到Dashbord下的Goods页面-->
+            <el-button>商品管理</el-button>
           </el-form-item>
         </div>
     </div>
@@ -144,22 +166,44 @@
 .shop .info4{
   grid-row: 6/7;
   grid-column: 1/11;
+  display: flex;
+  justify-content: center;
+  align-items: center
 }
 
 .re_btn{
   margin-bottom: 25px;
   margin-right: 20px;
   margin-top: 0px;
-  text-align: center;
   border-color:#81A18B;
 }
 .re_btn button{
   line-height: 4px;
-  width: 200%;
+  width: auto;
   height: 38px;
   border-color:#81A18B;
   font-size: 20px;
   padding: 30px;
+}
+
+
+
+
+.deleteConfirm p{
+  font-size:20px;
+  margin-bottom: 30px;
+  font-family: "Brush Script MT", cursive;
+}
+
+.deleteConfirm .deleteConfirmBtn{
+  display: inline-flex;
+}
+
+.deleteConfirm .deleteConfirmBtn .delete{
+  font-family: "Brush Script MT", cursive;
+  padding: 10px;
+  font-size: large;
+  font-size: 20px;
 }
 
 
