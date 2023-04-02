@@ -4,7 +4,6 @@ import com.example.online_shopping_website.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.lang.annotation.Inherited;
@@ -18,7 +17,7 @@ import java.util.Objects;
 public class User extends BaseEntity implements Serializable {
     private int uid;
 
-    private  int usertype;
+    private int usertype;
 
     private String username;
 
@@ -37,10 +36,6 @@ public class User extends BaseEntity implements Serializable {
     private String salt;
 
     private byte[] avatar;
-
-
-
-
 
     public byte[] getAvatar() {
         return avatar;
@@ -167,6 +162,8 @@ public class User extends BaseEntity implements Serializable {
         this.email = email;
         this.idnum = idnum;
     }
+
+
 }
 
 

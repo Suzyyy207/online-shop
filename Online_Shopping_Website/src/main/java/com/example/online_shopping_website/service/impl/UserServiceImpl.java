@@ -5,15 +5,9 @@ import com.example.online_shopping_website.entity.User;
 import com.example.online_shopping_website.service.IUserService;
 import com.example.online_shopping_website.service.ex.*;
 import com.example.online_shopping_website.util.JsonResult;
-import org.apache.ibatis.jdbc.Null;
-import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.online_shopping_website.service.impl.InfoVerification;
 
-
-import java.sql.SQLException;
-import java.util.List;
 
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
@@ -26,11 +20,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonResult<User> register(User user){
 
-        JsonResult<User> registerResult = new JsonResult<User>(OK,"", null);
+        JsonResult<User> registerResult = new JsonResult<>(OK, "", null);
 
         //对注册信息的双重检查
         if(!InfoVerification.checkAllInfoValid(user)){
-            throw new RegisterInfoInvalidException("前端传来的信息（检查过）有误，可能是恶意攻击");
+            throw new InfoInvalidException("前端传来的信息（检查过）有误，可能是恶意攻击");
         }
 
         if( userMapper.SearchByUsername(user.getUsername()) != null){
@@ -50,7 +44,7 @@ public class UserServiceImpl implements IUserService {
             int row = userMapper.Register(user);
             registerResult.setMessage("注册成功");
             if (row != 1){
-                throw new SQLRegisterInsertException("注册时出现未知错误");
+                throw new SQLException("注册时出现未知错误");
             }
         }
 
@@ -59,16 +53,14 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User SearchByUsername(String username){
-        User user = userMapper.SearchByUsername(username);
-        return user;
+        return userMapper.SearchByUsername(username);
     }
 
     @Override
     public JsonResult<User> login(String username, String password) {
 
-        int state =OK;
         String message = "登录成功！";
-        User data = null;
+        User data;
 
         User result = userMapper.SearchByUsername(username);
         if(result == null){
@@ -82,14 +74,13 @@ public class UserServiceImpl implements IUserService {
             }
         }
 
-        JsonResult<User> loginResult = new JsonResult<>(state,message,data);
-        return loginResult;
+        return new JsonResult<>(OK,message,data);
     }
 
     @Override
     public JsonResult<User> getUserInfo(String username){
-        JsonResult getUserInfoResult = new JsonResult<>(OK);
 
+        JsonResult<User> getUserInfoResult = new JsonResult<>(OK);
         if(!InfoVerification.isUsernameValid(username)){
             throw new UsernameInvalidException("用户名异常");
         }
@@ -98,17 +89,38 @@ public class UserServiceImpl implements IUserService {
         if(user == null){
             throw new UserNotFoundException("用户未找到");
         }
-
         User userInfoPart = new User(user.getPhone(), user.getEmail(), user.getIdnum());
         getUserInfoResult.setData(userInfoPart);
-
         return getUserInfoResult;
     }
 
     @Override
     public JsonResult<User> setUserInfo(String oldUsername, User NewUserInfo){
-        JsonResult setUserInfoResult = new JsonResult<>();
+        JsonResult<User> setUserInfoResult = new JsonResult<>(YES);
 
+        User SearchByOldusernameResult = userMapper.SearchByUsername(oldUsername);
+        if(SearchByOldusernameResult == null){
+            throw new UserNotFoundException("旧用户名不存在");
+        }   //有可能只修改其中一项
+        if( !NewUserInfo.getUsername().isEmpty() && userMapper.SearchByUsername(NewUserInfo.getUsername()) != null){
+            throw new UsernameDuplicatedException("新用户名已存在");
+        }if( !NewUserInfo.getPhone().isEmpty() && userMapper.SearchByPhone(NewUserInfo.getPhone()) != null){
+            throw new PhoneDuplicatedException("新电话号码已存在");
+        }if(!NewUserInfo.getEmail().isEmpty() && userMapper.SearchByEmail(NewUserInfo.getEmail()) != null){
+            throw new EmailDuplicatedException("新电子邮箱已存在");
+        }
+
+        Integer row = 0;
+        if(!NewUserInfo.getUsername().isEmpty())
+            row += userMapper.UpdateNewusernameByOldusername(oldUsername, NewUserInfo.getUsername());
+        if(!NewUserInfo.getPassword().isEmpty())
+            row += userMapper.UpdateNewpasswordByOldusername(oldUsername, NewUserInfo.getPassword());
+        if(!NewUserInfo.getPhone().isEmpty())
+            row += userMapper.UpdateNewphoneByOldusername(oldUsername, NewUserInfo.getPhone());
+        if(!NewUserInfo.getEmail().isEmpty())
+            row += userMapper.UpdateNewemailByOldusername(oldUsername, NewUserInfo.getEmail());
+
+        setUserInfoResult.setMessage("修改成功");
         return setUserInfoResult;
     }
 

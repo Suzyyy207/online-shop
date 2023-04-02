@@ -1,6 +1,7 @@
 package com.example.online_shopping_website.mapper;
 
 import com.example.online_shopping_website.entity.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -61,5 +62,36 @@ public interface UserMapper {
      */
     void AvatarUpdate(String username,byte[] avatar);
 
+    /**
+     *  根据旧用户名寻找，更新用户名
+     * @param oldusername
+     * @param Newusername
+     * @return 受影响的行数
+     */
+    int UpdateNewusernameByOldusername(String oldusername, String Newusername);
+
+    /**
+     *  根据旧用户名查找，更新密码
+     * @param oldusername
+     * @param Newpassword
+     * @return 受影响的行数
+     */
+    int UpdateNewpasswordByOldusername(String oldusername, String Newpassword);
+
+    /**
+     * 根据旧用户名查找，更新手机号
+     * @param oldusername
+     * @param Newphone
+     * @return 受影响的行数
+     */
+    int UpdateNewphoneByOldusername(String oldusername, String Newphone);
+
+    /**
+     * 根据旧用户名查找，更新电子邮箱
+     * @param oldusername
+     * @param Newemail
+     * @return 受影响的行数
+     */
+    int UpdateNewemailByOldusername(String oldusername, String Newemail);
 }
 
