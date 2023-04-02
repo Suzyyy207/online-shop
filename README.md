@@ -173,3 +173,17 @@ commit示例: feat(front):downloadImg add API /getUserAvatar to get img only
 - 完成某一部分功能，注释为“ xxx done”
 
   如“feat(back) : getUserInfo done”
+  
+  前端（于可欣）：
+
+- 完成某一新页面的框架创建，注释：“WebName built”
+
+  如：“feat(front): GoodsManage bulit”
+
+- 完成某一页面的组件添加或修改，注释为“ WebName ComponetFName changed/added”
+
+  如“feat(front) : GoodsManage jumpToRegister_btn added”
+  
+- 完成某一页面的格式调整，注释：“WebName layout changed ”
+
+  如：“feat(front): GoodsManage layout changed”
