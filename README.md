@@ -19,7 +19,7 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 
 | 参数名 | 含义         | 类型&备注         |
 | ------ | ------------ | ----------------- |
-| state  | 传输是否成功 |                   |
+| state  | 传输是否成功 | YES（0）和NO（1） |
 | data   | user类       | phone;idnum;email |
 
 测试
@@ -38,19 +38,20 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 | setUserInfo | POST | 修改用户信息 |
 
 参数列表 front->back
-| 参数名      | 含义     | 类型&备注 |
-| ----------- | -------- | --------- |
-| username    | 用户名   |           |
-| newusername | 新用户名 |           |
-| phone       | 手机号   |           |
-| idnum       | 身份证   |           |
-| email       | 邮箱     |           |
+| 参数名      | 含义       | 类型&备注                      |
+| ----------- | ---------- | ------------------------------ |
+| oldusername | 旧用户名   |                                |
+| newusername | 新用户名   |                                |
+| newpassword | 新密码     |                                |
+| newphone    | 新手机号   |                                |
+| newemail    | 新邮箱     |                                |
+| ~~idnum~~   | ~~身份证~~ | 文档提示：身份证号默认无法修改 |
 
 参数列表 back->front
 
 | 参数名  | 含义         | 类型&备注                                                    |
 | ------- | ------------ | ------------------------------------------------------------ |
-| state   | 传输是否成功 |                                                              |
+| state   | 传输是否成功 | YES（0）和NO（1）                                            |
 | message | 提示信息     | 修改失败：用户名/手机号/邮箱/身份证已存在；如果有多种错误，则拼接成同一个字符串，以“；”分割<br>修改成功！ |
 
 测试
@@ -155,8 +156,20 @@ commit示例: feat(front):downloadImg add API /getUserAvatar to get img only
 具体的commit单位前后端分别确定，但考虑到我们是以接口为基本单位确定具体功能的名称，所以至少在完成一个接口功能后commit一次<br>
 因此希望大家完成一个功能就commit一次！！！
 #### （3）注释
-基本功能的完成需要使用统一的注释，比如
+**基本功能的完成需要使用统一的注释**，比如
+
 - 前端完成与后端交互的函数，注释模版为“add API to post/get”。具体的使用例子为"add API '/login' to post user info"
-- README添加借口信息，注释模版为“add API info for XXX”。具体的使用例子为"add API info for getUserAvatar"
+- README添加接口信息，注释模版为“add API info for XXX”。具体的使用例子为"add API info for getUserAvatar"
 【【【【【【自己写一下自己的模版自己写一下自己的模版！！！！】】】】】】
 
+
+
+后端（施鸿翔）：
+
+- 某一部分功能正在开发中，注释：“xxx + 日期 + indevelopment”
+
+  如：“feat(back): getUserInfo 4.2 in development”
+
+- 完成某一部分功能，注释为“ xxx done”
+
+  如“feat(back) : getUserInfo done”
