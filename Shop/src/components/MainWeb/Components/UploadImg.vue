@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import "../../../constant.js";
 export default {
   data() {
     return {
@@ -30,12 +31,12 @@ export default {
       var localStorage = window.localStorage;
 
       this.$axios.post('/getUserAvatar', {
-        // 测试版本：
+        // 测试版本
         username: "数据库存储的username名称"
         // 正式版本：username: localStorage.getItem("username")
       })
       .then(res => {
-        if(res.data.state==3) {
+        if(res.data.state==window.SUCCESS) {
           // this.imageUrl = URL.createObjectURL(res.data.data);
           // this.isUploaded=true;
           this.$message.success("收到反馈（根据是否显示图片判断文件传输是否成功）");
@@ -59,9 +60,10 @@ export default {
       var files = file.target.files[0];
       console.log(files.name)
       console.log(files)
-
       var avatar = new FormData();
       avatar.append('image', file.target.files[0])
+      avatar.append('username', "username")
+      // 测试版本： “myUsername”改成指定用户名
       this.$axios.post('/setUserAvatar', avatar, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -69,7 +71,7 @@ export default {
       }).then(res => {
         if(res.data.state == 3) {
           this.$message.success("上传成功");
-          // this.getUserAvatar();
+          this.getUserAvatar();
         }
         else {
           this.$message.error(res.data.message);
