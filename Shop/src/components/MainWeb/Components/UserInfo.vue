@@ -84,6 +84,7 @@
   
 <script>
 import ValidCode from "./ValidCode.vue";
+import "../../../constant.js";
 const formData = new FormData();
 export default {
   data() {
