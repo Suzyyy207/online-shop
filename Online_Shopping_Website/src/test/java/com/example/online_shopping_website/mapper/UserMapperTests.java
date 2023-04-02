@@ -74,4 +74,30 @@ public class UserMapperTests {
         User user = userMapper.SearchByIdnum("123456");
         System.out.println(user);
     }
+
+    @Test
+    public void AvatarUpdate(){
+
+    }
+
+    @Test
+    public void UpdateNewusernameByOldusername(){
+
+    }
+
+    @Test
+    public void UpdateNewpasswordByOldusername(){
+
+    }
+
+    @Test
+    public void UpdateNewphoneByOldusername(){
+
+    }
+
+    @Test
+    public void UpdateNewemailByOldusername(){
+
+    }
+
 }

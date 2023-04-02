@@ -9,7 +9,5 @@ import lombok.AllArgsConstructor;
 
 @Data
 public class Admin extends User implements Serializable {
-    private void authorizeOpeningRequisition(){
 
-    }
 }

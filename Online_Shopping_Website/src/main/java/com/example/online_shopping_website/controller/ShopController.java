@@ -40,7 +40,7 @@ public class ShopController {
         String date = (String) map.get("date");
         String username = (String)map.get("username");
 
-        JsonResult<Shop> result = new JsonResult<>(OK);
+        JsonResult<Shop> result = new JsonResult<>(YES);
         User user = userService.SearchByUsername(username);
 
 
@@ -53,7 +53,7 @@ public class ShopController {
             result.setState(NO);
             result.setMessage("该身份证已经创建过商店了");
         }
-        if(result.getState() == OK){
+        if(result.getState() == YES){
             result.setData(shop);
         }
 
@@ -66,7 +66,7 @@ public class ShopController {
         //如果输入0 则返回错误
         System.out.println(shopname);
         Shop shop = shopService.shop_admitted(shopname);
-        result.setState(OK);
+        result.setState(YES);
         return result;
     }
     @RequestMapping("/api/getMyShopInfo")
@@ -83,7 +83,7 @@ public class ShopController {
         }
         if(shopInfo!=null) {
             checkResult.setData(shopInfo);
-            checkResult.setState(OK);
+            checkResult.setState(YES);
         }
         return checkResult;
     }
@@ -92,7 +92,7 @@ public class ShopController {
         JsonResult<List<Shop>> Result = new JsonResult<>();
         List<Shop> shopList = shopService.GetAllNotAdmittedShop();
         if(shopList !=null){
-            Result.setState(OK);
+            Result.setState(YES);
             Result.setData(shopList);
         }
         return Result;
@@ -102,7 +102,7 @@ public class ShopController {
         JsonResult<List<Shop>> Result = new JsonResult<>();
         List<Shop> shopList = shopService.GetAllShop();
         if(shopList !=null){
-            Result.setState(OK);
+            Result.setState(YES);
             Result.setData(shopList);
         }
         return Result;
@@ -112,7 +112,7 @@ public class ShopController {
         JsonResult<List<Shop>> Result = new JsonResult<>();
         List<Shop> shopList = shopService.GetAllAdmittedShop();
         if(shopList !=null){
-            Result.setState(OK);
+            Result.setState(YES);
             Result.setData(shopList);
         }
         return Result;
@@ -124,7 +124,7 @@ public class ShopController {
     ){
         String username = (String)userMap.get("username");
         //String username = user.getUsername();
-        JsonResult<Shop> Result = new JsonResult<>(OK);
+        JsonResult<Shop> Result = new JsonResult<>(YES);
         try {Shop shop = shopService.GetShopInformationFromUser(username);}
         catch (UserNotFoundException e){
             Result.setState(4000);

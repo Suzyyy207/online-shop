@@ -1,22 +1,22 @@
 package com.example.online_shopping_website.service.ex;
 
-public class RegisterInfoInvalidException extends RuntimeException{
-    public RegisterInfoInvalidException() {
+public class InfoInvalidException extends RuntimeException{
+    public InfoInvalidException() {
     }
 
-    public RegisterInfoInvalidException(String message) {
+    public InfoInvalidException(String message) {
         super(message);
     }
 
-    public RegisterInfoInvalidException(String message, Throwable cause) {
+    public InfoInvalidException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public RegisterInfoInvalidException(Throwable cause) {
+    public InfoInvalidException(Throwable cause) {
         super(cause);
     }
 
-    public RegisterInfoInvalidException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public InfoInvalidException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

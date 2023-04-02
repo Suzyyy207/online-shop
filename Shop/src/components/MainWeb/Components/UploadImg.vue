@@ -62,14 +62,14 @@ export default {
       console.log(files)
       var avatar = new FormData();
       avatar.append('image', file.target.files[0])
-      avatar.append('username', "username")
-      // 测试版本： “myUsername”改成指定用户名
+      avatar.append('username', "myUsername")
+      // 测试版本： “username”改成指定用户名
       this.$axios.post('/setUserAvatar', avatar, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }).then(res => {
-        if(res.data.state == 3) {
+        if(res.data.state == Window.SUCCESS) {
           this.$message.success("上传成功");
           this.getUserAvatar();
         }
