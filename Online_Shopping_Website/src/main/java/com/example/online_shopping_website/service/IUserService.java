@@ -3,6 +3,8 @@ package com.example.online_shopping_website.service;
 import com.example.online_shopping_website.entity.User;
 import com.example.online_shopping_website.util.JsonResult;
 
+import java.io.File;
+
 public interface IUserService {
     /**
      * 用户注册功能
@@ -31,4 +33,5 @@ public interface IUserService {
     JsonResult<User> setUserInfo(String oldUsername, User NewUserInfo);
 
     void UpdateAvatar(String username,byte[] avatar);
+    String GetAvatar(String username);
 }
