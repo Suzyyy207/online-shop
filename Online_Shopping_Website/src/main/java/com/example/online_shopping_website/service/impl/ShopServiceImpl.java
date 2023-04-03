@@ -42,6 +42,7 @@ public class ShopServiceImpl implements IShopService {
     @Override
     public Shop shop_admitted(String shopname){
         Shop shop = shopMapper.SearchByShopname(shopname);
+
         shopMapper.updateIsAdmitted(shopname);
         return shop;
     }
