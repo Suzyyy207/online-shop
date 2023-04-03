@@ -53,6 +53,16 @@ const router = createRouter({
       component: () => import('../components/MainWeb/Components/userInfo.vue')
     },
     {
+      path: '/GoodsRegister',
+      name: 'GoodsRegister',
+      component: () => import('../components/Dashboard/Goods/GoodsRegister.vue')
+    },
+    {
+      path: '/GoodsImg',
+      name: 'GoodsImg',
+      component: () => import('../components/Dashboard/Goods/GoodsImg.vue')
+    },
+    {
       path: '/UploadImg',
       name: 'UploadImg',
       component: () => import('../components/MainWeb/Components/UploadImg.vue')
