@@ -53,7 +53,7 @@ public class UserMapperTests {
 
     @Test
     public void SearchByUsername(){
-        User user = userMapper.SearchByUsername("test");
+        User user = userMapper.SearchByUsername("lisaitie");
         System.out.println(user);
     }
 

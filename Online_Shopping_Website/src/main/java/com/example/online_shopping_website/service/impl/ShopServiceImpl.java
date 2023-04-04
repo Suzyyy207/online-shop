@@ -24,6 +24,7 @@ import static javax.security.auth.callback.ConfirmationCallback.*;
 public class ShopServiceImpl implements IShopService {
     @Autowired
     private ShopMapper shopMapper;
+    @Autowired
     private UserMapper userMapper;
     @Override
     public void open(Shop shop){
