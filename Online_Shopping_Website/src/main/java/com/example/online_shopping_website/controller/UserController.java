@@ -113,9 +113,12 @@ public class UserController {
         user.setAvatar(avatarData);
         return result;
     }
-
-
-
+    public JsonResult<String> DownloadAvatar(@RequestParam("username") String username){
+        String image = userService.GetAvatar(username);
+        JsonResult<String> result = new JsonResult<>(YES, "用户头像返回成功");
+        result.setData(image);
+        return result;
+    }
 }
 
 
