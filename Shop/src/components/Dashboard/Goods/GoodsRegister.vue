@@ -37,9 +37,9 @@
                     <span class="input-requirement">商品价格不能小于0，且保留2位小数 </span>
                 </el-form-item>
 
-                <el-form-item label="初始库存" prop="goodsNumber"> 
+                <el-form-item label="初始库存" prop="goodsStock"> 
                     <el-input 
-                        v-model="addForm.goodsNumber" 
+                        v-model="addForm.goodsStock" 
                     ></el-input>
                     <span class="input-requirement">初始库存为不小于0的整数 </span>
                 </el-form-item>
@@ -130,8 +130,8 @@ export default {
                 goodsPrice:[
                     { required:true, validator: this.goodsPriceValidator, trigger: 'blur' }
                 ],
-                goodsNumber:[
-                    { required:true, validator: this.goodsNumberValidator, trigger: 'blur' }
+                goodsStock:[
+                    { required:true, validator: this.goodsStockValidator, trigger: 'blur' }
                 ],
                 introduction:[
                     { required: true, message: '店铺简介不能为空', trigger: 'blur' },
@@ -164,13 +164,13 @@ export default {
             }
             callback();
         },
-        goodsNumberValidator(rule, value, callback) {
+        goodsStockValidator(rule, value, callback) {
             if (isNaN(Number(value))) {
-                this.addForm.goodsNumber = 0;
-                return callback(new Error("请输入正确的浮点数"));
+                this.addForm.goodsStock = 0;
+                return callback(new Error("请输入正确的库存数"));
             }
             else {
-                this.addForm.goodsNumber = parseInt(value);
+                this.addForm.goodsStock = parseInt(value);
             }
             callback();
         },
@@ -204,7 +204,7 @@ export default {
                     introduction: this.addForm.introduction,
                     goodsname:this.addForm.goodsname,
                     goodsPrice: this.addForm.goodsPrice,
-                    goodsNumber: this.addForm.goodsNumber
+                    goodsStock: this.addForm.goodsStock
                 })
                 .then(res => {
                     if(res.data.state == window.SUCCESS){

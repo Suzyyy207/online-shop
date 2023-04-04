@@ -2,7 +2,7 @@
 <template>
   <div>
     <!--img v-if="this.isUploaded" :src="getIcon(this.imageUrl)"-->
-    <img v-if="this.isUploaded" :src="this.imageUrl">
+    <img v-if="this.isUploaded" :src="this.base64Data">
     <input
       v-if="!this.isUploaded"
       type="file"
@@ -20,7 +20,8 @@ export default {
   data() {
     return {
       isUploaded: false,
-      imageUrl: ""
+      imageUrl: "",
+      base64Data: ""
     };
   },
   created() {
@@ -40,12 +41,12 @@ export default {
           // this.imageUrl = URL.createObjectURL(res.data.data);
           // this.isUploaded=true;
           this.$message.success("收到反馈（根据是否显示图片判断文件传输是否成功）");
-          const formData = res.data.avatar;
-          const blob = formData.get('image');
-          const imgUrl = URL.createObjectURL(blob);
+          //const base64Data = res.data.avatar;
+          //const blob = formData.get('image');
+          //const imgUrl = URL.createObjectURL(blob);
           // const img = document.createElement('img');
           // img.src = imgUrl;
-          this.imageUrl = imgUrl;
+          this.base64Data = res.data.avatar;
           this.isUploaded = true;
         }
         else {
