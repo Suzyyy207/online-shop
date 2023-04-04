@@ -160,6 +160,7 @@ public class UserServiceImpl implements IUserService {
     public String GetAvatar(String username){
         User user = userMapper.SearchByUsername(username);
         byte[] imageData = user.getAvatar();
+        if(imageData==null) return null;
         String base64Image = Base64.getEncoder().encodeToString(imageData);
         return base64Image;
     }
