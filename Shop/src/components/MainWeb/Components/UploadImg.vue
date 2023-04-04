@@ -46,7 +46,7 @@ export default {
           //const imgUrl = URL.createObjectURL(blob);
           // const img = document.createElement('img');
           // img.src = imgUrl;
-          this.base64Data = res.data.avatar;
+          this.base64Data = "data:image/jpeg;base64," + res.data.avatar;
           this.isUploaded = true;
         }
         else {

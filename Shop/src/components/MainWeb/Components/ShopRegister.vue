@@ -248,7 +248,7 @@ const idnumValidator = (rule, value, callback) => {
           // 校验通过
           if(valid){
             var localStorage = window.localStorage;
-            console.log(this.form)
+            console.log(this.form);
             this.$axios.post('/shopRegister', {
               shopname: this.form.shopname,
               goodstype: this.form.goodstype.join(';'),

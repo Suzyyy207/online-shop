@@ -1,31 +1,13 @@
 <!--商家上架申请记录中的商品展示组件-->
-<script setup>
-import { reactive, ref } from 'vue'
-const dialogTableVisible = ref(false)
-</script>
-
 
 <template>
   <div class="goods">
     <a href="#" class="goodsLink">
       <img class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
-      <p class="goodsName">商品名：</p>
-      <p class="status">注册状态</p>
-      <el-button class="btnReg"  @click="dialogTableVisible = true">
+      <p class="goodsName">商品名：{{ goods.goodsname }}</p>
+      <el-button class="btnReg"  @click="toGoodsRegister">
         <p>点击查看详细信息</p>
       </el-button>
-      <el-dialog  class="information" v-model="dialogTableVisible" title="商品信息">
-        <p>店名：</p>
-        <p>店铺id：</p>
-        <p class="bottom">简介：</p>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button type="primary">点击修改注册信息</el-button>
-          </span>
-        </template>
-      </el-dialog>
-          
-          
     </a>
   </div>
 </template>
@@ -36,6 +18,23 @@ export default {
     goods: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    toGoodsRegister() {
+        console.log("跳转至详情页面");
+        var localStorage = window.localStorage;
+        localStorage.setItem("goodsId",this.goods.goodsId);
+        console.log(localStorage.getItem("goodsId"));
+        console.log(this.goods.router)
+        console.log(this.goods.toGoodsRegister)
+        var msg = this.$router.push({name:'GoodsRegister'})
+        .catch(err => {
+            console.log(err) 
+        })
+        
+        //console.log(this.$router.push({name:'GoodsRegister'}))
+        //this.goods.toGoodsRegister();
     }
   }
 }

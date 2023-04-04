@@ -100,6 +100,11 @@
 
             <div v-if="this.activeIndex==2">
                 管理员正在审核，请耐心等待...
+                <el-button 
+                    type="primary" 
+                    @click="prev()" 
+                >修改商品信息
+                </el-button>
             </div>
         </el-form>
 
@@ -146,8 +151,39 @@ export default {
             } 
         }
     },
-    created(){},
+    created(){
+        this.getGoodsInfo();
+    },
     methods:{
+        getGoodsInfo() {
+            var localStorage = window.localStorage;
+            if(localStorage.getItem("goodsId")){
+                // 说明是从商品信息页面跳转而来
+                console.log("已经注册");
+                this.$axios.post("/getGoodsInfoById", {
+                    goodsId: localStorage.getItem("goodsId")
+                })
+                .then((res) => {
+                    console.log(res.data);
+                    const goods = res.data;
+                    this.addForm.goodsname = goods.goodsname;
+                    this.addForm.goodsPrice = goods.goodsPrice;
+                    this.addForm.goodsNumber = goods.goodsNumber;
+                    this.addForm.goodsId = goods.goodsId;
+                    this.addForm.goodsname = goods.goodsname;
+                    this.addForm.goodsCategory = goods.goodsCategory,
+                    this.addForm.goodsList = goods.goodsList;
+                    this.$message.success("图片上传成功");
+                })
+              .catch((err) => {
+                console.log(err);
+                this.$message.error("图片上传失败");
+              });
+            }
+            else {
+                console.log("未注册");
+            }
+        },
         goodsPriceValidator(rule, value, callback) {
             if (isNaN(Number(value))) {
                 this.addForm.goodsPrice = 0;
@@ -242,8 +278,10 @@ export default {
         },
         next() {
             this.activeIndex++;
+        },
+        prev() {
+            this.activeIndex--;
         }
-
     }
 }
 

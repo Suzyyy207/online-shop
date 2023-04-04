@@ -72,6 +72,16 @@ const router = createRouter({
       path: '/upload',
       name: 'upload',
       component: () => import('../components/MainWeb/Components/upload.vue')
+    },
+    {
+      path: '/GoodsShow',
+      name: 'GoodsShow',
+      component: () => import('../components/Dashboard/Goods/GoodsShow.vue')
+    },
+    {
+      path: '/WrapperGoods',
+      name: 'WrapperGoods',
+      component: () => import('../components/Dashboard/Wrapper/WrapperGoods.vue')
     }
   ]
 })
