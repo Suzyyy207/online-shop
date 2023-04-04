@@ -18,7 +18,7 @@ public class ShopMapperTests {
     @Test
     public void shopOpening() {
 
-        Shop shop = new Shop("shoptest00","apple;banana", "1234567", "this is shop", "fudan", "100", 6);
+        Shop shop = new Shop("shoptest000","apple;banana", "1234567", "this is shop", "fudan", "100", 6);
         int rows = shopMapper.shopOpening(shop);
         System.out.println(rows);
     }

@@ -113,9 +113,21 @@ public class UserController {
         user.setAvatar(avatarData);
         return result;
     }
-
-
-
+    @PostMapping("/api/getUserAvatar")
+    public JsonResult<String> DownloadAvatar(@RequestBody User user){
+        String username = user.getUsername();
+        String image = userService.GetAvatar(username);
+        JsonResult<String> result = new JsonResult<>();
+        if(image!= null){
+            result.setState(YES);
+            result.setMessage("用户头像返回成功");
+        }else{
+            result.setState(NO);
+            result.setMessage("用户没有头像");
+        }
+        result.setData(image);
+        return result;
+    }
 }
 
 

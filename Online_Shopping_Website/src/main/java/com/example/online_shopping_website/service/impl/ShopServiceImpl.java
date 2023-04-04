@@ -24,6 +24,7 @@ import static javax.security.auth.callback.ConfirmationCallback.*;
 public class ShopServiceImpl implements IShopService {
     @Autowired
     private ShopMapper shopMapper;
+    @Autowired
     private UserMapper userMapper;
     @Override
     public void open(Shop shop){
@@ -42,6 +43,7 @@ public class ShopServiceImpl implements IShopService {
     @Override
     public Shop shop_admitted(String shopname){
         Shop shop = shopMapper.SearchByShopname(shopname);
+
         shopMapper.updateIsAdmitted(shopname);
         return shop;
     }
