@@ -11,7 +11,6 @@
       v-on:change="addFile($event)"
     >
   </div>
-  
 </template>
 
 <script>

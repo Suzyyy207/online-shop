@@ -1,6 +1,10 @@
 <!--个人信息界面-->
+
 <template>
     <el-form :model="form" :rules="rules" ref="form" class="form">
+
+        <UserAvatar></UserAvatar>
+
         <el-form-item label="用户名" prop="username">
             <el-input 
                 placeholder="请输入用户名"
@@ -101,7 +105,8 @@
   import "../../../constant.js";
   import { ElMessage, ElMessageBox } from 'element-plus';
   import { validatePhone, validateUsername, validateIdnum, validateEmail, validatePassword } from "../../../validate";
-  import ValidCode from "./ValidCode.vue";
+  import ValidCode from "../../MainWeb/Components/ValidCode.vue";
+  import UserAvatar from "./UserAvatar.vue";
   
   const passwordValidator = (rule, value, callback) => {
   if (!value) {
@@ -162,7 +167,8 @@
   export default {
     name: "userInfo",
     components:{
-      ValidCode
+      ValidCode,
+      UserAvatar
     },
     data() {
       var validCodeValidator = (rule, value, callback) => {
@@ -284,12 +290,9 @@
                 this.$axios.post('/setUserInfo', {
                     username: localStorage.getItem("username"),
                     newusername: this.form.username,
-                    /*goodstype: this.form.goodstype.join(';'),
-                    gender: this.form.gender,*/
                     newphone: this.form.phone,
                     idnum: this.form.idnum,
                     newemail: this.form.email
-                    /*birthday: this.form.birthday*/
                 })
                 .then(res => {
                     if(res.data.state == window.SUCCESS){
