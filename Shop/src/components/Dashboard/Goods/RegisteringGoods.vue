@@ -5,9 +5,10 @@
     <a href="#" class="goodsLink">
       <img class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
       <p class="goodsName">商品名：{{ goods.goodsname }}</p>
-      <el-button class="btnReg"  @click="toGoodsRegister">
-        <p>点击查看详细信息</p>
+      <el-button class="btnReg">
+        <RouterLink :to="{ name: 'GoodsRegister'}" @click.prevent="toGoodsRegister">点击查看详细信息</RouterLink>
       </el-button>
+      
     </a>
   </div>
 </template>
@@ -26,13 +27,18 @@ export default {
         var localStorage = window.localStorage;
         localStorage.setItem("goodsId",this.goods.goodsId);
         console.log(localStorage.getItem("goodsId"));
-        console.log(this.goods.router)
-        console.log(this.goods.toGoodsRegister)
-        var msg = this.$router.push({name:'GoodsRegister'})
-        .catch(err => {
-            console.log(err) 
-        })
-        
+        console.log(this.goods.router);
+        //var msg = this.goods.router.push({name:'GoodsRegister'})
+        //.then(res => {
+        //    console.log('路由跳转成功');
+        //    console.log(res);
+        //    console.log(this.$router.history);
+            //this.$router.go(-2);
+        //}).catch(res => {
+        //    console.log('路由跳转失败');
+        //});
+
+        //console.log(msg);
         //console.log(this.$router.push({name:'GoodsRegister'}))
         //this.goods.toGoodsRegister();
     }

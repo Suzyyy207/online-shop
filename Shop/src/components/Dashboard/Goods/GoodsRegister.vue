@@ -12,10 +12,8 @@
         <!-- 进度条 -->
         <el-card>
             <el-steps :space="200" :active="activeIndex" finish-status="success" align-center>
-                <el-step title="基本信息"></el-step>
+                <el-step title="基本信息填写"></el-step>
                 <el-step title="管理员审核"></el-step>
-                <el-step title="修改申请信息"></el-step>
-                <el-step title="管理员审核修改信息"></el-step>
                 <el-step title="申请成功"></el-step>
             </el-steps>
 
@@ -106,6 +104,14 @@
                 >修改商品信息
                 </el-button>
             </div>
+
+            <div v-if="this.activeIndex==3">
+                <el-button 
+                    type="primary" 
+                    @click="prev()" 
+                >修改商品信息
+                </el-button>
+            </div>
         </el-form>
 
 
@@ -121,7 +127,7 @@ export default {
             addForm: {
                 goodsname:'',
                 goodsPrice: 0,
-                goodsNumber: 0,
+                goodsStock: 0,
                 goodsCategory: [],
                 fileList: [],
                 introduction: "",
@@ -160,24 +166,26 @@ export default {
             if(localStorage.getItem("goodsId")){
                 // 说明是从商品信息页面跳转而来
                 console.log("已经注册");
+                this.activeIndex = 2;
                 this.$axios.post("/getGoodsInfoById", {
                     goodsId: localStorage.getItem("goodsId")
                 })
                 .then((res) => {
-                    console.log(res.data);
-                    const goods = res.data;
+                    console.log(res.data.data);
+                    const goods = res.data.data;
                     this.addForm.goodsname = goods.goodsname;
                     this.addForm.goodsPrice = goods.goodsPrice;
-                    this.addForm.goodsNumber = goods.goodsNumber;
+                    this.addForm.goodsStock = goods.goodsStock;
                     this.addForm.goodsId = goods.goodsId;
-                    this.addForm.goodsname = goods.goodsname;
                     this.addForm.goodsCategory = goods.goodsCategory,
-                    this.addForm.goodsList = goods.goodsList;
-                    this.$message.success("图片上传成功");
+                    this.addForm.fileList = goods.fileList;
+                    // this.$message.success("图片上传成功");
+                    if(goods.status == 1) this.activeIndex=3;
+                    else this.activeIndex=2;
                 })
               .catch((err) => {
                 console.log(err);
-                this.$message.error("图片上传失败");
+                // this.$message.error("图片上传失败");
               });
             }
             else {
@@ -236,7 +244,7 @@ export default {
                     // 测试版本——shopname: "目标店铺名"
                     // 正式版本——shopname: localStorage.getItem("shopname"),
                     shopname: "SHOPNAME",
-                    goodsCategory: this.addForm.goodsCategory.join(';'),
+                    goodsCategory: this.addForm.goodsCategory,
                     introduction: this.addForm.introduction,
                     goodsname:this.addForm.goodsname,
                     goodsPrice: this.addForm.goodsPrice,

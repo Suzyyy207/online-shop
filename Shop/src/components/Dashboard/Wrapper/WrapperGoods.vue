@@ -21,9 +21,6 @@ import RegisteringGoods from '../Goods/RegisteringGoods.vue'
             <GoodsShow />
             <GoodsShow /-->
         </div>
-        <el-button class="btnReg"  @click="toGoodsRegister">
-        <p>点击查看详细信息</p>
-      </el-button>
     </div>
 </template>
 <script>
@@ -46,7 +43,7 @@ export default {
     },
     methods: {
         getRegisteringGoods() {
-            this.shop.shopname="shopname"
+            this.goods.shopname="shopname"
         },
         toGoodsRegister() {
             console.log("跳转至详情页面");
