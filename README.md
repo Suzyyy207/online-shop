@@ -63,14 +63,7 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 | ------ | ------------ | ----------------- |
 | state  | 传输是否成功 | YES（0）和NO（1） |
 | data   | user类       | phone;idnum;email |
-
-测试
-
-| 前端测试路径            | 测试方法                                                     |
-| ----------------------- | ------------------------------------------------------------ |
-| localhost:端口/UserInfo | 修改UserInfo:245的username为指定用户并注释正常版本后，可以在改页面上看到用户个人信息 |
-
-
+测试：登录->个人中心，可以显示包括头像在内的用户信息
 
 ### 个人信息修改
 
@@ -96,14 +89,7 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 | state   | 传输是否成功 | YES（0）和NO（1）                                            |
 | message | 提示信息     | 修改失败：用户名/手机号/邮箱/身份证已存在；如果有多种错误，则拼接成同一个字符串，以“；”分割<br>修改成功！ |
 
-测试
-
-
-| 前端测试路径            | 测试方法                                                     |
-| ----------------------- | ------------------------------------------------------------ |
-| localhost:端口/UserInfo | 修改UserInfo:245的username为指定用户并注释正常版本后，可以在改页面上看到用户个人信息；点击“修改”按钮并修改后，可以正确修改 |
-
-
+测试：登录->个人中心，点击修改后可以成功更新后台信息（包括用户头像在內）
 
 ### 头像上传
 
@@ -129,12 +115,7 @@ commit示例: feat(front):uploadImg add API /setUserAvatar to post img only
 |  state  |  传输是否成功  | 依旧用NO（1）和OK（3）代表失败和成功 |
 |  message  |  提示信息  | 传输成功时：“用户头像上传成功”<br> 传输失败时："上传失败，请重试"   |
 
- 测试 :确定图像传输成功,这一阶段只需要测试图片能否传到后端，不涉及具体的用户名等
-
-|    |                                                    |
-| ---------- | ---------- |
-|  前端测试路径  |  localhost:端口/UploadImg  |
-|  测试方法  |  点击上传文件后，确定后端数据库是否成功收到图片数据  |
+ 测试:在用户信息显示处统一测试
 
 <br>
 
@@ -162,12 +143,7 @@ commit示例: feat(front):downloadImg add API /getUserAvatar to get img only
  |
 
 
- 测试 确定图像传输成功
-
-|    |    |  
-| ---------- | ---------- | 
-|  前端测试路径  |  localhost:端口/UploadImg  |    
-|  测试方法  |  将UploadImg.vue:34 的username赋值成指定的username，如果页面显示该用户的头像，则传输成功  | 
+ 测试：在用户信息修改处统一测试
 
 
 
