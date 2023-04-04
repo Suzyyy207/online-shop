@@ -1,5 +1,48 @@
 # lab_3
 
+## 商品信息管理
+### 商品注册
+| 接口名      | 方法 | 功能         |
+| ----------- | ---- | ------------ |
+| goodsRegister | POST | 商品注册——文本信息传输 |
+| setGoodsPicture | POST | 商品注册——图片传输 |
+#### goodsRegister
+参数列表 front->back
+| 参数名   | 含义   | 类型&备注 |
+| -------- | ------ | --------- |
+| shopname | 店铺名 |           |
+| goodsCategory | 商品类型 | 用;分隔的字符串          |
+| introduction |  |           |
+| goodsname | 店铺名 |           |
+| goodsPrice | 价格 |           |
+| goodsStocks | 库存 |           |
+
+参数列表 back->front
+
+| 参数名 | 含义         | 类型&备注         |
+| ------ | ------------ | ----------------- |
+| state  | 传输是否成功 | YES（0）和NO（1） |
+| goodsId   | 商品对应的商品id（后端生成，唯一）       |  |
+
+#### setGoodsPicture
+参数列表 front->back
+| 参数名   | 含义   | 类型&备注 |
+| -------- | ------ | --------- |
+| goodsId | 商品Id | 储存在formData中的goodsId中         |
+| file | 商品图片（可能有多张） |  储存在formData中的file（具体可见GoodsRegister.vue:214-216）       |
+
+参数列表 back->front
+
+| 参数名 | 含义         | 类型&备注         |
+| ------ | ------------ | ----------------- |
+| state  | 传输是否成功 | YES（0）和NO（1） |
+
+测试
+
+| 前端测试路径            | 测试方法                                                     |
+| ----------------------- | ------------------------------------------------------------ |
+| localhost:端口/GoodsRegister | 修改UserInfo:202的shopname为指定商店后，可以将数据储存在数据库 |
+
 ## 个人中心
 ### 个人信息显示
 
