@@ -158,7 +158,7 @@ commit示例: feat(front):downloadImg add API /getUserAvatar to get img only
 | 参数名 | 含义                   | 类型&备注                                       |
 | ------ | ---------------------- | ----------------------------------------------- |
 | state  | 是否有头像             |                                                 |
-| avatar | base64形式的图像数据 | 需要保证格式为 "data:...";
+| avatar | base64形式的图像数据 | 
  |
 
 
