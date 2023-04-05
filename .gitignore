@@ -2,7 +2,7 @@
 /.idea
 
 /design.md
-/test.md
+
 .DS_Store
 
 /Online_Shopping_Website/src/main/resources/application.properties
