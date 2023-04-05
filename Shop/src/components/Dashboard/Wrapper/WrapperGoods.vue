@@ -14,7 +14,7 @@ import RegisteringGoods from '../Goods/RegisteringGoods.vue'
             <!--div v-for="goods in registeringGoodsList" :key="goods.goodsId">
                 <GoodsShow :shop="shop"/>
             </div-->
-            <RegisteringGoods :goods="this.goods"/>
+            <GoodsShow :goods="this.goods"/>
             <!--GoodsShow />
             <GoodsShow />
             <GoodsShow />
