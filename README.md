@@ -192,7 +192,7 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 | 参数名 | 含义         | 类型&备注         |
 | ------ | ------------ | ----------------- |
 | state  | 传输是否成功 | YES（0）和NO（1） |
-| data   | user类       | phone;idnum;email |
+| data   | user类       | phone;idnum;email;account（个人账户余额） |
 测试：登录->个人中心，可以显示包括头像在内的用户信息
 
 ### 个人信息修改
