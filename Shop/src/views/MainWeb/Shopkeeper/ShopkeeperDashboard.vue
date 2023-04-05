@@ -3,6 +3,7 @@
 import ShopRegister from '../../../components/MainWeb/Components/ShopRegister.vue'
 import MyShopInfo from '../../../components/MainWeb/Components/MyShopInfo.vue'
 import Nav from '../../../components/Public/Nav/ShopkeeperNav.vue'
+import WrapperGoods from '../../../components/Dashboard/Wrapper/WrapperGoods.vue'
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 
@@ -11,9 +12,19 @@ import { RouterLink, RouterView } from 'vue-router'
     <Nav></Nav>
     <section class="register_show">
         <!--如果尚未注册过，则进入注册页面；否则进入商店信息展示页面-->
+        
+    </section>
+
+  <el-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
+    <el-tab-pane label="店铺基本信息">
         <MyShopInfo v-if="isregistered && (!isToModify)" :shop="shop"/>
         <ShopRegister v-else :shop="shop"/>
-    </section>
+    </el-tab-pane>
+    <el-tab-pane label="商品信息">
+        <WrapperGoods/>
+    </el-tab-pane>
+    <el-tab-pane label="店铺流水"></el-tab-pane>
+  </el-tabs>
 
 </template>
 
@@ -23,6 +34,12 @@ import "../../../constant.js";
 import { interceptor, shopkeeperInterceptor } from "../../../interceptor";
 export default {
     props: ['shop_id'],
+    beforeRouteLeave(to, from, next) {
+        var localStorage = window.localStorage;
+        localStorage.removeItem('toModify');
+        console.log("删除");
+        next()
+    },
     data() {
         return {
             isregistered: "",
@@ -89,7 +106,7 @@ export default {
         // 如果用户需要修改注册信息重新提交注册，也需要导入ShopRegister页面   
         toModify() {
             var localStorage = window.localStorage;
-            if(localStorage.getItem('address')) {
+            if(localStorage.getItem('toModify')) {
                 this.isToModify = 1;
             } else {
                 this.isToModify = 0;

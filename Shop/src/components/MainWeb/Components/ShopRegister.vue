@@ -1,9 +1,10 @@
 <!--此组件用于为未注册店铺的商家提供注册UI-->
 <template>
     <div id="register" class="register">
-        <h1>店 铺 注 册</h1>
+        <h1 v-if="this.form.idnumDisabled">店铺信息修改</h1>
+        <h1 v-else>店 铺 注 册</h1>
         <el-form :model="form" :rules="rules" ref="form" class="form">
-            <el-form-item prop="shopname" :class="{'input-error': isShopnameError}">
+            <el-form-item prop="shopname">
                 <el-input 
                     placeholder="店名（不超过12个字）" 
                     type="shopname" 
@@ -44,10 +45,11 @@
                 autocomplete="off"
                 :prefix-icon=" 1 ? 'Postcard' : ''"
                 Clearable
+                :disabled="this.form.idnumDisabled"
                 ></el-input>
             </el-form-item>
         
-            <el-form-item prop="introduction" :class="{'input-error': isIntroductionError}">
+            <el-form-item prop="introduction">
                 <el-input 
                     placeholder="店铺简介" 
                     type="introduction" 
@@ -58,7 +60,7 @@
                 ></el-input>
             </el-form-item>
 
-            <el-form-item prop="address" :class="{'input-error': isAddressError}">
+            <el-form-item prop="address">
                 <el-input 
                     placeholder="备案地址" 
                     type="address" 
@@ -83,12 +85,19 @@
                 <span class="input-requirement">启动资金不能少于1000，且保留2位小数 </span>
             </el-form-item>
 
-            <el-form-item label="注册日期" prop="date">
+            <el-form-item label="注册日期" prop="date" v-if="!this.form.idnumDisabled">
                 <el-date-picker 
                     v-model="form.date" 
                     type="date" 
                     readonly 
                     :default-value="new Date()"
+                ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="注册日期" prop="date" v-else>
+                <el-date-picker 
+                    v-model="form.date" 
+                    type="date" 
+                    readonly 
                 ></el-date-picker>
             </el-form-item>
 
@@ -117,9 +126,14 @@
             </el-row>
 
             <el-row>
-              <el-col :span="12">
+              <el-col v-if="!this.form.idnumDisabled" :span="12">
                 <el-form-item class="btn">
-                  <el-button type="primary" @click="register('form')" :disabled="isSubmitDisabled">注&nbsp;&nbsp;册</el-button>
+                  <el-button type="primary" @click="register('form')">注&nbsp;&nbsp;册</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col v-else :span="12">
+                <el-form-item class="btn">
+                  <el-button type="primary" @click="modifyShopInfo('form')">提交</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -185,7 +199,8 @@ const idnumValidator = (rule, value, callback) => {
           date: new Date(),
           username: "",
           agreement: "",
-          validCode: ""
+          validCode: "",
+          idnumDisabled: false
         },
         validCode: "",
         rules: {
@@ -229,14 +244,13 @@ const idnumValidator = (rule, value, callback) => {
         var localStorage = window.localStorage;
         // TODO:goodstype处理
         this.form.shopname = localStorage.getItem('shopname');
+        // this.form.goodstype = localStorage.getItem('goodstype');
         this.form.introduction = localStorage.getItem('introduction');
-        localStorage.removeItem("introduction");
         this.form.address = localStorage.getItem('address');
-        localStorage.removeItem("address");
         this.form.idnum = localStorage.getItem('idnum');
-        localStorage.removeItem("idnum");
+        this.form.idnumDisabled = true;
         this.form.capital = localStorage.getItem('capital');
-        localStorage.removeItem("capital");
+        this.form.date = new Date(localStorage.getItem('date'));
       },
       register: function (form) {
         // 首先判断需要填写的信息是否已经完全填入
@@ -273,7 +287,6 @@ const idnumValidator = (rule, value, callback) => {
                   this.$router.push({name:'ShopDashboardBlank'});
                 }, 1000);
               }
-              // 注册失败
               else {
                 this.$message.error(res.data.message);
               }
@@ -282,7 +295,57 @@ const idnumValidator = (rule, value, callback) => {
               console.log(err);
             })
           }
-          // 校验不通过
+          else {
+            this.$message.error("注册失败，请按照要求填写所有信息");
+          }
+        }))
+      },
+      modifyShopInfo: function (form) {
+        // 首先判断需要填写的信息是否已经完全填入
+        this.$refs[form].validate((valid=>{
+          if(this.form.agreement==""){
+            this.$message.error("必须同意店铺守则");
+            return;
+          }
+          // 校验通过
+          if(valid){
+            var localStorage = window.localStorage;
+            console.log(this.form);
+            this.$axios.post('/modifyShopInfo', {
+              newshopname: this.form.shopname,
+              goodstype: this.form.goodstype.join(';'),
+              introduction: this.form.introduction,
+              address: this.form.address,
+              capital: this.form.capital.toString(),
+              shopname: localStorage.getItem('shopname')
+            })
+            .then(res => {
+              if(res.data.state == window.SUCCESS){
+                this.$message.success("提交成功，请耐心等待管理员审批");
+
+                var localStorage = window.localStorage;
+                localStorage.setItem("shopname",res.data.data.shopname);
+
+                localStorage.removeItem('goodstype');
+                localStorage.removeItem('introduction');
+                localStorage.removeItem('address');
+                localStorage.removeItem('idnum');
+                localStorage.removeItem('capital');
+                localStorage.removeItem('date');
+
+                // 店铺注册成功后，导向ShopkeeperWeb主页面
+                setTimeout(() => {
+                  this.$router.push({name:'ShopDashboardBlank'});
+                }, 1000);
+              }
+              else {
+                this.$message.error(res.data.message);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            })
+          }
           else {
             this.$message.error("注册失败，请按照要求填写所有信息");
           }

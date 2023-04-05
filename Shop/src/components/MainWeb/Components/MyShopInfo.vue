@@ -44,7 +44,6 @@ const dialogTableVisible = ref(false)
 
         <div class="info4">
           <el-form-item class="re_btn">
-            <!--需要加身份证不可以改的函数-->
             <el-button type="submit" @click="modifyShopInfo">修改注册信息</el-button>
           </el-form-item>
           <el-form-item class="re_btn">
@@ -80,13 +79,15 @@ const dialogTableVisible = ref(false)
     methods: {
       modifyShopInfo() {
         var localStorage = window.localStorage;
+        localStorage.setItem("toModify",1);
         localStorage.setItem("shopname",this.shop.shopname);
         localStorage.setItem("goodstype",this.shop.goodstype);
         localStorage.setItem("introduction",this.shop.introduction);
         localStorage.setItem("address",this.shop.address);
         localStorage.setItem("idnum",this.shop.idnum);
         localStorage.setItem("capital",this.shop.capital);
-        this.$router.push({name:'ShopDashboardBlank'});
+        localStorage.setItem("date",this.shop.date);
+        this.$router.go(0);
       }
     }
 }

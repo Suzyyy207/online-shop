@@ -25,9 +25,11 @@ import RegisteringGoods from '../Goods/RegisteringGoods.vue'
 </template>
 <script>
 export default {
-    props: ['username'],
+    props: ['shopname'],
     data() {
         return {
+            // state表示“商品信息”页面对应的显示内容——注册新商品。
+            state: 0,
             registeringGoodsList: [],
             goods:{
                 goodsname: "goodsname",
