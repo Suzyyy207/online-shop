@@ -36,12 +36,12 @@
 
 ## 商品信息管理
 ### 商品状态goods.status
-| 值 | 含义         | 
-| ------ | ------------ | 
-| 0  | 注册中 | 
-| 1 | 正常有效商品       | 
-| 2 | 修改中       | 
-| 3 | 已下架       | 
+| 值 | 含义         | 类型&备注         |
+| ------ | ------------ | ------------ | 
+| 0  | 注册中 | 管理员尚未批复注册请求 <br>管理员拒绝注册请求        |
+| 1 | 正常有效商品       | 其他所有情况 |
+| 2 | 修改中       |管理员尚未批复修改请求 <br>管理员拒绝修改请求 |
+| 3 | 已下架       | 下架 |
 
 ### 商品注册状态goods.registerStatus
 | 值 | 含义         | 
@@ -51,10 +51,12 @@
 | 2  | 提交注册信息，管理员拒绝 |  
 
 ### 商品修改状态goods.modifyStatus
+| 值 | 含义         | 
+| ------ | ------------ | 
 | 0   | 未修改      | 
-| 1   | 提交修改信息，未批复       | 
-| 2  | 提交修改信息，管理员拒绝 | 
-| 3   | 提交修改信息，修改成功       | 
+| 1   | 提交修改信息，未批复     | 
+| 2  | 提交修改信息，管理员拒绝  | 
+| 3   | 提交修改信息，修改成功    | 
 
 ### 商品信息修改 goodsInfo
 | 接口名      | 方法 | 功能         |
@@ -82,7 +84,10 @@
 | getRegisteringGoodsByShopname | POST | 获得regiserStatus=0的所有商品信息 |
 | getRegisteredGoodsByShopname | POST | 获得registerStatus=1的所有商品信息 |
 | getRegisterationDeniedGoodsByShopname | POST | 获得registerStatus=2的所有商品信息 |
-| getInvalidGoodsByShopname | POST | 获得registerStatus=3的所有商品信息 |
+| getEditingGoodsByShopname | POST | 获得modifyStatus=1的所有商品信息 |
+| getEditedGoodsByShopname | POST | 获得modifyStatus=3的所有商品信息 |
+| getEditDeniedGoodsByShopname | POST | 获得modifyStatus=2的所有商品信息 |
+| getInvalidGoodsByShopname | POST | 获得status=3的所有商品信息 |
 
 *以上函数共享以下参数*
 
