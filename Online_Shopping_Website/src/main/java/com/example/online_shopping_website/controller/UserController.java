@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
 
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
@@ -43,8 +44,8 @@ public class UserController {
     }
 
     @RequestMapping("/api/getUserInfo")
-    public JsonResult<User> getUserInfo(@RequestParam("username") String username){
-
+    public JsonResult<User> getUserInfo(@RequestBody User user){
+        String username = user.getUsername();
         JsonResult<User> getUserInfoResult = new JsonResult<>(YES);
         try{
             getUserInfoResult = userService.getUserInfo(username);
@@ -59,11 +60,13 @@ public class UserController {
     }
 
     @RequestMapping("/api/setUserInfo")
-    public JsonResult<User> setUserInfo(@RequestParam("username") String oldusername,
-                                        @RequestParam("newusername") String newusername,
-                                        @RequestParam("newusername") String newpassword,
-                                        @RequestParam("phone") String newphone,
-                                        @RequestParam("email") String newemail){
+    public JsonResult<User> setUserInfo(@RequestBody Map<String,Object> map){
+        String oldusername = (String)map.get("oldusername");
+        String newusername = (String)map.get("newusername");
+        String newpassword = (String)map.get("newpassword");
+        String newphone = (String)map.get("newphone");
+        String newemail = (String)map.get("newemail");
+
         JsonResult<User> setUserInfoResult = new JsonResult<>(YES);
         User NewUserInfo = new User(newusername,newpassword,newphone,newemail);
 

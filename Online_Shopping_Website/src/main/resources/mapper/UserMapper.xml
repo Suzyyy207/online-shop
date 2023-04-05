@@ -52,19 +52,19 @@
     </update>
 
     <update id="UpdateNewusernameByOldusername">
-        UPDATE users SET username = #{Newusername} WHERE usrename = #{oldusername}
+        UPDATE users SET username = #{Newusername} WHERE username = #{oldusername}
     </update>
 
     <update id="UpdateNewpasswordByOldusername">
-        UPDATE users SET password = #{Newpassword} WHERE usrename = #{oldusername}
+        UPDATE users SET password = #{Newpassword} WHERE username = #{oldusername}
     </update>
 
     <update id="UpdateNewphoneByOldusername">
-        UPDATE users SET phone = #{Newphone} WHERE usrename = #{oldusername}
+        UPDATE users SET phone = #{Newphone} WHERE username = #{oldusername}
     </update>
 
     <update id="UpdateNewemailByOldusername">
-        UPDATE users SET email = #{Newemail} WHERE usrename = #{oldusername}
+        UPDATE users SET email = #{Newemail} WHERE username = #{oldusername}
     </update>
 
 </mapper>

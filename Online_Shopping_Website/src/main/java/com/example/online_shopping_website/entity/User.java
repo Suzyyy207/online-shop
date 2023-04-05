@@ -124,6 +124,10 @@ public class User extends BaseEntity implements Serializable {
         this.salt = salt;
     }
 
+    public User(String username) {
+        this.username = username;
+    }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -156,11 +160,11 @@ public class User extends BaseEntity implements Serializable {
         this.idnum = idnum;
     }
 
-    public User(String username, String phone, String email, String idnum) {
+    public User(String username, String password, String phone, String email) {
         this.username = username;
+        this.password = password;
         this.phone = phone;
         this.email = email;
-        this.idnum = idnum;
     }
 
     public User(String username, String password, String phone, String email, String idnum) {

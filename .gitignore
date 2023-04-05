@@ -5,4 +5,4 @@
 /test.md
 .DS_Store
 
-application.properties
+/Online_Shopping_Website/src/main/resources/application.properties
