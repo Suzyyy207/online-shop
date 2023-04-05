@@ -6,7 +6,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import GoodsRegister from '../../../components/Dashboard/Goods/GoodsRegister.vue'
 import WrapperRegisterGoods from '../../../components/Dashboard/Wrapper/WrapperRegisterGoods.vue'
 import WrapperEditGoods from '../../../components/Dashboard/Wrapper/WrapperEditGoods.vue'
-import WrapperValidGoods from '../../../components/Dashboard/Wrapper/WrapperValidGoods.vue'
+import WrapperAllGoods from '../../../components/Dashboard/Wrapper/WrapperAllGoods.vue'
 </script>
 
 <template>
@@ -29,11 +29,8 @@ import WrapperValidGoods from '../../../components/Dashboard/Wrapper/WrapperVali
         <el-tab-pane label="修改申请记录">
             <WrapperEditGoods/>
         </el-tab-pane>
-        <el-tab-pane label="商品展示">
-            <WrapperValidGoods/>
-        </el-tab-pane>
-        <el-tab-pane label="已下架">
-            <WrapperInvalidGoods/>
+        <el-tab-pane label="所有商品">
+            <WrapperAllGoods/>
         </el-tab-pane>
     </el-tabs>
 </template>

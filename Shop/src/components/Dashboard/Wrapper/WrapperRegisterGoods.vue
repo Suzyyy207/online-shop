@@ -42,6 +42,7 @@ export default {
                 goodsId: "id",
                 registerStatus: 0,
                 modifyStatus: 0,
+                status: 0,
                 goodsPrice:100,
                 goodsStock:20,
                 introduction:"intro",

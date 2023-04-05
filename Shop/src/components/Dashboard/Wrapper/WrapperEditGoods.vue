@@ -4,12 +4,30 @@
 
 <template>
     <div class="wrap" >
-        <h1 v-if="this.editingGoodsList.length===0">您还没有注册任何商品</h1>
-        <div class="goods">
-            <div v-for="goods in editingGoodsList" :key="goods.goodsId">
-                <GoodsShow :goods="goods"/>
-            </div>
-        </div>
+        <el-tabs tab-position="left">
+            <el-tab-pane label="待审核">
+                <div class="goods">
+                    <div v-for="goods in editingGoodsList" :key="goods.goodsId">
+                        <GoodsShow :goods="goods"/>
+                    </div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="申请失败">
+                <div class="goods">
+                    <div v-for="goods in editDeniedGoodsList" :key="goods.goodsId">
+                        <GoodsShow :goods="goods"/>
+                    </div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="申请成功">
+                <div class="goods">
+                    <div v-for="goods in editedGoodsList" :key="goods.goodsId">
+                        <GoodsShow :goods="goods"/>
+                    </div>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
+        
     </div>
 </template>
 <script>
@@ -17,11 +35,14 @@ export default {
     data() {
         return {
             editingGoodsList: [],
+            editedGoodsList: [],
+            editDeniedGoodsList: [],
             goods:{
                 goodsname: "goodsname",
                 goodsId: "id",
                 registerStatus: 0,
                 modifyStatus: 0,
+                status: 0,
                 goodsPrice:100,
                 goodsStock:20,
                 introduction:"intro",
@@ -30,16 +51,36 @@ export default {
         }
     },
     created (){
-        this.getEditingGoods() 
+        this.getEditingGoods();
+        this.getEditedGoods();
+        this.getEditDeniedGoods();
     },
     methods: {
         getEditingGoods() {
             this.editingGoodsList = [this.goods];
             var localStorage = window.localStorage;
-            this.$axios.post("/getRegisteringGoodsByShopname", {
+            this.$axios.post("/getEditingGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
             }).then(res => {
                 this.editingGoodsList = res.data.data;
+            })
+        },
+        getEditedGoods() {
+            this.editedGoodsList = [this.goods];
+            var localStorage = window.localStorage;
+            this.$axios.post("/getEditedGoodsByShopname", {
+                shopname: localStorage.getItem("shopname")
+            }).then(res => {
+                this.registeredGoodsList = res.data.data;
+            })
+        },
+        getEditDeniedGoods() {
+            this.editDeniedGoodsList = [this.goods];
+            var localStorage = window.localStorage;
+            this.$axios.post("/getEditDeniedGoodsByShopname", {
+                shopname: localStorage.getItem("shopname")
+            }).then(res => {
+                this.registerationDeniedGoodsList = res.data.data;
             })
         }
     }

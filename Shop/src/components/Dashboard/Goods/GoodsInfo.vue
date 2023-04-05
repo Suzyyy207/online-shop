@@ -7,6 +7,7 @@
                 <el-step title="基本信息填写"></el-step>
                 <el-step title="管理员审核"></el-step>
                 <el-step title="申请成功"></el-step>
+                <el-step title="商品已下架"></el-step>
             </el-steps>
 
         </el-card>
@@ -50,6 +51,18 @@
                     @click="this.modifyGoodsInfo()" 
                 >修改商品信息
                 </el-button>
+                <el-button 
+                    type="primary" 
+                    @click="this.goodsOffShelve()" 
+                >下架
+                </el-button>
+            </div>
+            <div v-if="this.activeIndex==4">
+                <el-button 
+                    type="primary" 
+                    @click="this.goodsOnShelve()" 
+                >重新上架
+                </el-button>
             </div>
         </el-form>
 
@@ -80,33 +93,64 @@ export default {
     },
     methods:{
         getGoodsInfo() {
-            switch(this.goods.registerStatus){
-                // 已提交申请，未批复
-                case 0:
-                    this.activeIndex=2;
-                    break;
-                case 1:
-                    switch(this.goods.modifyStatus){
-                        case 0:
-                        case 2:
-                            this.activeIndex =3;
-                            break;
-                        case 1:
+            switch(this.goods.status) {
+                case 0: // 注册中
+                    switch(this.goods.registerStatus) {
+                        case 0: //尚未批复
                             this.activeIndex = 2;
                             break;
-                        case 3:
-                            this.activeIndex=1;
+                        case 2: //管理员拒绝
+                            this.activeIndex = 1;
                             break;
                     }
+                case 2: // 提交修改请求，等待批复
+                    switch(this.goods.modifyStatus) {
+                        case 1: //尚未批复
+                            this.activeIndex = 2;
+                            break;
+                        case 2: //管理员拒绝
+                            this.activeIndex = 1;
+                            break;
+                    }
+                case 1:
+                    this.activeIndex = 3;
                     break;
-                case 2:
-                    this.activeIndex=1;
+                case 4: 
+                    this.activeIndex = 4;
                     break;
             }
         },
         modifyGoodsInfo() {
             localStorage.setItem("goodsId", this.goods.goodsId);
             this.activeIndex = 1;
+        },
+        goodsOffShelve() {
+            this.$axios.post("/goodsOffShelve", {
+                goodsId: this.goods.goodsId
+            })
+            .then((res) => {
+                console.log(res.data);
+                this.$message.success("下架成功！页面将自动刷新...");
+                this.$router.go(0);
+            })
+            .catch((err) => {
+                console.log(err);
+                this.$message.error("下架失败！请重试...");
+            });
+        },
+        goodsOnShelve() {
+            this.$axios.post("/goodsOnShelve", {
+                goodsId: this.goods.goodsId
+            })
+            .then((res) => {
+                console.log(res.data);
+                this.$message.success("上架成功！页面将自动刷新...");
+                this.$router.go(0);
+            })
+            .catch((err) => {
+                console.log(err);
+                this.$message.error("上架失败！请重试...");
+            });
         },
         next() {
             this.activeIndex++;

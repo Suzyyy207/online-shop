@@ -4,12 +4,22 @@
 
 <template>
     <div class="wrap" >
-        <h1 v-if="this.validGoodsList.length===0">您还没有注册任何商品</h1>
-        <div class="goods">
-            <div v-for="goods in validGoodsList" :key="goods.goodsId">
-                <GoodsShow :goods="goods"/>
-            </div>
-        </div>
+        <el-tabs tab-position="left">
+            <el-tab-pane label="在售商品">
+                <div class="goods">
+                    <div v-for="goods in validGoodsList" :key="goods.goodsId">
+                        <GoodsShow :goods="goods"/>
+                    </div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="已下架">
+                <div class="goods">
+                    <div v-for="goods in registerationDeniedGoodsList" :key="goods.goodsId">
+                        <GoodsShow :goods="goods"/>
+                    </div>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
     </div>
 </template>
 <script>
