@@ -69,6 +69,9 @@
 | 接口名      | 方法 | 功能         |
 | ----------- | ---- | ------------ |
 | getRegisteringGoodsByShopname | POST | 获得status=0的所有商品信息 |
+| getEditingGoodsByShopname | POST | 获得status=3的所有商品信息 |
+
+*以上函数共享以下参数*
 
 参数列表 front->back
 | 参数名   | 含义   | 类型&备注 |
