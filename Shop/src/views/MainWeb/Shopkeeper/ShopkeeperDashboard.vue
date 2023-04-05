@@ -11,6 +11,7 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
 
     <Nav></Nav>
+<<<<<<< HEAD
     <section>
         <SearchTop/>
     </section>
@@ -25,6 +26,23 @@ import { RouterLink, RouterView } from 'vue-router'
         </el-tab-pane>
         <el-tab-pane label="店铺流水"></el-tab-pane>
     </el-tabs>
+=======
+
+    <section>
+        <el-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
+            <el-tab-pane label="店铺基本信息">
+                <MyShopInfo class="cont" v-if="isregistered && (!isToModify)" :shop="shop"/>
+                <ShopRegister class="cont" v-else :shop="shop"/>
+            </el-tab-pane>
+
+            <el-tab-pane class="etb" label="商品信息">
+                <WrapperGoods class="cont" />
+            </el-tab-pane>
+
+            <el-tab-pane class="etb" label="店铺流水"></el-tab-pane>
+        </el-tabs>
+    </section>
+>>>>>>> c270d67f0a02f7364ab3bc74299fec7461343e38
 
 </template>
 
@@ -119,7 +137,4 @@ export default {
 
 <style scoped>
 /*商家注册信息栏*/
-.register_show{
-    margin:40px 100px 0px 100px;
-}
 </style>

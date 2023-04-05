@@ -45,6 +45,20 @@ const router = createRouter({
     },
     // 上述页面已添加拦截器
 
+
+    //新添加的个人中心页面，未添加拦截器
+    {
+      path: '/userSelfCenter',
+      name: 'userSelfCenter',
+      component: () => import('../views/SelfCenter/UserSC.vue')
+    },
+    {
+      path: '/shopkeeperSelfCenter',
+      name: 'shopkeeperCenter',
+      component: () => import('../views/SelfCenter/ShopkeeperSC.vue')
+    },
+
+
     // 下述页面是为了调试方便的组件路径，最终需要封装到views中，因此不需要额外添加拦截器
     // 提交项目前保证无组件路径
     {
@@ -75,8 +89,8 @@ const router = createRouter({
     ,
     {
       path: '/upload',
-      name: 'upload',
-      component: () => import('../components/Dashboard/User/upload.vue')
+      name: 'upload',     
+       component: () => import('../components/Dashboard/User/upload.vue')
     },
     {
       path: '/GoodsShow',
@@ -88,6 +102,7 @@ const router = createRouter({
       name: 'WrapperGoods',
       component: () => import('../components/Dashboard/Wrapper/WrapperGoods.vue')
     }
+    
   ]
 })
 router.beforeEach((to, from, next) => {

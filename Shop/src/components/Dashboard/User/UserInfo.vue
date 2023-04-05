@@ -2,84 +2,98 @@
 
 <template>
     <el-form :model="form" :rules="rules" ref="form" class="form">
+        <UserAvatar class="imgU"></UserAvatar>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="用户名" prop="username">
+                <el-input 
+                    placeholder="请输入用户名"
+                    type="username" 
+                    v-model="form.username" 
+                    autocomplete="off"
+                    clearable
+                    :prefix-icon=" 1 ? 'User' : ''"
+                    :disabled="usernameDisabled"
+                >
+                </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="手机号" prop="phone">
+                <el-input 
+                    placeholder="请输入手机号码"
+                    type="phone" 
+                    v-model="form.phone" 
+                    autocomplete="off"
+                    clearable
+                    :prefix-icon=" 1 ? 'Iphone' : ''"
+                    :disabled="phoneDisabled"
+                ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-        <UserAvatar></UserAvatar>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="身份证号" prop="idnum">
+                <el-input 
+                    placeholder="请输入电话号码"
+                    type="idnum" 
+                    v-model="form.idnum" 
+                    autocomplete="off"
+                    clearable
+                    :prefix-icon=" 1 ? 'Postcard' : ''"
+                    :disabled="idnumDisabled"
+                ></el-input>
+            </el-form-item>
+          </el-col>
 
-        <el-form-item label="用户名" prop="username">
-            <el-input 
-                placeholder="请输入用户名"
-                type="username" 
-                v-model="form.username" 
+          <el-col :span="12">
+            <el-form-item label="邮箱" prop="email">
+                <el-input 
+                    placeholder="请输入邮箱"
+                    type="email" 
+                    v-model="form.email" 
+                    autocomplete="off"
+                    clearable
+                    :prefix-icon=" 1 ? 'Message' : ''"
+                    :disabled="emailDisabled"
+                ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="密码" prop="password">
+              <el-input 
+                placeholder="密码"
+                show-password 
+                type="password" 
+                v-model="form.password" 
                 autocomplete="off"
                 clearable
-                :prefix-icon=" 1 ? 'User' : ''"
-                :disabled="usernameDisabled"
-            >
-            </el-input>
-        </el-form-item>
-  
-        <el-form-item label="手机号" prop="phone">
-            <el-input 
-                placeholder="请输入手机号码"
-                type="phone" 
-                v-model="form.phone" 
-                autocomplete="off"
-                clearable
-                :prefix-icon=" 1 ? 'Iphone' : ''"
-                :disabled="phoneDisabled"
-            ></el-input>
-        </el-form-item>
-  
-        <el-form-item label="身份证号" prop="idnum">
-            <el-input 
-                placeholder="请输入电话号码"
-                type="idnum" 
-                v-model="form.idnum" 
-                autocomplete="off"
-                clearable
-                :prefix-icon=" 1 ? 'Postcard' : ''"
-                :disabled="idnumDisabled"
-            ></el-input>
-        </el-form-item>
-
-        <el-form-item label="邮箱" prop="email">
-            <el-input 
-                placeholder="请输入邮箱"
-                type="email" 
-                v-model="form.email" 
-                autocomplete="off"
-                clearable
-                :prefix-icon=" 1 ? 'Message' : ''"
-                :disabled="emailDisabled"
-            ></el-input>
-        </el-form-item>
-
-        <el-form-item label="密码" prop="password">
-          <el-input 
-            placeholder="密码"
-            show-password 
-            type="password" 
-            v-model="form.password" 
-            autocomplete="off"
-            clearable
-            :prefix-icon=" 1 ? 'Key' : ''"
-            :disabled="passwordDisabled"
-          ></el-input>
-        </el-form-item>
-         
-        <el-form-item label="确认密码" prop="password2" v-if="isModified">
-          <el-input
-              placeholder="确认密码"
-              show-password
-              type="password"
-              v-model="form.password2"
-              autocomplete="off"
-              clearable
-              :prefix-icon=" 1 ? 'Key' : ''"
-              @keyup.enter.native="register"
-            ></el-input>
-          </el-form-item>
-    
+                :prefix-icon=" 1 ? 'Key' : ''"
+                :disabled="passwordDisabled"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          
+          <el-col :span="12">
+            <el-form-item label="确认密码" prop="password2" v-if="isModified">
+              <el-input
+                  placeholder="确认密码"
+                  show-password
+                  type="password"
+                  v-model="form.password2"
+                  autocomplete="off"
+                  clearable
+                  :prefix-icon=" 1 ? 'Key' : ''"
+                  @keyup.enter.native="register"
+                ></el-input>
+              </el-form-item>
+          </el-col>
+        </el-row>
 
 
         <el-row v-if="isModified">
@@ -94,10 +108,9 @@
         </el-row>
   
         <el-form-item>
-            <el-button v-if="isModified" type="primary" @click="setUserInfo('form')">提交</el-button>
-            <el-button v-else type="primary" @click="toModify">修改</el-button>
+            <el-button class="btn" v-if="isModified" type="primary" @click="setUserInfo('form')">提交</el-button>
+            <el-button class="btn" v-else type="primary" @click="toModify">修改</el-button>
         </el-form-item>
-  
     </el-form>
   </template>
   
@@ -333,3 +346,32 @@
   }
   </script>
   
+<style scoped>
+.form{
+  margin:50px;
+  gap:20px;
+}
+
+.el-form-item{
+  margin:20px;
+}
+
+.imgU{
+  width:100px;
+  height: 100px;
+  margin:20px auto;
+  display: flex;
+  border: 3px dashed gray; /* 3像素宽的黑色虚线边框 */
+  background-color: rgba(128, 128, 128, 0.2); /* 透明灰色背景 */
+}
+
+.form .btn {
+  line-height: 100px;
+  width: 100%;
+  height: 38px;
+  background-color:#81A18B;
+  border-color:#81A18B;
+  justify-items: center;
+
+}
+</style>
