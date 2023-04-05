@@ -4,29 +4,27 @@
 
 <template>
     <div class="wrap" >
-        <el-tabs tab-position="left">
-            <el-tab-pane label="待审核">
-                <div class="goods">
-                    <div v-for="goods in editingGoodsList" :key="goods.goodsId">
-                        <GoodsShow :goods="goods"/>
-                    </div>
-                </div>
-            </el-tab-pane>
-            <el-tab-pane label="申请失败">
-                <div class="goods">
-                    <div v-for="goods in editDeniedGoodsList" :key="goods.goodsId">
-                        <GoodsShow :goods="goods"/>
-                    </div>
-                </div>
-            </el-tab-pane>
-            <el-tab-pane label="申请成功">
-                <div class="goods">
-                    <div v-for="goods in editedGoodsList" :key="goods.goodsId">
-                        <GoodsShow :goods="goods"/>
-                    </div>
-                </div>
-            </el-tab-pane>
-        </el-tabs>
+        <h2>待审核</h2>
+        <div class="goods">
+            <div v-for="goods in editingGoodsList" :key="goods.goodsId">
+                <GoodsShow :goods="goods"/>
+            </div>
+        </div>
+
+        <h2>修改失败</h2>
+        <div class="goods">
+            <div v-for="goods in editDeniedGoodsList" :key="goods.goodsId">
+                <GoodsShow :goods="goods"/>
+            </div>
+        </div>
+
+        <h2>修改成功</h2>
+        <div class="goods">
+            <div v-for="goods in editedGoodsList" :key="goods.goodsId">
+                <GoodsShow :goods="goods"/>
+            </div>
+        </div>
+     
         
     </div>
 </template>
