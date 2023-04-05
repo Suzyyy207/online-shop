@@ -7,7 +7,9 @@ const dialogTableVisible = ref(false)
 <template>
   <div class="wrap">
     <div :shop="shop" class="shop">
-        <img class="logo" src="@/assets/shop.png"/>
+        <!--img class="logo" src="@/assets/shop.png"/-->
+        <img v-if="shop.avatar" :src="shop.avatar">
+        <img v-else class="logo" src="@/assets/shop.png"/>
 
         <div class="info1">
           <p>店名：{{shop.shopname}}</p>
@@ -19,7 +21,7 @@ const dialogTableVisible = ref(false)
         <div class="info2">
           <el-row>
             <el-col :span="12">
-              <p>身份证号：{{shop.idnum}}</p>
+              <p>注册人身份证号：{{shop.idnum}}</p>
             </el-col>
             <el-col :span="12">
               <p>备案地址：{{shop.address}}</p>

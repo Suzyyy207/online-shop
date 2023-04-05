@@ -36,7 +36,8 @@ export default {
                 capital: "",
                 date: "",
                 shopid: "",
-                is_admitted: ""
+                is_admitted: "",
+                avatar: ""
             }
         }
     },
@@ -60,10 +61,28 @@ export default {
                     this.isregistered = 1;
                     this.shop = res.data.data;
                     var localStorage = window.localStorage;
-                    localStorage.setItem("shopname", shop.shopname);
+                    localStorage.setItem("shopname", this.shop.shopname);
+                    this.getShopAvatar();
                 }
                 else {
                     this.isregistered = 0;
+                }
+            })
+        },
+        getShopAvatar: function() {
+            var localStorage = window.localStorage;
+
+            this.$axios.post('/getShopAvatarByShopname', {
+                shopname: localStorage.getItem("shopname")
+            })
+            .then(res => {
+                if(res.data.state==window.SUCCESS) {
+                    console.log("有头像");
+                    this.$message.success("收到反馈（根据是否显示图片判断文件传输是否成功）");
+                    this.shop.avatar = "data:image/jpeg;base64," + res.data.avatar;
+                }
+                else {
+                    console.log("没有头像");
                 }
             })
         },

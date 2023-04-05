@@ -58,6 +58,16 @@ const router = createRouter({
       component: () => import('../components/Dashboard/Goods/GoodsRegister.vue')
     },
     {
+      path: '/UserAvatar',
+      name: 'UserAvatar',
+      component: () => import('../components/Dashboard/User/UserAvatar.vue')
+    },
+    {
+      path: '/Avatar',
+      name: 'Avatar',
+      component: () => import('../components/Dashboard/User/UserAvatar.vue')
+    },
+    {
       path: '/GoodsImg',
       name: 'GoodsImg',
       component: () => import('../components/Dashboard/Goods/GoodsImg.vue')
@@ -66,7 +76,7 @@ const router = createRouter({
     {
       path: '/upload',
       name: 'upload',
-      component: () => import('../components/MainWeb/Components/upload.vue')
+      component: () => import('../components/Dashboard/User/upload.vue')
     },
     {
       path: '/GoodsShow',
