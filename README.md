@@ -45,6 +45,21 @@
 | 4  | 提交修改信息，管理员拒绝 | 
 | 5   | 下架       | 
 
+### 商品信息显示 goodsInfo
+| 接口名      | 方法 | 功能         |
+| ----------- | ---- | ------------ |
+| getRegisteringGoodsByShopname | POST | status=0的所有商品信息 |
+
+参数列表 front->back
+| 参数名   | 含义   | 类型&备注 |
+| -------- | ------ | --------- |
+| shopname | 店铺名 |           |
+
+参数列表 back->front
+| 参数名 | 含义         | 类型&备注         |
+| ------ | ------------ | ----------------- |
+| state  | 是否存在这种类型的商品 | YES（0）和NO（1） |
+| data   | goods构成的列表       | 每个goods包含：<br>普通文本信息<br>goodsCategory字符串列表<br>goodsAvatar图片列表 |
 
 ### 商品注册
 | 接口名      | 方法 | 功能         |
@@ -56,7 +71,7 @@
 | 参数名   | 含义   | 类型&备注 |
 | -------- | ------ | --------- |
 | shopname | 店铺名 |           |
-| goodsCategory | 商品类型 | 用;分隔的字符串          |
+| goodsCategory | 商品类型 | 字符串列表          |
 | introduction |  |           |
 | goodsname | 店铺名 |           |
 | goodsPrice | 价格 |           |
