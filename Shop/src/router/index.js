@@ -62,6 +62,18 @@ const router = createRouter({
       path: '/upload',
       name: 'upload',
       component: () => import('../components/MainWeb/Components/upload.vue')
+    },
+
+    //新添加的个人中心页面，未添加拦截器
+    {
+      path: '/userSelfCenter',
+      name: 'userSelfCenter',
+      component: () => import('../views/SelfCenter/UserSC.vue')
+    },
+    {
+      path: '/shopkeeperSelfCenter',
+      name: 'shopkeeperCenter',
+      component: () => import('../views/SelfCenter/ShopkeeperChange.vue')
     }
   ]
 })
