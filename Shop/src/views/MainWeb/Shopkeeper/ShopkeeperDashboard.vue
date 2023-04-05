@@ -11,22 +11,6 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
 
     <Nav></Nav>
-<<<<<<< HEAD
-    <section>
-        <SearchTop/>
-    </section>
-
-    <el-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
-        <el-tab-pane label="店铺基本信息">
-            <MyShopInfo v-if="isregistered && (!isToModify)" :shop="shop"/>
-            <ShopRegister v-else :shop="shop"/>
-        </el-tab-pane>
-        <el-tab-pane label="商品信息">
-            <Goods4Shopkeeper/>
-        </el-tab-pane>
-        <el-tab-pane label="店铺流水"></el-tab-pane>
-    </el-tabs>
-=======
 
     <section>
         <el-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
@@ -36,13 +20,13 @@ import { RouterLink, RouterView } from 'vue-router'
             </el-tab-pane>
 
             <el-tab-pane class="etb" label="商品信息">
-                <WrapperGoods class="cont" />
+                <!--WrapperGoods class="cont" /-->
+                <Goods4Shopkeeper/>
             </el-tab-pane>
 
             <el-tab-pane class="etb" label="店铺流水"></el-tab-pane>
         </el-tabs>
     </section>
->>>>>>> c270d67f0a02f7364ab3bc74299fec7461343e38
 
 </template>
 
