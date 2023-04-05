@@ -27,6 +27,7 @@ import static javax.security.auth.callback.ConfirmationCallback.*;
 public class ShopController {
     @Autowired
     private IUserService userService;
+    @Autowired
     private IShopService shopService;
     @RequestMapping("/api/shopRegister")
     public JsonResult<Shop> open(@RequestBody Map<String,Object> map) {

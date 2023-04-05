@@ -7,21 +7,25 @@
             <div class="infoShow">
                 <img src="../../assets/shop.png" alt="头像">
                 <div class="info">
-                <p>姓名: xxxx</p>
-                <p>用户类型: xxxxx</p>
-                <p>电话: xxx</p>
-                <p>身份证号: xxxxx</p>
-                <p>邮箱: xxxx</p>
-                <p>账户余额: <num class="account">0</num></p>
-                <div class="charge">
-                    <el-input class="chargeInput"></el-input>
-                    <el-button>充值</el-button>
+                    <p>姓名: xxxx</p>
+                    <p>用户类型: xxxxx</p>
+                    <p>电话: xxx</p>
+                    
                 </div>
-                </div>
+            </div>
+            <p>身份证号: 610102200202193129</p>
+            <p>邮箱: suzyyy207@gmail.com</p>
+            <!--这里需要根据用户类型决定展示信息-->
+            <p>个人账户余额: <num class="account">0</num></p>
+            <p>商户账户余额: <num class="account">0</num></p>
+            <div class="charge">
+                <el-input class="chargeInput"></el-input>
+                <el-button>充值</el-button>
             </div>
             <el-button class="">修改个人信息</el-button>
         </div>
 
+        <!--为后续扩展已购买记录预留-->
         <div class="goodsInfo">
           <div class="goodsList">
             <h3 class="goodsTitle">已购买</h3>
@@ -90,6 +94,11 @@ section{
     margin: 10px 0;
 }
 
+.profile > p{
+    letter-spacing:0;
+    line-height: 10px;
+    margin-left: 10px;
+}
 .profile .chargeInput{
     width:60%;
     margin-right:20px

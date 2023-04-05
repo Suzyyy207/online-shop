@@ -45,24 +45,6 @@ const router = createRouter({
     },
     // 上述页面已添加拦截器
 
-    // 下述页面是为了调试方便的组件路径，最终需要封装到views中，因此不需要额外添加拦截器
-    // 提交项目前保证无组件路径
-    {
-      path: '/UserInfo',
-      name: 'UserInfo',
-      component: () => import('../components/MainWeb/Components/userInfo.vue')
-    },
-    {
-      path: '/UploadImg',
-      name: 'UploadImg',
-      component: () => import('../components/MainWeb/Components/UploadImg.vue')
-    }
-    ,
-    {
-      path: '/upload',
-      name: 'upload',
-      component: () => import('../components/MainWeb/Components/upload.vue')
-    },
 
     //新添加的个人中心页面，未添加拦截器
     {
@@ -73,9 +55,58 @@ const router = createRouter({
     {
       path: '/shopkeeperSelfCenter',
       name: 'shopkeeperCenter',
-      component: () => import('../views/SelfCenter/ShopkeeperChange.vue')
+      component: () => import('../views/SelfCenter/ShopkeeperSC.vue')
+    },
+
+
+    // 下述页面是为了调试方便的组件路径，最终需要封装到views中，因此不需要额外添加拦截器
+    // 提交项目前保证无组件路径
+    {
+      path: '/UserDashboard',
+      name: 'UserDashboard',
+      component: () => import('../views/Dashboard/User/UserDashboard.vue')
+    },
+    {
+      path: '/GoodsRegister',
+      name: 'GoodsRegister',
+      component: () => import('../components/Dashboard/Goods/GoodsRegister.vue')
+    },
+    {
+      path: '/UserAvatar',
+      name: 'UserAvatar',
+      component: () => import('../components/Dashboard/User/UserAvatar.vue')
+    },
+    {
+      path: '/Avatar',
+      name: 'Avatar',
+      component: () => import('../components/Dashboard/User/UserAvatar.vue')
+    },
+    {
+      path: '/GoodsImg',
+      name: 'GoodsImg',
+      component: () => import('../components/Dashboard/Goods/GoodsImg.vue')
     }
+    ,
+    {
+      path: '/upload',
+      name: 'upload',     
+       component: () => import('../components/Dashboard/User/upload.vue')
+    },
+    {
+      path: '/GoodsShow',
+      name: 'GoodsShow',
+      component: () => import('../components/Dashboard/Goods/GoodsShow.vue')
+    },
+    {
+      path: '/WrapperGoods',
+      name: 'WrapperGoods',
+      component: () => import('../components/Dashboard/Wrapper/WrapperGoods.vue')
+    }
+    
   ]
 })
-
+router.beforeEach((to, from, next) => {
+  console.log(`Navigating from ${from.path} to ${to.path}`);
+  next();
+});
 export default router

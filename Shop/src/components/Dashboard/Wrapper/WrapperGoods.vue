@@ -1,6 +1,7 @@
 <!--此组件为将所有向已注册成功的店铺信息打包，并排版为用户友好的UI界面-->
 <script setup>
 import GoodsShow from '../Goods/GoodsShow.vue'
+import RegisteringGoods from '../Goods/RegisteringGoods.vue'
 </script>
 
 <template>
@@ -10,16 +11,57 @@ import GoodsShow from '../Goods/GoodsShow.vue'
         <h1>已注册</h1>
         <h1>您还没有注册任何商品</h1>
         <div class="goods">
+            <!--div v-for="goods in registeringGoodsList" :key="goods.goodsId">
+                <GoodsShow :shop="shop"/>
+            </div-->
+            <RegisteringGoods :goods="this.goods"/>
+            <!--GoodsShow />
             <GoodsShow />
             <GoodsShow />
             <GoodsShow />
-            <GoodsShow />
-            <GoodsShow />
+            <GoodsShow /-->
         </div>
-        
     </div>
 </template>
-
+<script>
+export default {
+    props: ['shopname'],
+    data() {
+        return {
+            // state表示“商品信息”页面对应的显示内容——注册新商品。
+            state: 0,
+            registeringGoodsList: [],
+            goods:{
+                goodsname: "goodsname",
+                goodsId: "id",
+                status: 2,
+                router: this.$router,
+                toGoodsRegister: this.toGoodsRegister
+            }
+        }
+    },
+    created (){
+        //this.getRegisteringGoods() 
+    },
+    methods: {
+        getRegisteringGoods() {
+            this.goods.shopname="shopname"
+        },
+        toGoodsRegister() {
+            console.log("跳转至详情页面");
+            var localStorage = window.localStorage;
+            localStorage.setItem("goodsId",this.goods.goodsId);
+            console.log(localStorage.getItem("goodsId"));
+            var msg = this.$router.push({name:'GoodsRegister'})
+            .catch(err => {
+                console.log(err) 
+            })
+            console.log(msg)
+        //console.log(this.$router.push({name:'GoodsRegister'}))
+    }
+    }
+}
+</script>
 
 
 <style scoped>

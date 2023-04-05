@@ -7,7 +7,9 @@ const dialogTableVisible = ref(false)
 <template>
   <div class="wrap">
     <div :shop="shop" class="shop">
-        <img class="logo" src="@/assets/shop.png"/>
+        <!--img class="logo" src="@/assets/shop.png"/-->
+        <img v-if="shop.avatar" :src="shop.avatar">
+        <img v-else class="logo" src="@/assets/shop.png"/>
 
         <div class="info1">
           <p>店名：{{shop.shopname}}</p>
@@ -19,7 +21,7 @@ const dialogTableVisible = ref(false)
         <div class="info2">
           <el-row>
             <el-col :span="12">
-              <p>身份证号：{{shop.idnum}}</p>
+              <p>注册人身份证号：{{shop.idnum}}</p>
             </el-col>
             <el-col :span="12">
               <p>备案地址：{{shop.address}}</p>
@@ -42,7 +44,6 @@ const dialogTableVisible = ref(false)
 
         <div class="info4">
           <el-form-item class="re_btn">
-            <!--需要加身份证不可以改的函数-->
             <el-button type="submit" @click="modifyShopInfo">修改注册信息</el-button>
           </el-form-item>
           <el-form-item class="re_btn">
@@ -78,13 +79,15 @@ const dialogTableVisible = ref(false)
     methods: {
       modifyShopInfo() {
         var localStorage = window.localStorage;
+        localStorage.setItem("toModify",1);
         localStorage.setItem("shopname",this.shop.shopname);
         localStorage.setItem("goodstype",this.shop.goodstype);
         localStorage.setItem("introduction",this.shop.introduction);
         localStorage.setItem("address",this.shop.address);
         localStorage.setItem("idnum",this.shop.idnum);
         localStorage.setItem("capital",this.shop.capital);
-        this.$router.push({name:'ShopDashboardBlank'});
+        localStorage.setItem("date",this.shop.date);
+        this.$router.go(0);
       }
     }
 }

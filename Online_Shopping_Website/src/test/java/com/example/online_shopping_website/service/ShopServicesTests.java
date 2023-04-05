@@ -37,7 +37,7 @@ public class ShopServicesTests {
     }
     @Test
     public void GetShopInformationFromUser(){
-        Shop shop = shopService.GetShopInformationFromUser("buyer");
+        Shop shop = shopService.GetShopInformationFromUser("test1123");
         System.out.println(shop);
     }
 }

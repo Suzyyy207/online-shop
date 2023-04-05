@@ -9,6 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Blob;
+import java.util.Base64;
+
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
 
@@ -147,5 +155,13 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void UpdateAvatar(String username,byte[] avatar){
         userMapper.AvatarUpdate(username,avatar);
+    }
+    @Override
+    public String GetAvatar(String username){
+        User user = userMapper.SearchByUsername(username);
+        byte[] imageData = user.getAvatar();
+        if(imageData==null) return null;
+        String base64Image = Base64.getEncoder().encodeToString(imageData);
+        return base64Image;
     }
 }
