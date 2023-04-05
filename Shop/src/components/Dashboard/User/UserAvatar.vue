@@ -126,4 +126,9 @@ export default {
 </script>
 
 <style>
+.avatar-uploader{
+  display: flex;
+  margin: 0 auto;
+}
+
 </style>

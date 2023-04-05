@@ -10,21 +10,21 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
 
     <Nav></Nav>
-    <section class="register_show">
-        <!--如果尚未注册过，则进入注册页面；否则进入商店信息展示页面-->
-        
-    </section>
 
-  <el-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
-    <el-tab-pane label="店铺基本信息">
-        <MyShopInfo v-if="isregistered && (!isToModify)" :shop="shop"/>
-        <ShopRegister v-else :shop="shop"/>
-    </el-tab-pane>
-    <el-tab-pane label="商品信息">
-        <WrapperGoods/>
-    </el-tab-pane>
-    <el-tab-pane label="店铺流水"></el-tab-pane>
-  </el-tabs>
+    <section>
+        <el-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
+            <el-tab-pane label="店铺基本信息">
+                <MyShopInfo class="cont" v-if="isregistered && (!isToModify)" :shop="shop"/>
+                <ShopRegister class="cont" v-else :shop="shop"/>
+            </el-tab-pane>
+
+            <el-tab-pane class="etb" label="商品信息">
+                <WrapperGoods class="cont" />
+            </el-tab-pane>
+
+            <el-tab-pane class="etb" label="店铺流水"></el-tab-pane>
+        </el-tabs>
+    </section>
 
 </template>
 
@@ -118,7 +118,4 @@ export default {
 
 <style scoped>
 /*商家注册信息栏*/
-.register_show{
-    margin:40px 100px 0px 100px;
-}
 </style>
