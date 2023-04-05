@@ -3,7 +3,7 @@
 ### 店铺信息显示shopInfo
 | 接口名      | 方法 | 功能         |
 | ----------- | ---- | ------------ |
-| 店铺信息显示getShopInfoByUsername | POST | 获取指定用户商店信息（不包括头像） |
+| getShopInfoByUsername | POST | 获取指定用户商店信息（不包括头像） |
 
 参数列表 front->back
 | 参数名   | 含义   | 类型&备注 |
@@ -45,10 +45,30 @@
 | 4  | 提交修改信息，管理员拒绝 | 
 | 5   | 下架       | 
 
+### 商品信息修改 goodsInfo
+| 接口名      | 方法 | 功能         |
+| ----------- | ---- | ------------ |
+| setGoodsInfo | POST | 修改商品信息 |
+
+参数列表 front->back
+| 参数名   | 含义   | 类型&备注 |
+| -------- | ------ | --------- |
+| goodsId | 商品id |           |
+| goodsCategory |  |  字符串列表         |
+| introduction |  |           |
+| goodsname |  |           |
+| goodsPrice |  |           |
+| goodsStock |  |           |
+
+参数列表 back->front
+| 参数名 | 含义         | 类型&备注         |
+| ------ | ------------ | ----------------- |
+| state  | 是否修改成功 | YES（0）和NO（1） |
+
 ### 商品信息显示 goodsInfo
 | 接口名      | 方法 | 功能         |
 | ----------- | ---- | ------------ |
-| getRegisteringGoodsByShopname | POST | status=0的所有商品信息 |
+| getRegisteringGoodsByShopname | POST | 获得status=0的所有商品信息 |
 
 参数列表 front->back
 | 参数名   | 含义   | 类型&备注 |
@@ -75,7 +95,7 @@
 | introduction |  |           |
 | goodsname | 店铺名 |           |
 | goodsPrice | 价格 |           |
-| goodsStocks | 库存 |           |
+| goodsStock | 库存 |           |
 
 参数列表 back->front
 
