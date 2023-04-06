@@ -5,9 +5,9 @@
 
 commit示例: feat(front):userInfo add API /getUserInfo to get user info
 
-| 接口名      | 方法 | 功能         |
-| ----------- | ---- | ------------ |
-| getUserInfo | POST | 获取用户信息 |
+| 接口名      | 地址             | 方法 | 功能         |
+| ----------- | ---------------- | ---- | ------------ |
+| getUserInfo | /api/getuserInfo | POST | 获取用户信息 |
 
 参数列表 front->back
 | 参数名   | 含义   | 类型&备注 |
@@ -32,9 +32,9 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 ### 个人信息修改
 
 
-| 接口名      | 方法 | 功能         |
-| ----------- | ---- | ------------ |
-| setUserInfo | POST | 修改用户信息 |
+| 接口名      | 地址             | 方法 | 功能         |
+| ----------- | ---------------- | ---- | ------------ |
+| setUserInfo | /api/setUserInfo | POST | 修改用户信息 |
 
 参数列表 front->back
 | 参数名      | 含义       | 类型&备注                      |
@@ -68,9 +68,9 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 
 commit示例: feat(front):uploadImg add API /setUserAvatar to post img only   
 
-| 接口名        | 方法 | 功能         |
-| ------------- | ---- | ------------ |
-| setUserAvatar | POST | 设置用户头像 |
+| 接口名        | 地址               | 方法 | 功能         |
+| ------------- | ------------------ | ---- | ------------ |
+| setUserAvatar | /api/setUserAvatar | POST | 设置用户头像 |
 
 参数列表 front->back
 
@@ -101,9 +101,9 @@ commit示例: feat(front):uploadImg add API /setUserAvatar to post img only
 
 commit示例: feat(front):downloadImg add API /getUserAvatar to get img only  
 
-| 接口名        | 方法 | 功能         |
-| ------------- | ---- | ------------ |
-| getUserAvatar | POST | 返回用户头像 |
+| 接口名        | 地址               | 方法 | 功能         |
+| ------------- | ------------------ | ---- | ------------ |
+| getUserAvatar | /api/getUserAvatar | POST | 返回用户头像 |
 
 参数列表 front->back
 
@@ -125,6 +125,102 @@ commit示例: feat(front):downloadImg add API /getUserAvatar to get img only
 | ---------- | ---------- | 
 |  前端测试路径  |  localhost:端口/UploadImg  |    
 |  测试方法  |  将UploadImg.vue:34 的username赋值成指定的username，如果页面显示该用户的头像，则传输成功  | 
+
+
+
+## 账户系统
+
+### 账户充值
+
+**注意：涉及金额的变量全部为String类型，有效位数20位（包括小数），带两位小数。**
+
+**格式为 "xxxx.xx" ，如"1000.05"代表1000.05元**
+
+| 接口名          | 地址                 | 方法 | 功能     |
+| --------------- | -------------------- | ---- | -------- |
+| accountRecharge | /api/accountRecharge | POST | 账户充值 |
+
+参数列表 front->back
+
+| 参数名   | 含义       | 类型&备注                              |
+| -------- | ---------- | -------------------------------------- |
+| username | 用户名     |                                        |
+| money    | 充值的金额 | String类型，后端负责转换，前端检查格式 |
+
+参数列表 back->front
+
+| 参数名  | 含义         | 类型&备注         |
+| ------- | ------------ | ----------------- |
+| state   | 充值是否成功 | YES（0）和NO（1） |
+| message | 提示消息     | 提示充值失败/成功 |
+
+测试
+
+| 前端测试路径 | 测试方法 |
+| ------------ | -------- |
+|              |          |
+
+
+
+### 注册资金转账
+
+//TODO
+
+
+
+### 申请删除商店
+
+| 接口名             | 地址                    | 方法 | 功能             |
+| ------------------ | ----------------------- | ---- | ---------------- |
+| ApplyForShopDelete | /api/ApplyForShopDelete | POST | 商家申请删除商店 |
+
+参数列表 front->back
+
+| 参数名 | 含义   | 类型&备注 |
+| ------ | ------ | --------- |
+| shopid | 商店id |           |
+|        |        |           |
+
+参数列表 back->front
+
+| 参数名  | 含义         | 类型&备注           |
+| ------- | ------------ | ------------------- |
+| state   | 删除是否成功 | YES（0）和NO（1）   |
+| message | 提示消息     | 提示：申请失败/成功 |
+
+测试
+
+| 前端测试路径 | 测试方法 |
+| ------------ | -------- |
+|              |          |
+
+
+
+### 批准删除商店
+
+| 接口名            | 地址                   | 方法 | 功能               |
+| ----------------- | ---------------------- | ---- | ------------------ |
+| ApproveShopDelete | /api/ApproveShopDelete | POST | 管理员同意删除商店 |
+
+参数列表 front->back
+
+| 参数名 | 含义   | 类型&备注 |
+| ------ | ------ | --------- |
+| shopid | 商店id |           |
+|        |        |           |
+
+参数列表 back->front
+
+| 参数名  | 含义         | 类型&备注               |
+| ------- | ------------ | ----------------------- |
+| state   | 删除是否成功 | YES（0）和NO（1）       |
+| message | 提示消息     | 提示：删除商店失败/成功 |
+
+测试
+
+| 前端测试路径 | 测试方法 |
+| ------------ | -------- |
+|              |          |
 
 
 
