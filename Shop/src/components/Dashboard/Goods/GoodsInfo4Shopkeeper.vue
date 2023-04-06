@@ -16,6 +16,7 @@
             <div v-if="this.activeIndex==1">
                <GoodsRegister :goods='goods'/>
                <el-button 
+                    v-if="!(goods.registerStatus==2 || goods.modifyStatus == 2)"
                     type="primary" 
                     @click="this.getGoodsInfo()" 
                 >取消
@@ -171,6 +172,7 @@ export default {
             }).then(res => {
                     if(res.data.state == window.SUCCESS){
                        this.$message.success(res.data.message);
+                       this.$router.go(0);
                     }
                     else {
                         this.$message.error("提交失败，请重试");

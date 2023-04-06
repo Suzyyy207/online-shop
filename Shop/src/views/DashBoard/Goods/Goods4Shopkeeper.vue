@@ -13,7 +13,7 @@ import WrapperGoodsRecord from '../../../components/Dashboard/Wrapper/WrapperGoo
             <WrapperGoodsRecord/>
         </el-tab-pane>
         <el-tab-pane label="所有商品">
-            <!--WrapperAllGoods/-->
+            <WrapperAllGoods/>
         </el-tab-pane>
     </el-tabs>
 </template>

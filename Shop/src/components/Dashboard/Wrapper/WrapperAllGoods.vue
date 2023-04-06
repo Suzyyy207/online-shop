@@ -14,7 +14,7 @@
             </el-tab-pane>
             <el-tab-pane label="已下架">
                 <div class="goods">
-                    <div v-for="goods in registerationDeniedGoodsList" :key="goods.goodsId">
+                    <div v-for="goods in invalidGoodsList" :key="goods.goodsId">
                         <GoodsShow :goods="goods"/>
                     </div>
                 </div>
@@ -27,6 +27,7 @@ export default {
     data() {
         return {
             validGoodsList: [],
+            invalidGoodsList: [],
             goods:{
                 goodsname: "goodsname",
                 goodsId: "id",
@@ -39,13 +40,23 @@ export default {
         }
     },
     created (){
-        this.getValidGoods() 
+        this.getValidGoods();
+        this.getInvalidGoods();
     },
     methods: {
         getValidGoods() {
             this.validGoodsList = [this.goods];
             var localStorage = window.localStorage;
             this.$axios.post("/getValidGoodsByShopname", {
+                shopname: localStorage.getItem("shopname")
+            }).then(res => {
+                this.validGoodsList = res.data.data;
+            })
+        },
+        getInvalidGoods() {
+            this.invalidGoodsList = [this.goods];
+            var localStorage = window.localStorage;
+            this.$axios.post("/getInvalidGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
             }).then(res => {
                 this.validGoodsList = res.data.data;
