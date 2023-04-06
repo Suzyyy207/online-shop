@@ -1,4 +1,4 @@
-<!-- 商家查看商品详情 -->
+<!-- 添加商品的组件页面-->
 <template>
     <div>
         <!-- 进度条 -->
@@ -15,58 +15,54 @@
         <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="100px" label-position="top">
             <div v-if="this.activeIndex==1">
                <GoodsRegister :goods='goods'/>
-               <el-button 
-                    v-if="!(goods.registerStatus==2 || goods.modifyStatus == 2)"
-                    type="primary" 
-                    @click="this.getGoodsInfo()" 
-                >取消
-                </el-button>
             </div>
 
             <div v-if="this.activeIndex==2">
                 管理员正在审核，请耐心等待...
-                <GoodsDetail :goods="this.goods"/>
-
-                    <el-button 
-                        type="primary" 
-                        @click="this.modifyGoodsInfo()" 
-                        >修改商品信息
-                    </el-button>
-                    <el-button 
-                        type="primary" 
-                        @click="this.cancelApplication()" 
-                        >撤销申请
-                    </el-button>
+                <div v-for="avatar in goods.goodsAvatar">
+                    <img :src="'data:image/jpeg;base64,' + avatar">
+                </div>
                 
+                <p>商品类型：{{ goods.goodsname }}</p>
+                <p>商品类别：{{ goods.goodsCategory }}</p>
+                <p>商品简介：{{ goods.introduction }}</p>
+                <p>商品库存：{{ goods.goodsStocks }}</p>
+                <p>商品价格：{{ goods.goodsPrice }}</p>
+                <el-button 
+                    type="primary" 
+                    @click="this.modifyGoodsInfo()" 
+                >修改商品信息
+                </el-button>
             </div>
 
             <div v-if="this.activeIndex==3">
-                <GoodsDetail :goods="this.goods"/>
-
-                    <el-button 
-                        type="primary" 
-                        @click="this.modifyGoodsInfo()" 
-                        >修改商品信息
-                        </el-button>
-                        <el-button 
-                            type="primary" 
-                            @click="this.goodsOffShelve()" 
-                        >下架
-                    </el-button>
+                <div v-for="avatar in goods.goodsAvatar">
+                    <img :src="'data:image/jpeg;base64,' + avatar">
+                </div>
                 
+                    <p>商品类型：{{ goods.goodsname }}</p>
+                    <p>商品类别：{{ goods.goodsCategory }}</p>
+                    <p>商品简介：{{ goods.introduction }}</p>
+                    <p>商品库存：{{ goods.goodsStocks }}</p>
+                    <p>商品价格：{{ goods.goodsPrice }}</p>
+
+                <el-button 
+                    type="primary" 
+                    @click="this.modifyGoodsInfo()" 
+                >修改商品信息
+                </el-button>
+                <el-button 
+                    type="primary" 
+                    @click="this.goodsOffShelve()" 
+                >下架
+                </el-button>
             </div>
             <div v-if="this.activeIndex==4">
-                <GoodsDetail :goods="this.goods"/>
-
-                <div v-if="showType==1">
-                    <el-button 
-                        type="primary" 
-                        @click="this.goodsOnShelve()" 
-                        >重新上架
-                    </el-button>
-                </div>
-
-                
+                <el-button 
+                    type="primary" 
+                    @click="this.goodsOnShelve()" 
+                >重新上架
+                </el-button>
             </div>
         </el-form>
 
@@ -76,8 +72,7 @@
  
 <script>
 import "../../../constant";
-import GoodsRegister from "./GoodsRegister.vue";
-import GoodsDetail from "./GoodsDetail.vue";
+import GoodsRegister from "./GoodsRegister.vue"
 export default {
     props: {
         goods: {
@@ -86,8 +81,7 @@ export default {
         }
     },
     components: {
-        GoodsRegister,
-        GoodsDetail
+        GoodsRegister
     },
     data(){
         return {
@@ -109,7 +103,6 @@ export default {
                             this.activeIndex = 1;
                             break;
                     }
-                    break;
                 case 2: // 提交修改请求，等待批复
                     switch(this.goods.modifyStatus) {
                         case 1: //尚未批复
@@ -119,7 +112,6 @@ export default {
                             this.activeIndex = 1;
                             break;
                     }
-                    break;
                 case 1:
                     this.activeIndex = 3;
                     break;
@@ -165,22 +157,6 @@ export default {
         },
         prev() {
             this.activeIndex--;
-        },
-        cancelApplication() {
-            this.$axios.post('/cancelApplication',{
-                goodsId: this.goods.goodsId
-            }).then(res => {
-                    if(res.data.state == window.SUCCESS){
-                       this.$message.success(res.data.message);
-                       this.$router.go(0);
-                    }
-                    else {
-                        this.$message.error("提交失败，请重试");
-                    }
-                })
-            .catch(err => {
-                console.log(err);
-            })
         }
     }
 }

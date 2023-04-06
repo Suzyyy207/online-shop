@@ -1,7 +1,6 @@
 <!--个人信息界面-->
 
 <template>
-  
     <el-form :model="form" :rules="rules" ref="form" class="form">
         <UserAvatar class="imgU"></UserAvatar>
         <el-row>
@@ -14,6 +13,7 @@
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'User' : ''"
+                    :disabled="usernameDisabled"
                 >
                 </el-input>
             </el-form-item>
@@ -27,6 +27,7 @@
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'Iphone' : ''"
+                    :disabled="phoneDisabled"
                 ></el-input>
             </el-form-item>
           </el-col>
@@ -36,13 +37,13 @@
           <el-col :span="12">
             <el-form-item label="身份证号" prop="idnum">
                 <el-input 
-                    placeholder="请输入身份证号"
+                    placeholder="请输入电话号码"
                     type="idnum" 
                     v-model="form.idnum" 
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'Postcard' : ''"
-                    :disabled="true"
+                    :disabled="idnumDisabled"
                 ></el-input>
             </el-form-item>
           </el-col>
@@ -56,6 +57,7 @@
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'Message' : ''"
+                    :disabled="emailDisabled"
                 ></el-input>
             </el-form-item>
           </el-col>
@@ -72,12 +74,13 @@
                 autocomplete="off"
                 clearable
                 :prefix-icon=" 1 ? 'Key' : ''"
+                :disabled="passwordDisabled"
               ></el-input>
             </el-form-item>
           </el-col>
           
           <el-col :span="12">
-            <el-form-item label="确认密码" prop="password2">
+            <el-form-item label="确认密码" prop="password2" v-if="isModified">
               <el-input
                   placeholder="确认密码"
                   show-password
@@ -93,7 +96,7 @@
         </el-row>
 
 
-        <el-row>
+        <el-row v-if="isModified">
             <el-form-item prop="validCode" >
                 <el-input 
                 v-model="form.validCode" 
@@ -105,10 +108,8 @@
         </el-row>
   
         <el-form-item>
-            <el-button class="btn"  type="primary" @click="setUserInfo('form')">提交</el-button>
-        </el-form-item>
-        <el-form-item>
-            <el-button class="btn"  type="primary" @click="cancel">取消</el-button>
+            <el-button class="btn" v-if="isModified" type="primary" @click="setUserInfo('form')">提交</el-button>
+            <el-button class="btn" v-else type="primary" @click="toModify">修改</el-button>
         </el-form-item>
     </el-form>
   </template>
@@ -153,6 +154,17 @@
       }
     }
   };
+  const idnumValidator = (rule, value, callback) => {
+    if (!value) {
+      return callback(new Error("身份证号不能为空"));
+    } else {
+      if (validateIdnum(value)) {
+        callback();
+      } else {
+        return callback(new Error('身份证号格式不正确'))
+      }
+    }
+  };
   const emailValidator = (rule, value, callback) => {
     if (!value) {
       return callback(new Error("邮箱不能为空"));
@@ -166,7 +178,7 @@
   };
   
   export default {
-    name: "UserInfo",
+    name: "userInfo",
     components:{
       ValidCode,
       UserAvatar
@@ -203,7 +215,12 @@
           password2: ""
         },
         validCode: "",
+        isModified: false,
+        usernameDisabled: true,
+        phoneDisabled: true,
         idnumDisabled: true,
+        emailDisabled: true,
+        passwordDisabled: true,
         rules: {
           username: [
             { required: true, validator: usernameValidator, trigger: 'change' },
@@ -212,6 +229,10 @@
           phone: [
             { required: true, validator: phoneValidator, trigger: "change" },
             { required: true, validator: phoneValidator, trigger: "blur" }
+          ],
+          idnum: [
+            { required: true, validator: idnumValidator, trigger: 'change' },
+            { required: true, validator: idnumValidator, trigger: 'blur' }
           ],
           email: [
             { required: true, validator: emailValidator, trigger: 'change' },
@@ -239,10 +260,14 @@
       getUserInfo() {
         var localStorage = window.localStorage;
         this.$axios.post('/getUserInfo', {
+            // 测试版本：自定义username
+            // username: "username"
+            // 正式版本
             username: localStorage.getItem("username")
         })
         .then(res => {
             const user = res.data.data;
+            /*this.form.gender = user.gender;*/
             this.form.phone = user.phone;
             this.form.idnum = user.idnum;
             this.form.email = user.email;
@@ -302,6 +327,13 @@
             }
         }))
       },
+     toModify() {
+        this.usernameDisabled = false;
+        this.phoneDisabled = false;
+        this.emailDisabled = false;
+        this.passwordDisabled = false;
+        this.isModified = true;
+     },
      createValidCode(data){
         this.validCode = data;
     },
@@ -310,9 +342,6 @@
         this.form.usertype="";
         this.form.agreement="";
      },
-     cancel() {
-        this.$router.go(0);
-     }
     }
   }
   </script>

@@ -37,12 +37,12 @@ import { interceptor, shopkeeperInterceptor } from "../../../interceptor";
 import Goods4Shopkeepper from '../../DashBoard/Goods/Goods4Shopkeeper.vue'
 export default {
     props: ["shop_id"],
-    /*beforeRouteLeave(to, from, next) {
+    beforeRouteLeave(to, from, next) {
         var localStorage = window.localStorage;
         localStorage.removeItem("toModify");
         console.log("删除");
         next();
-    },*/
+    },
     data() {
         return {
             isregistered: "",
@@ -65,7 +65,7 @@ export default {
         interceptor(this);
         shopkeeperInterceptor(this);
         this.getMyShopInfo();
-        //this.toModify();
+        this.toModify();
     },
     methods: {
         // 根据当前username取店铺信息

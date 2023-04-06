@@ -44,4 +44,17 @@ public class UserServiceTests {
         System.out.println(registerResult.getMessage());
         System.out.println(registerResult.getData());
     }
+
+    @Test
+    public void getUserinfo(){
+        JsonResult<User> result = userService.getUserInfo("jack");
+        System.out.println(result);
+    }
+
+    @Test
+    public void setUserInfo() {
+        User user = new User("jason1","12345678", "142536482", "4613875");
+        JsonResult<User> result = userService.setUserInfo("jack",user);
+        System.out.println(result);
+    }
 }
