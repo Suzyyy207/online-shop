@@ -2,128 +2,106 @@
 
 <template>
     <div>
-        <!-- 面包栏 -->
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-        <el-breadcrumb-item>添加商品</el-breadcrumb-item>
-        </el-breadcrumb>
-
-        <!-- 进度条 -->
-        <el-card>
-            <el-steps :space="200" :active="activeIndex" finish-status="success" align-center>
-                <el-step title="基本信息填写"></el-step>
-                <el-step title="管理员审核"></el-step>
-                <el-step title="申请成功"></el-step>
-            </el-steps>
-
-        </el-card>
-
         <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="100px" label-position="top">
-            <div v-if="this.activeIndex==1">
-                <!-- TODO: icon添加 -->
-                <el-form-item label="商品名称" prop="goodsname"> 
-                    <el-input 
-                        v-model="addForm.goodsname"
-                    ></el-input>
-                </el-form-item>
+            <!-- TODO: icon添加 -->
+            <el-form-item label="商品名称" prop="goodsname"> 
+                <el-input 
+                     v-model="addForm.goodsname"
+                ></el-input>
+            </el-form-item>
 
-                <el-form-item label="商品价格" prop="goodsPrice"> 
-                    <el-input 
-                        v-model="addForm.goodsPrice" 
-                    ></el-input>
-                    <span class="input-requirement">商品价格不能小于0，且保留2位小数 </span>
-                </el-form-item>
+            <el-form-item label="商品价格" prop="goodsPrice"> 
+                <el-input 
+                    v-model="addForm.goodsPrice" 
+                ></el-input>
+                <span class="input-requirement">商品价格不能小于0，且保留2位小数 </span>
+            </el-form-item>
 
-                <el-form-item label="初始库存" prop="goodsStock"> 
-                    <el-input 
-                        v-model="addForm.goodsStock" 
-                    ></el-input>
-                    <span class="input-requirement">初始库存为不小于0的整数 </span>
-                </el-form-item>
+            <el-form-item label="初始库存" prop="goodsStock"> 
+                <el-input 
+                    v-model="addForm.goodsStock" 
+                ></el-input>
+                <span class="input-requirement">初始库存为不小于0的整数 </span>
+            </el-form-item>
 
-                <!--TODO：重新分配类型，做成级联选择器-->
+            <!--TODO：重新分配类型，做成级联选择器-->
 
-                <el-form-item label="商品类别" prop="goodsCategory">
-                    <el-checkbox-group v-model="addForm.goodsCategory">
-                        <el-checkbox label="电脑数码" name="digitalproduct" />
-                        <el-checkbox label="家用电器" name="householdappliances" />
-                        <el-checkbox label="运动户外" name="sports" />
-                        <el-checkbox label="服饰鞋包" name="clothing" />
-                        <el-checkbox label="个护化妆" name="makeups" />
-                        <el-checkbox label="母婴用品" name="babyproduct" />
-                        <el-checkbox label="日用百货" name="dailynecessities" />
-                        <el-checkbox label="食品生鲜" name="food" />
-                        <el-checkbox label="配饰腕表" name="accessory" />
-                        <el-checkbox label="图书音像" name="book" />
-                        <el-checkbox label="玩模乐器" name="instrument" />
-                        <el-checkbox label="办公设备" name="officeequipment" />
-                        <el-checkbox label="家居家装" name="furniture" />
-                        <el-checkbox label="汽车消费" name="car" />
-                        <el-checkbox label="艺术收藏" name="art" />
-                        <el-checkbox label="其他" name="others" />
-                    </el-checkbox-group>
-                </el-form-item>
+            <el-form-item label="商品类别" prop="goodsCategory">
+                <el-checkbox-group v-model="addForm.goodsCategory">
+                    <el-checkbox label="电脑数码" />
+                    <el-checkbox label="家用电器" />
+                    <el-checkbox label="运动户外" />
+                    <el-checkbox label="服饰鞋包" />
+                    <el-checkbox label="个护化妆" />
+                    <el-checkbox label="母婴用品" />
+                    <el-checkbox label="日用百货" />
+                    <el-checkbox label="食品生鲜" />
+                    <el-checkbox label="配饰腕表" />
+                    <el-checkbox label="图书音像" />
+                    <el-checkbox label="玩模乐器" />
+                    <el-checkbox label="办公设备" />
+                    <el-checkbox label="家居家装" />
+                    <el-checkbox label="汽车消费" />
+                    <el-checkbox label="艺术收藏" />
+                    <el-checkbox label="其他" />
+                </el-checkbox-group>
+            </el-form-item>
 
-                <!--TODO: 简介框需要比其他框height更大-->
-                <el-form-item label="店铺简介" prop="introduction">
-                    <el-input 
-                        placeholder="店铺简介（不超过128个字）" 
-                        v-model="addForm.introduction" 
-                        autocomplete="off"
-                        Clearable
-                    ></el-input>
-                </el-form-item>
+            <!--TODO: 简介框需要比其他框height更大-->
+            <el-form-item label="店铺简介" prop="introduction">
+                <el-input 
+                    placeholder="店铺简介（不超过128个字）" 
+                    v-model="addForm.introduction" 
+                    autocomplete="off"
+                    Clearable
+                ></el-input>
+            </el-form-item>
 
 
-                <el-upload
-                    v-model:file-list="addForm.fileList"
-                    auto-upload:false
-                    list-type="picture-card"
-                    :on-remove="handleChange"
-                    ref="upload"
-                    :action="''"
-                    :auto-upload="false"
-                    :on-change="handleChange"
-                >
+            <el-upload
+                v-model:file-list="addForm.fileList"
+                auto-upload:false
+                list-type="picture-card"
+                :on-remove="handleChange"
+                ref="upload"
+                :action="''"
+                :auto-upload="false"
+                :on-change="handleChange"
+            >
                 <el-icon><Plus /></el-icon>
-                </el-upload>
-                
-                <el-button 
-                    type="primary" 
-                    @click="handleUpload('addForm')" 
-                >注&nbsp;&nbsp;册
-                </el-button>
-            </div>
+            </el-upload>
 
-            <div v-if="this.activeIndex==2">
-                管理员正在审核，请耐心等待...
-                <el-button 
-                    type="primary" 
-                    @click="prev()" 
-                >修改商品信息
-                </el-button>
-            </div>
+            <el-button 
+                v-if="isModified"
+                type="primary" 
+                @click="setGoodsInfo('addForm')" 
+            >提交
+            </el-button>
 
-            <div v-if="this.activeIndex==3">
-                <el-button 
-                    type="primary" 
-                    @click="prev()" 
-                >修改商品信息
-                </el-button>
-            </div>
+            <el-button 
+                v-else
+                type="primary" 
+                @click="handleUpload('addForm')" 
+            >注&nbsp;&nbsp;册
+            </el-button>
+
         </el-form>
-
-
     </div>
 </template>
  
 <script>
 import "../../../constant";
 export default {
+    props: {
+        goods: {
+            type: Object,
+            required: false,
+            default: ""
+        }
+    },
     data(){
         return {
-            activeIndex: 1,
+            isModified: 0,
             addForm: {
                 goodsname:'',
                 goodsPrice: 0,
@@ -162,34 +140,19 @@ export default {
     },
     methods:{
         getGoodsInfo() {
-            var localStorage = window.localStorage;
-            if(localStorage.getItem("goodsId")){
-                // 说明是从商品信息页面跳转而来
-                console.log("已经注册");
-                this.activeIndex = 2;
-                this.$axios.post("/getGoodsInfoById", {
-                    goodsId: localStorage.getItem("goodsId")
-                })
-                .then((res) => {
-                    console.log(res.data.data);
-                    const goods = res.data.data;
-                    this.addForm.goodsname = goods.goodsname;
-                    this.addForm.goodsPrice = goods.goodsPrice;
-                    this.addForm.goodsStock = goods.goodsStock;
-                    this.addForm.goodsId = goods.goodsId;
-                    this.addForm.goodsCategory = goods.goodsCategory,
-                    this.addForm.fileList = goods.fileList;
-                    // this.$message.success("图片上传成功");
-                    if(goods.status == 1) this.activeIndex=3;
-                    else this.activeIndex=2;
-                })
-              .catch((err) => {
-                console.log(err);
-                // this.$message.error("图片上传失败");
-              });
-            }
-            else {
-                console.log("未注册");
+            if(this.goods!="") {
+                console.log("商品信息修改");
+                this.isModified = 1;
+                this.addForm.goodsname = this.goods.goodsname;
+                this.addForm.goodsPrice = this.goods.goodsPrice;
+                this.addForm.goodsStock = this.goods.goodsStock;
+                this.addForm.goodsCategory = this.goods.goodsCategory;
+                this.addForm.introduction = this.goods.introduction;
+                this.addForm.fileList = this.goods.goodsAvatar;
+                // TODO：fileList类型转换
+
+                //goodsId = this.goods.goodsId
+                console.log(this.goods);
             }
         },
         goodsPriceValidator(rule, value, callback) {
@@ -241,9 +204,7 @@ export default {
                 // 先传输普通数据
                 var localStorage = window.localStorage;
                 this.$axios.post('/goodsRegister', {
-                    // 测试版本——shopname: "目标店铺名"
-                    // 正式版本——shopname: localStorage.getItem("shopname"),
-                    shopname: "SHOPNAME",
+                    shopname: localStorage.getItem("shopname"),
                     goodsCategory: this.addForm.goodsCategory,
                     introduction: this.addForm.introduction,
                     goodsname:this.addForm.goodsname,
@@ -264,7 +225,6 @@ export default {
                         .then((res) => {
                             console.log(res.data);
                             this.$message.success("提交成功！");
-                            this.next();
                         })
                         .catch((err) => {
                             console.log(err);
@@ -284,11 +244,51 @@ export default {
             }
           });
         },
-        next() {
-            this.activeIndex++;
-        },
-        prev() {
-            this.activeIndex--;
+        setGoodsInfo: function (addForm) {
+            this.$refs[addForm].validate((valid) => {
+            if (valid) {
+                // 先传输普通数据
+                var localStorage = window.localStorage;
+                this.$axios.post('/setGoodsInfo', {
+                    goodsId: this.goods.goodsId,
+                    goodsCategory: this.addForm.goodsCategory,
+                    introduction: this.addForm.introduction,
+                    goodsname:this.addForm.goodsname,
+                    goodsPrice: this.addForm.goodsPrice,
+                    goodsStock: this.addForm.goodsStock
+                })
+                .then(res => {
+                    if(res.data.state == window.SUCCESS){
+                        // 然后传输图片
+                        let formData = new FormData();
+                        formData.append("goodsId", res.data.data.goodsId);
+                        for (let i = 0; i < this.addForm.fileList.length; i++) {
+                            formData.append("file", this.addForm.fileList[i].raw);
+                        }
+                        this.$axios.post("/setGoodsPicture", formData, {
+                            headers: { "Content-Type": "multipart/form-data" },
+                        })
+                        .then((res) => {
+                            console.log(res.data);
+                            this.$message.success("提交成功！");
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            this.$message.error("提交失败，请重试");
+                        });
+                    }
+                    else {
+                        this.$message.error("提交失败，请重试");
+                    }
+                })
+                .catch(err => {
+                console.log(err);
+                })
+            } else {
+                console.log("校验失败");
+                return false;
+            }
+          });
         }
     }
 }

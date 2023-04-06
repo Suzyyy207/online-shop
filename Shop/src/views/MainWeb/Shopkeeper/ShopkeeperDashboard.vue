@@ -3,7 +3,8 @@
 import ShopRegister from '../../../components/MainWeb/Components/ShopRegister.vue'
 import MyShopInfo from '../../../components/MainWeb/Components/MyShopInfo.vue'
 import Nav from '../../../components/Public/Nav/ShopkeeperNav.vue'
-import WrapperGoods from '../../../components/Dashboard/Wrapper/WrapperGoods.vue'
+import Goods4Shopkeeper from '../../DashBoard/Goods/Goods4Shopkeeper.vue'
+import SearchTop from '../../../components/Dashboard/Goods/SearchG.vue'
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 
@@ -19,7 +20,8 @@ import { RouterLink, RouterView } from 'vue-router'
             </el-tab-pane>
 
             <el-tab-pane class="etb" label="商品信息">
-                <WrapperGoods class="cont" />
+                <!--WrapperGoods class="cont" /-->
+                <Goods4Shopkeeper/>
             </el-tab-pane>
 
             <el-tab-pane class="etb" label="店铺流水"></el-tab-pane>
@@ -32,13 +34,14 @@ import { RouterLink, RouterView } from 'vue-router'
 <script>
 import "../../../constant.js";
 import { interceptor, shopkeeperInterceptor } from "../../../interceptor";
+import Goods4Shopkeepper from '../../DashBoard/Goods/Goods4Shopkeeper.vue'
 export default {
-    props: ['shop_id'],
+    props: ["shop_id"],
     beforeRouteLeave(to, from, next) {
         var localStorage = window.localStorage;
-        localStorage.removeItem('toModify');
+        localStorage.removeItem("toModify");
         console.log("删除");
-        next()
+        next();
     },
     data() {
         return {
@@ -56,9 +59,9 @@ export default {
                 is_admitted: "",
                 avatar: ""
             }
-        }
+        };
     },
-    created (){
+    created() {
         interceptor(this);
         shopkeeperInterceptor(this);
         this.getMyShopInfo();
@@ -68,13 +71,12 @@ export default {
         // 根据当前username取店铺信息
         getMyShopInfo() {
             var localStorage = window.localStorage;
-
-            this.$axios.post('/getShopInfoByUsername', {
+            this.$axios.post("/getShopInfoByUsername", {
                 username: localStorage.getItem("username")
             })
-            .then(res => {
+                .then(res => {
                 // 如果用户已经注册过，则在localStorage中储存此商户的shopname，便于后续在数据库中的操作
-                if(res.data.state == window.SUCCESS) {
+                if (res.data.state == window.SUCCESS) {
                     this.isregistered = 1;
                     this.shop = res.data.data;
                     var localStorage = window.localStorage;
@@ -84,16 +86,15 @@ export default {
                 else {
                     this.isregistered = 0;
                 }
-            })
+            });
         },
-        getShopAvatar: function() {
+        getShopAvatar: function () {
             var localStorage = window.localStorage;
-
-            this.$axios.post('/getShopAvatarByShopname', {
+            this.$axios.post("/getShopAvatarByShopname", {
                 shopname: localStorage.getItem("shopname")
             })
-            .then(res => {
-                if(res.data.state==window.SUCCESS) {
+                .then(res => {
+                if (res.data.state == window.SUCCESS) {
                     console.log("有头像");
                     this.$message.success("收到反馈（根据是否显示图片判断文件传输是否成功）");
                     this.shop.avatar = "data:image/jpeg;base64," + res.data.avatar;
@@ -101,18 +102,20 @@ export default {
                 else {
                     console.log("没有头像");
                 }
-            })
+            });
         },
         // 如果用户需要修改注册信息重新提交注册，也需要导入ShopRegister页面   
         toModify() {
             var localStorage = window.localStorage;
-            if(localStorage.getItem('toModify')) {
+            if (localStorage.getItem("toModify")) {
                 this.isToModify = 1;
-            } else {
+            }
+            else {
                 this.isToModify = 0;
             }
         }
-    }
+    },
+    components: { Goods4Shopkeepper }
 }
 </script>
 

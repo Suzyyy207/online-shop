@@ -1,7 +1,7 @@
 <!--商家修改信息主页面-->
 <script setup>
 import Nav from '../../components/Public/Nav/UserNav.vue'
-import UserInfo  from '../../components/Dashboard/User/UserInfo.vue';
+import UserInfo  from '../../components/Dashboard/User/SetUserInfo.vue';
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 
