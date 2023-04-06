@@ -1,7 +1,7 @@
 <!--商家上架申请记录中的商品展示组件-->
 <script setup>
 import { reactive, ref } from 'vue'
-import GoodsInfo from "./GoodsInfo.vue"
+import GoodsInfo4Shopkeeper from "./GoodsInfo4Shopkeeper.vue"
 const dialogTableVisible = ref(false)
 </script>
 
@@ -18,20 +18,9 @@ const dialogTableVisible = ref(false)
         <p>点击查看详细信息</p>
       </el-button>
 
-      <el-dialog  class="information" v-model="dialogTableVisible" title="商品信息">
-        <GoodsInfo :goods="this.goods"/>
-        <!--img v-if="!goods.avatar" class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
-        <img v-else :src="'data:image/jpeg;base64,'+goods.avatar">
-        <p>商品名：{{ goods.goodsname }}</p>
-        <p>商品类型：{{ goods.goodsCategory }}</p>
-        <p>商品价格：{{ goods.goodsPrice }}</p>
-        <p>商品库存：{{ goods.goodsStocks }}</p>
-        <p>商品简介：{{ goods.introduction }}</p>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button type="primary">点击修改注册信息</el-button>
-          </span>
-        </template-->
+      <el-dialog class="information" v-model="dialogTableVisible" title="商品信息">
+        <GoodsInfo4Shopkeeper v-if="showType==1" :goods="this.goods"/>
+        <GoodsInfo4Manager v-else :goods="this.goods"/>
       </el-dialog>
           
     </a>
@@ -39,13 +28,26 @@ const dialogTableVisible = ref(false)
 </template>
 
 <script>
+import "../../../constant"
+import GoodsInfo4Manager from './GoodsInfo4Manager.vue';
 export default {
-  props: {
-    goods: {
-      type: Object,
-      required: true
+    data() {
+        return {
+            showType: localStorage.getItem("usertype")
+        };
+    },
+    props: {
+        goods: {
+            type: Object,
+            required: true
+        }
+    },
+    created() {
+    },
+    methods: {},
+    components: { 
+      GoodsInfo4Manager
     }
-  }
 }
 </script>
 

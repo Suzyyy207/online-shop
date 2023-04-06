@@ -34,7 +34,7 @@ export default {
             goods:{
                 goodsname: "goodsname",
                 goodsId: "id",
-                status: 2,
+                status: 1,
                 router: this.$router,
                 toGoodsRegister: this.toGoodsRegister
             }
