@@ -276,11 +276,11 @@
             if(valid) {
                 var localStorage = window.localStorage;
                 this.$axios.post('/setUserInfo', {
-                    username: localStorage.getItem("username"),
+                    oldusername: localStorage.getItem("username"),
                     newusername: this.form.username,
                     newphone: this.form.phone,
-                    idnum: this.form.idnum,
-                    newemail: this.form.email
+                    newemail: this.form.email,
+                    newpassword: this.form.password
                 })
                 .then(res => {
                     if(res.data.state == window.SUCCESS){
