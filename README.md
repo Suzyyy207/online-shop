@@ -111,6 +111,7 @@
 | getEditedGoodsByShopname | POST | 获得modifyStatus=3的所有商品信息 |
 | getEditDeniedGoodsByShopname | POST | 获得modifyStatus=2的所有商品信息 |
 | getInvalidGoodsByShopname | POST | 获得status=3的所有商品信息 |
+| getValidGoodsByShopname | POST | 获得所有正在售卖的商品信息status=1 |
 
 *以上函数共享以下参数*
 
