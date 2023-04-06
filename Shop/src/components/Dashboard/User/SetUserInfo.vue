@@ -276,6 +276,7 @@
             if(valid) {
                 var localStorage = window.localStorage;
                 this.$axios.post('/setUserInfo', {
+                    // idnum不传输
                     oldusername: localStorage.getItem("username"),
                     newusername: this.form.username,
                     newphone: this.form.phone,
