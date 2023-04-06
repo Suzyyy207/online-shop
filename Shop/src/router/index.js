@@ -36,7 +36,7 @@ const router = createRouter({
     {
       path: '/ShopDashboard',
       name: 'ShopDashboard',
-      component: () => import('../views/MainWeb/Shopkeeper/ShopkeeperDashboard.vue')
+      component: () => import('../views/MainWeb/Shopkeeper/ShopDashboard.vue')
     },
     {
       path: '/ShopDashboardBlank',

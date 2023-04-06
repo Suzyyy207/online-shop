@@ -30,7 +30,7 @@ export default {
             goods:{
                 goodsname: "goodsname",
                 goodsId: "id",
-                status: 1,
+                status: 0,
                 goodsPrice:100,
                 goodsStock:20,
                 introduction:"intro",

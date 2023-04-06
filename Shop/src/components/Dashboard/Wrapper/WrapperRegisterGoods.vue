@@ -1,4 +1,3 @@
-<!--已申请未批复+已申请被拒绝-->
 <script setup>
     import GoodsShow from '../Goods/GoodsShow.vue'
 </script>
@@ -27,6 +26,9 @@
 </template>
 <script>
 export default {
+    components: {
+        GoodsShow
+    },
     data() {
         return {
             registeringGoodsList: [],
@@ -36,8 +38,8 @@ export default {
                 goodsname: "goodsname",
                 goodsId: "id",
                 registerStatus: 0,
-                modifyStatus: 0,
-                status: 0,
+                modifyStatus: 2,
+                status: 2,
                 goodsPrice:100,
                 goodsStock:20,
                 introduction:"intro",

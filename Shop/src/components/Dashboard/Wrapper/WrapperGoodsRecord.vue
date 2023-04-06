@@ -17,6 +17,9 @@
 </template>
 <script>
 export default {
-    
+    components: {
+        WrapperRegisterGoods,
+        WrapperEditGoods
+    }
 }
 </script>
