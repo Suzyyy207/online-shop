@@ -131,6 +131,7 @@ public class UserController {
         result.setData(image);
         return result;
     }
+
 }
 
 

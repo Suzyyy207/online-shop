@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.lang.annotation.Inherited;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
@@ -36,6 +37,16 @@ public class User extends BaseEntity implements Serializable {
     private String salt;
 
     private byte[] avatar;
+
+    private BigDecimal privateAccount;
+
+    public BigDecimal getPrivateAccount() {
+        return privateAccount;
+    }
+
+    public void setPrivateAccount(BigDecimal privateAccount) {
+        this.privateAccount = privateAccount;
+    }
 
     public byte[] getAvatar() {
         return avatar;
