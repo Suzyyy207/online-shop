@@ -137,6 +137,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 section{
     margin: 0;
