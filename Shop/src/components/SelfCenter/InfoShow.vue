@@ -68,6 +68,7 @@ export default {
             this.form.idnum = user.idnum;
             this.form.email = user.email;
             this.form.password = user.password;
+            this.form.account = user.account;
         })
       },
       getUserAvatar: function() {
