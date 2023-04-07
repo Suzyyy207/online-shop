@@ -28,7 +28,7 @@
         <div class="goodsInfo">
           <div class="goodsList">
             <h3 class="goodsTitle">已购买</h3>
-            <!-- 购物记录将在此处通过 JavaScript 动态加载 -->
+            <!-- 购物记录将在此处通过 JavaScript 动态加载  -->
           </div>
         </div>
 
