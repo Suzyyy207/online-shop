@@ -11,7 +11,7 @@
 | 参数名   | 含义   | 类型&备注 |
 | -------- | ------ | --------- |
 | username |  |           |
-| credit | 充值金额 |   float        |
+| credit | 充值金额 |  float  |
 
 参数列表 back->front
 
