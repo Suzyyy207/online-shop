@@ -20,7 +20,7 @@
             <p>个人账户余额: <num class="account">{{ this.form.account }}</num></p>
             <div class="charge">
                 <el-input class="chargeInput" v-model='credit'></el-input>
-                <el-button @click="userRecharge">充值</el-button>
+                <el-button @click="recharge">充值</el-button>
             </div>
         </div>
 
@@ -90,7 +90,7 @@ export default {
             }
         })
       },
-      userRecharge: function() {
+      recharge: function() {
         var localStorage = window.localStorage;
         console.log(this.credit);
         if (isNaN(Number(this.credit))|this.credit<0){
@@ -102,8 +102,10 @@ export default {
             const match = credit.match(regex);
             const formattedValue = match ? match[0] : '0';
             this.credit = parseFloat(formattedValue);
-            this.$axios.post('/userRecharge', {
+            this.$axios.post('/recharge', {
                 username: localStorage.getItem("username"),
+                // accountType为1表示为个人账户充值
+                accountType: 1,
                 credit: this.credit
             })
             .then(res => {
