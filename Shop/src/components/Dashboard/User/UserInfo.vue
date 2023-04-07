@@ -117,9 +117,15 @@
   <script>
   import "../../../constant.js";
   import { ElMessage, ElMessageBox } from 'element-plus';
+<<<<<<< HEAD:Shop/src/components/MainWeb/Components/UserInfo.vue
+  import ValidCode from "./ValidCode.vue";
+  import { validatePhone, validateUsername, validateIdnum, validateEmail, validatePassword } from "../../../validate";
+  import { objectExpression } from "@babel/types";
+=======
   import { validatePhone, validateUsername, validateIdnum, validateEmail, validatePassword } from "../../../validate";
   import ValidCode from "../../MainWeb/Components/ValidCode.vue";
   import UserAvatar from "./UserAvatar.vue";
+>>>>>>> d4be2944a3ae92aa72288a643d356aa24580d997:Shop/src/components/Dashboard/User/UserInfo.vue
   
   const passwordValidator = (rule, value, callback) => {
   if (!value) {
@@ -206,6 +212,21 @@
       };
       return {
         form: {
+<<<<<<< HEAD:Shop/src/components/MainWeb/Components/UserInfo.vue
+          username: "",
+          phone: "",
+          idnum: "",
+          email: "",
+          validCode: "",
+          password: "",
+          password2: ""
+        },
+        user: {
+          oldusername: "",
+          oldphone: "",
+          oldemail: "",
+          oldpassword: ""
+=======
           username: "username",
           phone: "phone",
           idnum: "440404200404040404",
@@ -213,6 +234,7 @@
           validCode: "",
           password: "",
           password2: ""
+>>>>>>> d4be2944a3ae92aa72288a643d356aa24580d997:Shop/src/components/Dashboard/User/UserInfo.vue
         },
         validCode: "",
         isModified: false,
@@ -272,6 +294,13 @@
             this.form.idnum = user.idnum;
             this.form.email = user.email;
             this.form.password = user.password;
+<<<<<<< HEAD:Shop/src/components/MainWeb/Components/UserInfo.vue
+            this.user.oldusername = user.username;
+            this.user.oldphone= user.phone;
+            this.user.oldemail= user.email;
+            this.user.oldpassword= user.password;
+=======
+>>>>>>> d4be2944a3ae92aa72288a643d356aa24580d997:Shop/src/components/Dashboard/User/UserInfo.vue
         })
       },
       reset: function () {
@@ -300,6 +329,10 @@
         this.$refs[form].validate((valid=>{
             if(valid) {
                 var localStorage = window.localStorage;
+                if(this.user.oldusername == this.form.username && this.user.oldphone == this.form.phone && this.user.newemail == this.form.email && this.user.password == this.user.newpassword) {
+                  this.$message.error("您没有修改任何信息，请修改信息后重新提交");
+                  return;
+                }
                 this.$axios.post('/setUserInfo', {
                     username: localStorage.getItem("username"),
                     newusername: this.form.username,
@@ -312,8 +345,7 @@
                         this.$message.sucess(res.data.message);
                         var localStorage = window.localStorage;
                         localStorage.setItem("username", this.form.username);
-                        // TODO：跳转到一个空白页面后跳转回来
-                        this.$router.push({name:'UserInfoBlank'});
+                        this.$router.go(0);
                     } else {
                         const error_msg = res.data.message.replace(/&$/, '');
                         const msg = error_msg.split("&");
