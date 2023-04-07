@@ -137,15 +137,15 @@ public class UserController {
     public JsonResult userRecharge(@RequestBody Map<String,Object> map){
         String username = (String)map.get("username");
         BigDecimal credit = new BigDecimal((float) map.get("credit"));
+        int accountType = (int)map.get("accountType");
         JsonResult result = new JsonResult<>();
         //异常情况 credit太大或太小
         BigDecimal zero = new BigDecimal(0);
         if(credit.compareTo(zero) == -1){   //-1, 0, or 1 = less than, equal to, or greater than .
             result.setState(NO);
         }else{
-            result = userService.userRecharge(username, credit);
+            result = userService.userRecharge(username, credit, accountType);
         }
-
         return result;
     }
 }

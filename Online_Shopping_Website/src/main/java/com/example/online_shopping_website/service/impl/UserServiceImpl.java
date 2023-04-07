@@ -160,8 +160,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonResult userRecharge(String username, BigDecimal credit){
+    public JsonResult userRecharge(String username, BigDecimal credit, int accountType){
         JsonResult result = new JsonResult<>(YES);
+        //先确定用户类型
+
         //取出原来的账户余额，在业务层相加，然后放回
         BigDecimal originalAccount = userMapper.GetAccountByUsername(username);
         BigDecimal newAccount = originalAccount.add(credit);
