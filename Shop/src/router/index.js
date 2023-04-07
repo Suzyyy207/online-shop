@@ -99,9 +99,9 @@ const router = createRouter({
       component: () => import('../components/Dashboard/Wrapper/WrapperGoods.vue')
     },
     {
-      path: '/UserInfo',
-      name: 'UserInfo',
-      component: () => import('../components/Dashboard/User/setUserInfo.vue')
+      path: '/SetUserInfo',
+      name: 'SetUserInfo',
+      component: () => import('../components/Dashboard/User/SetUserInfo.vue')
     }
     
   ]

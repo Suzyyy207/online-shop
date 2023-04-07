@@ -116,10 +116,9 @@
   <script>
   import "../../../constant.js";
   import { ElMessage, ElMessageBox } from 'element-plus';
-  import { validatePhone, validateUsername, validateIdnum, validateEmail, validatePassword } from "../../../validate";
+  import { validatePhone, validateUsername, validateEmail, validatePassword } from "../../../validate";
   import ValidCode from "../../MainWeb/Components/ValidCode.vue";
   import UserAvatar from "./UserAvatar.vue";
-import { objectExpression } from "@babel/types";
   
   const passwordValidator = (rule, value, callback) => {
   if (!value) {
@@ -167,7 +166,7 @@ import { objectExpression } from "@babel/types";
   };
   
   export default {
-    name: "UserInfo",
+    name: "SetUserInfo",
     components:{
       ValidCode,
       UserAvatar
