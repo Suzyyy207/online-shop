@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.util.Base64;
 
@@ -156,5 +157,17 @@ public class UserServiceImpl implements IUserService {
         if(imageData==null) return null;
         String base64Image = Base64.getEncoder().encodeToString(imageData);
         return base64Image;
+    }
+
+    @Override
+    public JsonResult userRecharge(String username, BigDecimal credit, int accountType){
+        JsonResult result = new JsonResult<>(YES);
+        //先确定用户类型
+
+        //取出原来的账户余额，在业务层相加，然后放回
+        BigDecimal originalAccount = userMapper.GetAccountByUsername(username);
+        BigDecimal newAccount = originalAccount.add(credit);
+        userMapper.RechargeAccountByUsername(username,newAccount);
+        return result;
     }
 }

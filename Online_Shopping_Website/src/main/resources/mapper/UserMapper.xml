@@ -67,6 +67,9 @@
         UPDATE users SET email = #{Newemail} WHERE username = #{oldusername}
     </update>
 
+    <select id="GetAccountByUsername">
+        SELECT
+    </select>
 </mapper>
 
 

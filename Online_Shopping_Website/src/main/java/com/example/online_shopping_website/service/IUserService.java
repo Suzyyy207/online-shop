@@ -4,6 +4,7 @@ import com.example.online_shopping_website.entity.User;
 import com.example.online_shopping_website.util.JsonResult;
 
 import java.io.File;
+import java.math.BigDecimal;
 
 public interface IUserService {
     /**
@@ -34,4 +35,5 @@ public interface IUserService {
 
     void UpdateAvatar(String username,byte[] avatar);
     String GetAvatar(String username);
+    JsonResult userRecharge(String username, BigDecimal credit,int accountType);
 }
