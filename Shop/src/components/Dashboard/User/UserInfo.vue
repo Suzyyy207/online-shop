@@ -125,7 +125,11 @@
   import { validatePhone, validateUsername, validateIdnum, validateEmail, validatePassword } from "../../../validate";
   import ValidCode from "../../MainWeb/Components/ValidCode.vue";
   import UserAvatar from "./UserAvatar.vue";
+<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
 >>>>>>> d4be2944a3ae92aa72288a643d356aa24580d997:Shop/src/components/Dashboard/User/UserInfo.vue
+========
+import { objectExpression } from "@babel/types";
+>>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
   
   const passwordValidator = (rule, value, callback) => {
   if (!value) {
@@ -212,11 +216,15 @@
       };
       return {
         form: {
+<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
 <<<<<<< HEAD:Shop/src/components/MainWeb/Components/UserInfo.vue
+========
+>>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
           username: "",
           phone: "",
           idnum: "",
           email: "",
+<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
           validCode: "",
           password: "",
           password2: ""
@@ -231,10 +239,18 @@
           phone: "phone",
           idnum: "440404200404040404",
           email: "email",
+========
+>>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
           validCode: "",
           password: "",
           password2: ""
 >>>>>>> d4be2944a3ae92aa72288a643d356aa24580d997:Shop/src/components/Dashboard/User/UserInfo.vue
+        },
+        user: {
+          oldusername: "",
+          oldphone: "",
+          oldemail: "",
+          oldpassword: ""
         },
         validCode: "",
         isModified: false,
@@ -294,13 +310,19 @@
             this.form.idnum = user.idnum;
             this.form.email = user.email;
             this.form.password = user.password;
+<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
 <<<<<<< HEAD:Shop/src/components/MainWeb/Components/UserInfo.vue
+========
+>>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
             this.user.oldusername = user.username;
             this.user.oldphone= user.phone;
             this.user.oldemail= user.email;
             this.user.oldpassword= user.password;
+<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
 =======
 >>>>>>> d4be2944a3ae92aa72288a643d356aa24580d997:Shop/src/components/Dashboard/User/UserInfo.vue
+========
+>>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
         })
       },
       reset: function () {
@@ -334,7 +356,12 @@
                   return;
                 }
                 this.$axios.post('/setUserInfo', {
+<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
                     username: localStorage.getItem("username"),
+========
+                    // idnum不传输
+                    oldusername: localStorage.getItem("username"),
+>>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
                     newusername: this.form.username,
                     newphone: this.form.phone,
                     idnum: this.form.idnum,
