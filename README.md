@@ -11,7 +11,8 @@
 参数列表 front->back
 | 参数名   | 含义   | 类型&备注 |
 | -------- | ------ | --------- |
-| username |  |           |
+| username |  | String |
+| accountType | 账户类型 | INT 普通买家：1(只有一个账户)；商家：1(privateAccount个人账户) 2（shopAccount商店账户）管理员：1(profitAccount商城利润账户) 2(intermediaryAccount商城购物中间账户) |
 | credit | 充值金额 |  float  |
 
 参数列表 back->front
@@ -20,7 +21,7 @@
 | ------ | ------------ | ----------------- |
 | state  | 是否充值成功 | YES（0）和NO（1） |
 
-#### 测试：个人中心页面有充值按钮
+测试：个人中心页面有充值按钮
 
 ### 个人流水显示 getUserTransactions
 userTransaction类：表示用户的交易信息
