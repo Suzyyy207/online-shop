@@ -1,7 +1,6 @@
-<!--商家上架申请记录中的商品展示组件-->
+<!--管理员界面的商品展示组件-->
 <script setup>
 import { reactive, ref } from 'vue'
-import GoodsInfo4Shopkeeper from "./GoodsInfo4Shopkeeper.vue"
 const dialogTableVisible = ref(false)
 </script>
 
@@ -14,12 +13,27 @@ const dialogTableVisible = ref(false)
       <img v-else :src="'data:image/jpeg;base64,'+goods.avatar[0]">
 
       <p class="goodsName">商品名：{{ goods.goodsname }}</p>
+      <p v-if="goods.status==0">申请类型：注册申请</p>
+      <p v-if="goods.status==2">申请类型：修改申请</p>
       <el-button class="btnReg"  @click="dialogTableVisible = true">
         <p>点击查看详细信息</p>
       </el-button>
 
       <el-dialog class="information" v-model="dialogTableVisible" title="商品信息">
-        <GoodsInfo4Shopkeeper :goods="this.goods"/>
+        <p>所属店铺：{{ goods.shopname }}</p>
+        <GoodsDetail :goods="this.goods"></GoodsDetail>
+
+        <el-button 
+            type="primary" 
+            @click="this.goodsApplicationApproved()" 
+        >批准
+        </el-button>
+
+        <el-button 
+            type="primary" 
+            @click="this.goodsApplicationRejected()" 
+        >拒绝
+        </el-button>
       </el-dialog>
           
     </a>
@@ -28,6 +42,7 @@ const dialogTableVisible = ref(false)
 
 <script>
 import "../../../constant"
+import GoodsDetail from './GoodsDetail.vue';
 export default {
     props: {
         goods: {
@@ -36,7 +51,42 @@ export default {
         }
     },
     components: { 
-      GoodsInfo4Shopkeeper
+      GoodsDetail
+    },
+    methods: {
+        goodsApplicationApproved() {
+            this.$axios.post('/goodsApplicationApproved',{
+                goodsId: this.goods.goodsId,
+                approveType: this.goods.status
+            }).then(res => {
+                    if(res.data.state == window.SUCCESS){
+                       this.$message.success(res.data.message);
+                    }
+                    else {
+                        this.$message.error("操作失败，请重试");
+                    }
+                })
+            .catch(err => {
+                console.log(err);
+            })
+        },
+        goodsApplicationRejected() {
+            this.$axios.post('/goodsApplicationRejected',{
+                goodsId: this.goods.goodsId,
+                cancelType: this.goods.status
+            }).then(res => {
+                    if(res.data.state == window.SUCCESS){
+                       this.$message.success(res.data.message);
+                       this.$router.go(0);
+                    }
+                    else {
+                        this.$message.error("操作失败，请重试");
+                    }
+                })
+            .catch(err => {
+                console.log(err);
+            })
+        }
     }
 }
 </script>

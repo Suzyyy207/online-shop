@@ -36,7 +36,7 @@ const router = createRouter({
     {
       path: '/ShopDashboard',
       name: 'ShopDashboard',
-      component: () => import('../views/MainWeb/Shopkeeper/ShopkeeperDashboard.vue')
+      component: () => import('../views/MainWeb/Shopkeeper/ShopDashboard.vue')
     },
     {
       path: '/ShopDashboardBlank',
@@ -61,11 +61,7 @@ const router = createRouter({
 
     // 下述页面是为了调试方便的组件路径，最终需要封装到views中，因此不需要额外添加拦截器
     // 提交项目前保证无组件路径
-    {
-      path: '/UserDashboard',
-      name: 'UserDashboard',
-      component: () => import('../views/Dashboard/User/UserDashboard.vue')
-    },
+    
     {
       path: '/GoodsRegister',
       name: 'GoodsRegister',
@@ -101,6 +97,11 @@ const router = createRouter({
       path: '/WrapperGoods',
       name: 'WrapperGoods',
       component: () => import('../components/Dashboard/Wrapper/WrapperGoods.vue')
+    },
+    {
+      path: '/SetUserInfo',
+      name: 'SetUserInfo',
+      component: () => import('../components/Dashboard/User/SetUserInfo.vue')
     }
     
   ]

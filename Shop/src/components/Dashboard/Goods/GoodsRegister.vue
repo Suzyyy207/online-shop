@@ -251,7 +251,7 @@ export default {
                 var localStorage = window.localStorage;
                 this.$axios.post('/setGoodsInfo', {
                     goodsId: this.goods.goodsId,
-                    goodsCategory: this.addForm.goodsCategory,
+                    goodsCategory: this.addForm.goodsCategory.join(';'),
                     introduction: this.addForm.introduction,
                     goodsname:this.addForm.goodsname,
                     goodsPrice: this.addForm.goodsPrice,

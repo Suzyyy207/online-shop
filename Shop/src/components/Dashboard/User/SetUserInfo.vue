@@ -1,6 +1,7 @@
 <!--个人信息界面-->
 
 <template>
+  
     <el-form :model="form" :rules="rules" ref="form" class="form">
         <UserAvatar class="imgU"></UserAvatar>
         <el-row>
@@ -13,7 +14,6 @@
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'User' : ''"
-                    :disabled="usernameDisabled"
                 >
                 </el-input>
             </el-form-item>
@@ -27,7 +27,6 @@
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'Iphone' : ''"
-                    :disabled="phoneDisabled"
                 ></el-input>
             </el-form-item>
           </el-col>
@@ -37,13 +36,13 @@
           <el-col :span="12">
             <el-form-item label="身份证号" prop="idnum">
                 <el-input 
-                    placeholder="请输入电话号码"
+                    placeholder="请输入身份证号"
                     type="idnum" 
                     v-model="form.idnum" 
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'Postcard' : ''"
-                    :disabled="idnumDisabled"
+                    :disabled="true"
                 ></el-input>
             </el-form-item>
           </el-col>
@@ -57,7 +56,6 @@
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'Message' : ''"
-                    :disabled="emailDisabled"
                 ></el-input>
             </el-form-item>
           </el-col>
@@ -74,13 +72,12 @@
                 autocomplete="off"
                 clearable
                 :prefix-icon=" 1 ? 'Key' : ''"
-                :disabled="passwordDisabled"
               ></el-input>
             </el-form-item>
           </el-col>
           
           <el-col :span="12">
-            <el-form-item label="确认密码" prop="password2" v-if="isModified">
+            <el-form-item label="确认密码" prop="password2">
               <el-input
                   placeholder="确认密码"
                   show-password
@@ -96,7 +93,7 @@
         </el-row>
 
 
-        <el-row v-if="isModified">
+        <el-row>
             <el-form-item prop="validCode" >
                 <el-input 
                 v-model="form.validCode" 
@@ -108,8 +105,10 @@
         </el-row>
   
         <el-form-item>
-            <el-button class="btn" v-if="isModified" type="primary" @click="setUserInfo('form')">提交</el-button>
-            <el-button class="btn" v-else type="primary" @click="toModify">修改</el-button>
+            <el-button class="btn"  type="primary" @click="setUserInfo('form')">提交</el-button>
+        </el-form-item>
+        <el-form-item>
+            <el-button class="btn"  type="primary" @click="cancel">取消</el-button>
         </el-form-item>
     </el-form>
   </template>
@@ -117,19 +116,9 @@
   <script>
   import "../../../constant.js";
   import { ElMessage, ElMessageBox } from 'element-plus';
-<<<<<<< HEAD:Shop/src/components/MainWeb/Components/UserInfo.vue
-  import ValidCode from "./ValidCode.vue";
-  import { validatePhone, validateUsername, validateIdnum, validateEmail, validatePassword } from "../../../validate";
-  import { objectExpression } from "@babel/types";
-=======
-  import { validatePhone, validateUsername, validateIdnum, validateEmail, validatePassword } from "../../../validate";
+  import { validatePhone, validateUsername, validateEmail, validatePassword } from "../../../validate";
   import ValidCode from "../../MainWeb/Components/ValidCode.vue";
   import UserAvatar from "./UserAvatar.vue";
-<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
->>>>>>> d4be2944a3ae92aa72288a643d356aa24580d997:Shop/src/components/Dashboard/User/UserInfo.vue
-========
-import { objectExpression } from "@babel/types";
->>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
   
   const passwordValidator = (rule, value, callback) => {
   if (!value) {
@@ -164,17 +153,6 @@ import { objectExpression } from "@babel/types";
       }
     }
   };
-  const idnumValidator = (rule, value, callback) => {
-    if (!value) {
-      return callback(new Error("身份证号不能为空"));
-    } else {
-      if (validateIdnum(value)) {
-        callback();
-      } else {
-        return callback(new Error('身份证号格式不正确'))
-      }
-    }
-  };
   const emailValidator = (rule, value, callback) => {
     if (!value) {
       return callback(new Error("邮箱不能为空"));
@@ -188,7 +166,7 @@ import { objectExpression } from "@babel/types";
   };
   
   export default {
-    name: "userInfo",
+    name: "SetUserInfo",
     components:{
       ValidCode,
       UserAvatar
@@ -216,35 +194,13 @@ import { objectExpression } from "@babel/types";
       };
       return {
         form: {
-<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
-<<<<<<< HEAD:Shop/src/components/MainWeb/Components/UserInfo.vue
-========
->>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
           username: "",
           phone: "",
           idnum: "",
           email: "",
-<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
           validCode: "",
           password: "",
           password2: ""
-        },
-        user: {
-          oldusername: "",
-          oldphone: "",
-          oldemail: "",
-          oldpassword: ""
-=======
-          username: "username",
-          phone: "phone",
-          idnum: "440404200404040404",
-          email: "email",
-========
->>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
-          validCode: "",
-          password: "",
-          password2: ""
->>>>>>> d4be2944a3ae92aa72288a643d356aa24580d997:Shop/src/components/Dashboard/User/UserInfo.vue
         },
         user: {
           oldusername: "",
@@ -253,12 +209,7 @@ import { objectExpression } from "@babel/types";
           oldpassword: ""
         },
         validCode: "",
-        isModified: false,
-        usernameDisabled: true,
-        phoneDisabled: true,
         idnumDisabled: true,
-        emailDisabled: true,
-        passwordDisabled: true,
         rules: {
           username: [
             { required: true, validator: usernameValidator, trigger: 'change' },
@@ -267,10 +218,6 @@ import { objectExpression } from "@babel/types";
           phone: [
             { required: true, validator: phoneValidator, trigger: "change" },
             { required: true, validator: phoneValidator, trigger: "blur" }
-          ],
-          idnum: [
-            { required: true, validator: idnumValidator, trigger: 'change' },
-            { required: true, validator: idnumValidator, trigger: 'blur' }
           ],
           email: [
             { required: true, validator: emailValidator, trigger: 'change' },
@@ -298,31 +245,18 @@ import { objectExpression } from "@babel/types";
       getUserInfo() {
         var localStorage = window.localStorage;
         this.$axios.post('/getUserInfo', {
-            // 测试版本：自定义username
-            // username: "username"
-            // 正式版本
             username: localStorage.getItem("username")
         })
         .then(res => {
             const user = res.data.data;
-            /*this.form.gender = user.gender;*/
             this.form.phone = user.phone;
             this.form.idnum = user.idnum;
             this.form.email = user.email;
             this.form.password = user.password;
-<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
-<<<<<<< HEAD:Shop/src/components/MainWeb/Components/UserInfo.vue
-========
->>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
             this.user.oldusername = user.username;
             this.user.oldphone= user.phone;
             this.user.oldemail= user.email;
             this.user.oldpassword= user.password;
-<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
-=======
->>>>>>> d4be2944a3ae92aa72288a643d356aa24580d997:Shop/src/components/Dashboard/User/UserInfo.vue
-========
->>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
         })
       },
       reset: function () {
@@ -356,16 +290,12 @@ import { objectExpression } from "@babel/types";
                   return;
                 }
                 this.$axios.post('/setUserInfo', {
-<<<<<<<< HEAD:Shop/src/components/Dashboard/User/UserInfo.vue
-                    username: localStorage.getItem("username"),
-========
                     // idnum不传输
                     oldusername: localStorage.getItem("username"),
->>>>>>>> f73f6812aea1afd840c3ac2e95cc5af056875917:Shop/src/components/Dashboard/User/SetUserInfo.vue
                     newusername: this.form.username,
                     newphone: this.form.phone,
-                    idnum: this.form.idnum,
-                    newemail: this.form.email
+                    newemail: this.form.email,
+                    newpassword: this.form.password
                 })
                 .then(res => {
                     if(res.data.state == window.SUCCESS){
@@ -386,13 +316,6 @@ import { objectExpression } from "@babel/types";
             }
         }))
       },
-     toModify() {
-        this.usernameDisabled = false;
-        this.phoneDisabled = false;
-        this.emailDisabled = false;
-        this.passwordDisabled = false;
-        this.isModified = true;
-     },
      createValidCode(data){
         this.validCode = data;
     },
@@ -401,6 +324,9 @@ import { objectExpression } from "@babel/types";
         this.form.usertype="";
         this.form.agreement="";
      },
+     cancel() {
+        this.$router.go(0);
+     }
     }
   }
   </script>

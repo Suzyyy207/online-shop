@@ -4,5 +4,6 @@
 /design.md
 
 .DS_Store
+./Shop/node_modules
 
 /Online_Shopping_Website/src/main/resources/application.properties

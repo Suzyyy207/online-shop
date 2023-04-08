@@ -1,9 +1,4 @@
 <!--此组件为商家看到的本店铺的注册信息展示-->
-<script setup>
-import { reactive, ref } from 'vue'
-const dialogTableVisible = ref(false)
-</script>
-
 <template>
   <div class="wrap">
     <div :shop="shop" class="shop">
@@ -35,61 +30,118 @@ const dialogTableVisible = ref(false)
               <p>注册日期：{{shop.date}}</p>
             </el-col>
             <el-col :span="12">
-              <p v-if="shop.is_admitted == 1">注册状态：已注册</p>
-              <p v-if="shop.is_admitted == 0">注册状态：审核中</p>
-              <p v-if="shop.is_admitted == 2">注册状态：已拒绝。请修改店铺信息后重新提交申请</p>
+              <p v-if="shop.is_admitted == 1">店铺状态：已注册</p>
+              <p v-if="shop.is_admitted == 0">店铺状态：管理员审核注册申请中</p>
+              <p v-if="shop.is_admitted == 2">店铺状态：注册申请已拒绝，请修改店铺信息后重新提交注册申请</p>
+              <p v-if="shop.is_admitted == 3">店铺状态：管理员审核删除申请中</p>
+              <p v-if="shop.is_admitted == 4">店铺状态：删除申请已拒绝，请撤销申请并修改信息后重新提交申请</p>
             </el-col>
           </el-row>
         </div>
 
         <div class="info4">
-          <el-form-item class="re_btn">
+          <!-- 撤销注册申请：注册申请中 -->
+          <el-form-item v-if="shop.is_admitted==0||shop.is_admitted==2" class="re_btn">
+              <el-button type="submit" @click="dialogTableVisible = true">撤销注册申请</el-button>
+              <el-dialog v-model="dialogTableVisible" title="撤销注册申请确认">
+                <p>你确定要撤销注册店铺申请吗？</p>
+                <div class="deleteConfirmBtn">
+                  <el-button class="delete" type="primary" @click="cancelRegister">确认</el-button>
+                  <el-button class="delete" @click="dialogTableVisible = false">我再想想</el-button>
+                </div>
+              </el-dialog>
+            </el-form-item>
+
+          <!-- 修改注册信息btn：注册申请中/正常状态/注册失败 -->
+          <el-form-item v-if="shop.is_admitted<3" class="re_btn">
             <el-button type="submit" @click="modifyShopInfo">修改注册信息</el-button>
           </el-form-item>
-          <el-form-item class="re_btn">
-            <!--点击后弹框，需要根据弹框中点击的内容决定是否给后端发送删除申请-->
-            <el-button type="submit" @click="dialogTableVisible = true">申请删除</el-button>
-            <el-dialog  class="deleteConfirm" v-model="dialogTableVisible" title="删除确认">
-              <p>你确定要删除你的店铺吗？删除后，店铺下的商品也将被清除！</p>
-              <div class="deleteConfirmBtn">
-                <!--弹框的按钮-->
-                <el-button class="delete" type="primary" @click="deleteConfirmed">确认</el-button>
-                <el-button class="delete" @click="deleteCancel">我再想想</el-button>
-              </div>
-            </el-dialog>
-          </el-form-item>
 
-          <el-form-item class="re_btn">
-            <!--配置路由，跳转到Dashbord下的Goods页面-->
-            <el-button>商品管理</el-button>
-          </el-form-item>
-        </div>
+          <!-- 删除店铺btn：正常状态 -->
+          <el-form-item v-if="shop.is_admitted==1" class="re_btn">
+              <!--点击后弹框，需要根据弹框中点击的内容决定是否给后端发送删除申请-->
+              <el-button type="submit" @click="dialogTableVisible = true">申请删除</el-button>
+              <el-dialog  class="deleteConfirm" v-model="dialogTableVisible" title="删除确认">
+                <p>你确定要删除你的店铺吗？删除后，店铺下的商品也将被清除！</p>
+                <div class="deleteConfirmBtn">
+                  <el-button class="delete" type="primary" @click="unregisterConfirmed">确认</el-button>
+                  <el-button class="delete" @click="dialogTableVisible = false">我再想想</el-button>
+                </div>
+              </el-dialog>
+            </el-form-item>
+
+            <!-- 撤销删除申请btn：删除申请审核中/拒绝删除申请 -->
+            <el-form-item v-if="shop.is_admitted==3||shop.is_admitted==4" class="re_btn">
+              <el-button type="submit" @click="dialogTableVisible = true">撤销删除申请</el-button>
+              <el-dialog v-model="dialogTableVisible" title="撤销删除申请确认">
+                <p>你确定要撤销删除店铺申请吗？</p>
+                <div class="deleteConfirmBtn">
+                  <el-button class="delete" type="primary" @click="cancelRegister">确认</el-button>
+                  <el-button class="delete" @click="dialogTableVisible = false">我再想想</el-button>
+                </div>
+              </el-dialog>
+            </el-form-item>
+          </div>
+
+        
+
     </div>
   </div>
 </template>
   
-  <script>
-  export default {
-    props: {
-      shop: {
-        type: Object,
-        required: true
-      }
-    },
-    methods: {
-      modifyShopInfo() {
-        var localStorage = window.localStorage;
-        localStorage.setItem("toModify",1);
-        localStorage.setItem("shopname",this.shop.shopname);
-        localStorage.setItem("goodstype",this.shop.goodstype);
-        localStorage.setItem("introduction",this.shop.introduction);
-        localStorage.setItem("address",this.shop.address);
-        localStorage.setItem("idnum",this.shop.idnum);
-        localStorage.setItem("capital",this.shop.capital);
-        localStorage.setItem("date",this.shop.date);
-        this.$router.go(0);
-      }
+<script>
+import '../../../constant'
+export default {
+  props: {
+    shop: {
+      type: Object,
+      required: true
     }
+  },
+  data() {
+    return {
+      dialogTableVisible: false
+    }
+  },
+  methods: {
+    modifyShopInfo() {
+      var localStorage = window.localStorage;
+      localStorage.setItem("toModify",1);
+      localStorage.setItem("shopname",this.shop.shopname);
+      localStorage.setItem("goodstype",this.shop.goodstype);
+      localStorage.setItem("introduction",this.shop.introduction);
+      localStorage.setItem("address",this.shop.address);
+      localStorage.setItem("idnum",this.shop.idnum);
+      localStorage.setItem("capital",this.shop.capital);
+      localStorage.setItem("date",this.shop.date);
+      this.$router.go(0);
+    },
+    unregisterConfirmed() {
+      this.$axios.post('/shopUnregister',{
+        shopname: localStorage.getItem("shopname")
+      }).then(res=>{
+        if(res.data.state==window.SUCCESS){
+          this.$message.success(res.data.message);
+        } else {
+          this.$message.error(res.data.message);
+        }
+      })
+      this.dialogTableVisible = false;
+    },
+    cancelRegister() {
+      this.$axios.post('/cancelRegister',{
+        shopname: localStorage.getItem("shopname"),
+        cancelType: this.shop.is_admitted
+      }).then(res=>{
+        if(res.data.state==window.SUCCESS){
+          this.$message.success(res.data.message);
+        } else {
+          this.$message.error(res.data.message);
+        }
+      })
+      this.$router.go(0);
+    }
+  }
 }
 </script>
 
