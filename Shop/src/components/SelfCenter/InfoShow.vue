@@ -48,12 +48,12 @@ export default {
     methods: {
       getUserInfo() {
         var localStorage = window.localStorage;
+        console.log("created!");
         this.$axios.post('/getUserInfo', {
             username: localStorage.getItem("username")
         })
         .then(res => {
             const user = res.data.data;
-            /*this.form.gender = user.gender;*/
             this.form.username = user.username;
             this.form.phone = user.phone;
             this.form.idnum = user.idnum;
@@ -96,7 +96,7 @@ export default {
                 username: localStorage.getItem("username"),
                 // accountType为1表示为个人账户充值
                 accountType: 1,
-                credit: this.credit
+                credit: String(this.credit)
             })
             .then(res => {
                 if(res.data.state==window.SUCCESS) {
