@@ -12,7 +12,7 @@ import SetUserInfo from '../../components/Dashboard/User/SetUserInfo.vue'
     <Nav></Nav>
     <section>
         <div v-if="state==0">
-            <h1 class="title">Self Center</h1>
+            <h1 class="titleShow">Self Center</h1>
             <div class="main">
                 <div class="infoShow">
                     <InfoShow></InfoShow>
@@ -22,7 +22,8 @@ import SetUserInfo from '../../components/Dashboard/User/SetUserInfo.vue'
             </div>
         </div>
         <div v-if="state==1">
-            <SetUserInfo/>
+            <h1 class="titleChange">个人信息修改</h1>
+            <SetUserInfo class="changeWrap"/>
         </div>
         
     </section>
@@ -41,7 +42,7 @@ export default{
 </script>
 
 <style scoped>
-.title{
+.titleShow{
     font-family: 'Courier New', Courier, monospace;
     margin: 30px 0 30px 50px;
     color:#81A18B;
@@ -73,5 +74,23 @@ export default{
     display: block;
     width: 80%; /* 设置宽度 */
     margin: 0 auto 20px auto; /* 居中 */
+}
+
+.titleChange{
+  text-align: center;
+  font-family:"Lucida Console", "Courier New", monospace;
+  font-size: 40px;
+  margin:40px;
+  font-weight: bolder;
+  color:#81A18B;
+}
+.changeWrap{
+    padding: 20px 30px 10px 30px;
+    margin: 20px 180px 40px 180px;
+    background-color: #fff;
+    border-radius: 15px;
+    color: #303133;
+    border: 2px solid #ebeef5;
+    gap:20px;
 }
 </style>

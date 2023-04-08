@@ -94,7 +94,7 @@
 
 
         <el-row>
-            <el-form-item prop="validCode" >
+            <el-form-item label="验证码" prop="validCode" >
                 <el-input 
                 v-model="form.validCode" 
                 placeholder="验证码"
@@ -104,12 +104,18 @@
             <ValidCode @input="createValidCode" />
         </el-row>
   
-        <el-form-item>
-            <el-button class="btn"  type="primary" @click="setUserInfo('form')">提交</el-button>
-        </el-form-item>
-        <el-form-item>
-            <el-button class="btn"  type="primary" @click="cancel">取消</el-button>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item>
+                <el-button class="btn"  type="primary" @click="setUserInfo('form')">提交</el-button>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item>
+                <el-button class="btn"  type="primary" @click="cancel">取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
     </el-form>
   </template>
   
