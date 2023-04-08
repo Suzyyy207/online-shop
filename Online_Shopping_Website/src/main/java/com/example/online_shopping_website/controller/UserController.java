@@ -133,10 +133,10 @@ public class UserController {
         return result;
     }
 
-    @RequestMapping("/api/userRecharge")
-    public JsonResult userRecharge(@RequestBody Map<String,Object> map){
+    @RequestMapping("/api/recharge")
+    public JsonResult recharge(@RequestBody Map<String,Object> map){
         String username = (String)map.get("username");
-        BigDecimal credit = new BigDecimal((float) map.get("credit"));
+        BigDecimal credit = new BigDecimal((String) map.get("credit"));
         int accountType = (int)map.get("accountType");
         JsonResult result = new JsonResult<>();
         //异常情况 credit太大或太小
@@ -144,7 +144,7 @@ public class UserController {
         if(credit.compareTo(zero) == -1){   //-1, 0, or 1 = less than, equal to, or greater than .
             result.setState(NO);
         }else{
-            result = userService.userRecharge(username, credit, accountType);
+            result = userService.recharge(username, credit, accountType);
         }
         return result;
     }

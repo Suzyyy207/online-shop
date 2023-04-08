@@ -5,7 +5,7 @@ public class AccountType {
 
     public static final int shopAccount = 2;
 
-    public static final int profitAccount = 1;
+    public static final int profitAccount = 3;
 
-    public static final int intermediaryAccount = 1;
+    public static final int intermediaryAccount = 4;
 }

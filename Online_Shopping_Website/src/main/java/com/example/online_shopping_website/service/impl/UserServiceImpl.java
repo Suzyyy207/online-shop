@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.sql.Blob;
 import java.util.Base64;
 
+import static com.example.online_shopping_website.entity.AccountType.*;
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
 
@@ -160,14 +161,35 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public JsonResult userRecharge(String username, BigDecimal credit, int accountType){
+    public JsonResult recharge(String username, BigDecimal credit, int accountType){
         JsonResult result = new JsonResult<>(YES);
-        //先确定用户类型
+        //根据accountType判断,取出原来的账户余额，在业务层相加，然后放回
+        switch (accountType){
+            case privateAccount:
+                BigDecimal originalPrivateAccount = userMapper.GetPrivateAccountByUsername(username);
+                BigDecimal newPrivateAccount = originalPrivateAccount.add(credit);
+                userMapper.RechargePrivateAccountByUsername(username,newPrivateAccount);
+                break;
+            case shopAccount:
+                BigDecimal originalShopAccount = userMapper.GetShopAccountByUsername(username);
+                BigDecimal newShopAccount = originalShopAccount.add(credit);
+                userMapper.RechargeShopAccountByUsername(username,newShopAccount);
+                break;
+            case profitAccount:
+                BigDecimal originalProfitAccount = userMapper.GetProfitAccountByUsername(username);
+                BigDecimal newProfitAccount = originalProfitAccount.add(credit);
+                userMapper.RechargeProfitAccountByUsername(username,newProfitAccount);
+                break;
+            case intermediaryAccount:
+                BigDecimal originalIntermediaryAccount = userMapper.GetIntermediaryAccountByUsername(username);
+                BigDecimal newIntermediaryAccount = originalIntermediaryAccount.add(credit);
+                userMapper.RechargeIntermediaryAccountByUsername(username,newIntermediaryAccount);
+                break;
+            default:
+                result.setState(NO);
+                System.out.println("账户类型异常");
+        }
 
-        //取出原来的账户余额，在业务层相加，然后放回
-        BigDecimal originalAccount = userMapper.GetAccountByUsername(username);
-        BigDecimal newAccount = originalAccount.add(credit);
-        userMapper.RechargeAccountByUsername(username,newAccount);
         return result;
     }
 }

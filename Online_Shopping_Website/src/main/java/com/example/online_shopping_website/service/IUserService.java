@@ -35,5 +35,5 @@ public interface IUserService {
 
     void UpdateAvatar(String username,byte[] avatar);
     String GetAvatar(String username);
-    JsonResult userRecharge(String username, BigDecimal credit,int accountType);
+    JsonResult recharge(String username, BigDecimal credit,int accountType);
 }

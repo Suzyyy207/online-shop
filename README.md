@@ -4,16 +4,16 @@
 ### 个人账户展示
 #### 测试：个人中心可以正确显示账户余额（具体参数传递方法见/getUserInfo）
 ### 个人账户充值
-| 接口名      | 方法 | 功能         |
-| ----------- | ---- | ------------ |
-| recharge | POST | 个人账户充值 |
+| 接口名   | 地址          | 方法 | 功能     |
+| -------- | ------------- | ---- | -------- |
+| recharge | /api/recharge | POST | 账户充值 |
 
 参数列表 front->back
 | 参数名   | 含义   | 类型&备注 |
 | -------- | ------ | --------- |
 | username |  | String |
-| accountType | 账户类型 | INT 普通买家：1(只有一个账户)；商家：1(privateAccount个人账户) 2（shopAccount商店账户）管理员：1(profitAccount商城利润账户) 2(intermediaryAccount商城购物中间账户) |
-| credit | 充值金额 |  float  |
+| accountType | 账户类型 | INT 普通买家：1(privateAccount个人账户)；商家：1(个人账户) 2（shopAccount商店账户）管理员：3(profitAccount商城利润账户) 4(intermediaryAccount商城购物中间账户) |
+| credit | 充值金额 |  **String**（转换不会丢失精度）  |
 
 参数列表 back->front
 

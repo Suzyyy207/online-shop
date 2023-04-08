@@ -95,8 +95,20 @@ public interface UserMapper {
      */
     int UpdateNewemailByOldusername(String oldusername, String Newemail);
 
-    int RechargeAccountByUsername(String username, BigDecimal credit);
+    BigDecimal GetPrivateAccountByUsername(String username);
 
-    BigDecimal GetAccountByUsername(String username);
+    BigDecimal GetShopAccountByUsername(String username);
+
+    BigDecimal GetProfitAccountByUsername(String username);
+
+    BigDecimal GetIntermediaryAccountByUsername(String username);
+
+    int RechargePrivateAccountByUsername(String username, BigDecimal credit);
+
+    int RechargeShopAccountByUsername(String username, BigDecimal credit);
+
+    int RechargeProfitAccountByUsername(String username, BigDecimal credit);
+
+    int RechargeIntermediaryAccountByUsername(String username, BigDecimal credit);
 }
 
