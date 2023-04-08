@@ -109,7 +109,7 @@ public class UserController {
 //            return result;
 //    }
     @PostMapping("/api/setUserAvatar")
-    public JsonResult<User> uploadAvatar(@RequestParam("avatar") MultipartFile avatarFile, @RequestParam("username") String username) throws IOException {
+    public JsonResult<User> uploadAvatar(MultipartFile avatarFile, String username) throws IOException {
         User user = new User();
         byte[] avatarData = avatarFile.getBytes();
         userService.UpdateAvatar(username,avatarData);

@@ -1,6 +1,7 @@
 package com.example.online_shopping_website.service.impl;
 
 import com.example.online_shopping_website.entity.Good;
+import com.example.online_shopping_website.entity.Shop;
 import com.example.online_shopping_website.mapper.GoodMapper;
 import com.example.online_shopping_website.mapper.ShopMapper;
 import com.example.online_shopping_website.service.IGoodService;
@@ -9,10 +10,14 @@ import com.example.online_shopping_website.service.ex.ShopnameDuplicateException
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GoodServiceImpl implements IGoodService {
     @Autowired
     private GoodMapper goodMapper;
+    @Autowired
+    private ShopMapper shopMapper;
     @Override
     public Good goodsRegister(String introduction,String goodsname,float goodsPrice,int goodsStock,String goodsCategory,String shopname){
         Good good = goodMapper.SearchByGoodname(goodsname);
@@ -47,5 +52,23 @@ public class GoodServiceImpl implements IGoodService {
             goodMapper.UpdateGoodsStock(goodsId,goodsStock);
         }
     }
-
+    @Override
+    public void picsUpload(int goodsId,byte[] pic){
+        goodMapper.picInsert(goodsId,pic);
+    }
+    @Override
+    public List<Good> searchByStatus(String shopname, int status){
+        List<Good> goodslist = goodMapper.SearchByStatus(shopname,status);
+        return goodslist;
+    }
+    @Override
+    public List<Good> searchByRegisterStatus(String shopname, int registerStatus){
+        List<Good> goodslist = goodMapper.SearchByStatus(shopname,registerStatus);
+        return goodslist;
+    }
+    @Override
+    public List<Good> searchByModifyStatus(String shopname, int modifyStatus){
+        List<Good> goodslist = goodMapper.SearchByStatus(shopname,modifyStatus);
+        return goodslist;
+    }
 }

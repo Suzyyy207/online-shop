@@ -49,4 +49,19 @@
     <update id="UpdateModifyStatus">
         UPDATE goods SET modifyStatus = #{modifyStatus} WHERE goodsId = #{goodsId}
     </update>
+    <insert id="picInsert" >
+        INSERT INTO goodspics
+        (goodsId,pic)
+        VALUES
+            (#{goodsId}, #{pic});
+    </insert>
+    <select id="SearchByStatus" resultMap="GoodMap">
+        SELECT * FROM goods where status = #{status} and shopname = #{shopname}
+    </select>
+    <select id="SearchByRegisterStatus" resultMap="GoodMap">
+        SELECT * FROM goods where registerStatus = #{registerStatus} and shopname = #{shopname}
+    </select>
+    <select id="SearchByModifyStatus" resultMap="GoodMap">
+        SELECT * FROM goods where modifyStatus = #{modifyStatus} and shopname = #{shopname}
+    </select>
 </mapper>
