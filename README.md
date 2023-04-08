@@ -112,7 +112,7 @@
 - 管理员拒绝删除申请
   -- 商店状态恢复
   -- TODO：后续需要类似“收件箱”功能使得用户收到管理员的批复
-商户提交删除信息后，需要管理员进行审核
+  商户提交删除信息后，需要管理员进行审核
 
 #### 店铺删除shopUnregister
 | 接口名      | 方法 | 功能         |
@@ -162,9 +162,10 @@
 | state  | 撤销是否提交成功 | YES（0）和NO（1） |
 | message   | 提示信息       | 撤销成功<br>撤销失败 |
 
-## 个人账户系统 userAccount
+## 个人账户系统 
 ### 个人账户展示
-#### 测试：个人中心可以正确显示账户余额（具体参数传递方法见/getUserInfo）
+测试：个人中心可以正确显示账户余额（具体参数传递方法见/getUserInfo）
+
 ### 个人账户充值
 | 接口名      | 方法 | 功能         |
 | ----------- | ---- | ------------ |
@@ -175,7 +176,7 @@
 | -------- | ------ | --------- |
 | username |  | String |
 | accountType | 账户类型 | INT 普通买家：1(只有一个账户)；商家：1(privateAccount个人账户) 2（shopAccount商店账户）管理员：1(profitAccount商城利润账户) 2(intermediaryAccount商城购物中间账户) |
-| credit | 充值金额 |  float  |
+| credit | 充值金额 | String(转换不会丢失精度)                                     |
 
 参数列表 back->front
 
@@ -188,6 +189,7 @@
 ### 个人流水显示 getUserTransactions
 userTransaction类：表示用户的交易信息
 PS.这里只涉及前端需要的数据，后端/数据库具体怎么设计你们自己决定就可以
+
 | 参数名 | 含义         | 类型&备注         |
 | ------ | ------------ | ----------------- |
 | date   | 交易日期       |  |
@@ -447,8 +449,8 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 | 参数名 | 含义         | 类型&备注         |
 | ------ | ------------ | ----------------- |
 | state  | 传输是否成功 | YES（0）和NO（1） |
-| data   | user类       | phone;idnum;email;account（个人账户余额） |
-测试：登录->个人中心，可以显示包括头像在内的用户信息
+| data   | user类       | phone;idnum;email; privateAccount（个人账户余额） |
+|测试：登录->个人中心，可以显示包括头像在内的用户信息|||
 
 ### 个人信息修改
 
