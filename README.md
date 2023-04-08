@@ -1,7 +1,7 @@
 # lab_3
 
-## 管理员批复
-### 店铺申请批复 adminApproval
+## 管理员批复 adminApproval
+### 店铺申请批复 
 店铺注册申请/店铺修改申请（待完善）/店铺删除申请批复都用同一接口，就是原来的registerApproved和registerRejected，在此处更名为shopApplicationApproved和shopApplicationRejected
 
 #### 同意申请 shopApplicationApproved
