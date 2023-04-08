@@ -1,6 +1,7 @@
 package com.example.online_shopping_website.service.impl;
 
 import com.example.online_shopping_website.entity.Transaction;
+import com.example.online_shopping_website.entity.constant.AccountType;
 import com.example.online_shopping_website.mapper.TransactionMapper;
 import com.example.online_shopping_website.mapper.UserMapper;
 import com.example.online_shopping_website.entity.User;
@@ -16,6 +17,7 @@ import java.util.Base64;
 import java.util.List;
 
 import static com.example.online_shopping_website.entity.constant.AccountType.*;
+import static com.example.online_shopping_website.entity.constant.UserType.*;
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
 
@@ -163,27 +165,35 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonResult recharge(String username, BigDecimal credit, int accountType){
         JsonResult result = new JsonResult<>(YES);
-        //根据accountType判断,取出原来的账户余额，在业务层相加，然后放回
-        switch (accountType){
-            case privateAccount:
+        int userType = userMapper.GetUserTypeByUsername(username);
+        //根据userType和accountType来判断，取出原来的账户余额，在业务层相加，然后放回
+        switch (userType){
+            case admin:
+                if(accountType == profitAccount){
+                    BigDecimal originalProfitAccount = userMapper.GetPrivateAccountByUsername(username);
+                    BigDecimal newProfitAccount = originalProfitAccount.add(credit);
+                    userMapper.RechargeProfitAccountByUsername(username,newProfitAccount);
+                } else if (accountType == intermediaryAccount) {
+                    BigDecimal originalIntermediaryAccount = userMapper.GetIntermediaryAccountByUsername(username);
+                    BigDecimal newIntermediaryAccount = originalIntermediaryAccount.add(credit);
+                    userMapper.RechargeIntermediaryAccountByUsername(username,newIntermediaryAccount);
+                }
+                break;
+            case merchant:
+                if(accountType == privateAccount){
+                    BigDecimal originalPrivateAccount = userMapper.GetPrivateAccountByUsername(username);
+                    BigDecimal newPriavteAccount = originalPrivateAccount.add(credit);
+                    userMapper.RechargeProfitAccountByUsername(username,newPriavteAccount);
+                } else if (accountType == shopAccount) {
+                    BigDecimal originalShopAccount = userMapper.GetShopAccountByUsername(username);
+                    BigDecimal newShopAccount = originalShopAccount.add(credit);
+                    userMapper.RechargeShopAccountByUsername(username,newShopAccount);
+                }
+                break;
+            case buyer:
                 BigDecimal originalPrivateAccount = userMapper.GetPrivateAccountByUsername(username);
-                BigDecimal newPrivateAccount = originalPrivateAccount.add(credit);
-                userMapper.RechargePrivateAccountByUsername(username,newPrivateAccount);
-                break;
-            case shopAccount:
-                BigDecimal originalShopAccount = userMapper.GetShopAccountByUsername(username);
-                BigDecimal newShopAccount = originalShopAccount.add(credit);
-                userMapper.RechargeShopAccountByUsername(username,newShopAccount);
-                break;
-            case profitAccount:
-                BigDecimal originalProfitAccount = userMapper.GetProfitAccountByUsername(username);
-                BigDecimal newProfitAccount = originalProfitAccount.add(credit);
-                userMapper.RechargeProfitAccountByUsername(username,newProfitAccount);
-                break;
-            case intermediaryAccount:
-                BigDecimal originalIntermediaryAccount = userMapper.GetIntermediaryAccountByUsername(username);
-                BigDecimal newIntermediaryAccount = originalIntermediaryAccount.add(credit);
-                userMapper.RechargeIntermediaryAccountByUsername(username,newIntermediaryAccount);
+                BigDecimal newPriavteAccount = originalPrivateAccount.add(credit);
+                userMapper.RechargeProfitAccountByUsername(username,newPriavteAccount);
                 break;
             default:
                 result.setState(NO);
@@ -192,6 +202,8 @@ public class UserServiceImpl implements IUserService {
 
         return result;
     }
+
+
     @Override
     public JsonResult getUserTransactions(String username){
         JsonResult result = new JsonResult<>(YES);

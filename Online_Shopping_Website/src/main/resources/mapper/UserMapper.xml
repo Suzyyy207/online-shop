@@ -7,11 +7,11 @@
 
     <resultMap id="UserMap" type="com.example.online_shopping_website.entity.User">
         <result column="uid" property="uid"/>
+        <result column="usertype" property="usertype"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
         <result column="shopid" property="shopid"/>
         <result column="phone" property="phone"/>
-        <result column="email" property="email"/>
         <result column="email" property="email"/>
         <result column="idnum" property="idnum"/>
         <result column="is_delete" property="is_delete"/>
@@ -68,6 +68,10 @@
     <update id="UpdateNewemailByOldusername">
         UPDATE users SET email = #{Newemail} WHERE username = #{oldusername}
     </update>
+
+    <select id="GetUserTypeByUsername">
+        SELECT usertype FROM users WHERE username = #{username}
+    </select>
 
     <select id="GetPrivateAccountByUsername" resultType="java.math.BigDecimal">
         SELECT privateAccount FROM users WHERE username = #{username}

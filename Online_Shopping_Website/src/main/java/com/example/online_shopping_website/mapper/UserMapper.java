@@ -95,6 +95,8 @@ public interface UserMapper {
      */
     int UpdateNewemailByOldusername(String oldusername, String Newemail);
 
+    int GetUserTypeByUsername(String username);
+
     BigDecimal GetPrivateAccountByUsername(String username);
 
     BigDecimal GetShopAccountByUsername(String username);
