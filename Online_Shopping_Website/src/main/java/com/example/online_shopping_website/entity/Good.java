@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Good {
+    int goodId;
+    String goodsname;
+    double goodsPrice;
     int status;
     int registerStatus;
     int modifyStatus;
-    int goodsId;
-    String introduction;
-    String goodsname;
-    float goodsPrice;
-    int goodsStock;
     String goodsCategory;
+    int goodsStock;
+    String introduction;
     String shopname;
 }

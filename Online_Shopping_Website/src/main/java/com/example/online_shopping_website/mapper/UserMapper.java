@@ -3,7 +3,6 @@ package com.example.online_shopping_website.mapper;
 import com.example.online_shopping_website.entity.User;
 import org.apache.ibatis.annotations.Param;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 //@Mapper
@@ -94,9 +93,5 @@ public interface UserMapper {
      * @return 受影响的行数
      */
     int UpdateNewemailByOldusername(String oldusername, String Newemail);
-
-    int RechargeAccountByUsername(String username, BigDecimal credit);
-
-    BigDecimal GetAccountByUsername(String username);
 }
 

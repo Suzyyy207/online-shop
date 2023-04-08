@@ -125,20 +125,33 @@
               </el-col>
             </el-row>
 
-            <el-row>
-              <el-col v-if="!this.form.idnumDisabled" :span="12">
+            <el-row v-if="!this.form.idnumDisabled">
+              <el-col :span="12">
                 <el-form-item class="btn">
                   <el-button type="primary" @click="register('form')">注&nbsp;&nbsp;册</el-button>
-                </el-form-item>
-              </el-col>
-              <el-col v-else :span="12">
-                <el-form-item class="btn">
-                  <el-button type="primary" @click="modifyShopInfo('form')">提交</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item class="btn">
                   <el-button type="primary" @click="reset">重&nbsp;&nbsp;置</el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            
+            <el-row v-else>
+              <el-col :span="8">
+                <el-form-item class="btn">
+                  <el-button type="primary" @click="modifyShopInfo('form')">提交</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item class="btn">
+                  <el-button type="primary" @click="reset">重&nbsp;&nbsp;置</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col v-if="toModify" :span="8">
+                <el-form-item class="btn">
+                  <el-button type="primary" @click="cancel">返&nbsp;&nbsp;回</el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -153,6 +166,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { validateIdnum } from "../../../validate";
 import "../../../constant.js";
 import ValidCode from "./ValidCode.vue";
+import ShopDashboard from '../../../views/MainWeb/Shopkeeper/ShopDashboard.vue';
 const idnumValidator = (rule, value, callback) => {
   if (!value) {
     return callback(new Error("身份证号不能为空"));
@@ -202,6 +216,7 @@ const idnumValidator = (rule, value, callback) => {
           validCode: "",
           idnumDisabled: false
         },
+        toModify: false,
         validCode: "",
         rules: {
           shopname: [
@@ -251,6 +266,7 @@ const idnumValidator = (rule, value, callback) => {
         this.form.idnumDisabled = true;
         this.form.capital = localStorage.getItem('capital');
         this.form.date = new Date(localStorage.getItem('date'));
+        this.toModify = true;
       },
       register: function (form) {
         // 首先判断需要填写的信息是否已经完全填入
@@ -395,6 +411,10 @@ const idnumValidator = (rule, value, callback) => {
       },
       addZero(value) {
         return value < 10 ? `0${value}` : value; // 如果数字小于10，就在前面加0，比如9月就变成09月
+      },
+      cancel() {
+        localStorage.removeItem("toModify");
+        this.$router.go(0)
       }
     }
 }
@@ -403,7 +423,9 @@ const idnumValidator = (rule, value, callback) => {
 
 
 <style scoped>
-
+.register{
+  margin:40px 60px;
+}
 
 .register h1{
   text-align: center;

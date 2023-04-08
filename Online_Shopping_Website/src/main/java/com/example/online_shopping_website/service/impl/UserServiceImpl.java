@@ -14,7 +14,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Blob;
 import java.util.Base64;
 
@@ -99,9 +98,10 @@ public class UserServiceImpl implements IUserService {
     public JsonResult<User> getUserInfo(String username){
 
         JsonResult<User> getUserInfoResult = new JsonResult<>(YES);
-//        if(!InfoVerification.isUsernameValid(username)){
-//            throw new UsernameInvalidException("用户名异常");
-//        }
+        if(!InfoVerification.isUsernameValid(username)){
+            throw new UsernameInvalidException("用户名异常");
+        }
+
         User user = userMapper.SearchByUsername(username);
         if(user == null){
             throw new UserNotFoundException("用户未找到");
@@ -119,8 +119,7 @@ public class UserServiceImpl implements IUserService {
         if(SearchByOldusernameResult == null){
             throw new UserNotFoundException("旧用户名不存在");
         }   //有可能只修改其中一项
-        //两种情况1. 不修改（相应项为空） 2.已存在
-        if( !NewUserInfo.getUsername().isEmpty() && userMapper.SearchByUsername(NewUserInfo.getUsername()) != null ){
+        if( !NewUserInfo.getUsername().isEmpty() && userMapper.SearchByUsername(NewUserInfo.getUsername()) != null){
             throw new UsernameDuplicatedException("新用户名已存在");
         }if( !NewUserInfo.getPhone().isEmpty() && userMapper.SearchByPhone(NewUserInfo.getPhone()) != null){
             throw new PhoneDuplicatedException("新电话号码已存在");
@@ -128,19 +127,26 @@ public class UserServiceImpl implements IUserService {
             throw new EmailDuplicatedException("新电子邮箱已存在");
         }
 
-
+        int row_real = 0;
+        int row_assumption = 0;
+        if(!NewUserInfo.getUsername().isEmpty()){
+            row_real += userMapper.UpdateNewusernameByOldusername(oldUsername, NewUserInfo.getUsername());
+            row_assumption += 1;
+        }
         if(!NewUserInfo.getPassword().isEmpty()){
-            userMapper.UpdateNewpasswordByOldusername(oldUsername, NewUserInfo.getPassword());
+            row_real += userMapper.UpdateNewpasswordByOldusername(oldUsername, NewUserInfo.getPassword());
+            row_assumption += 1;
         }
         if(!NewUserInfo.getPhone().isEmpty()){
-             userMapper.UpdateNewphoneByOldusername(oldUsername, NewUserInfo.getPhone());
+            row_real += userMapper.UpdateNewphoneByOldusername(oldUsername, NewUserInfo.getPhone());
+            row_assumption += 1;
         }
         if(!NewUserInfo.getEmail().isEmpty()){
-            userMapper.UpdateNewemailByOldusername(oldUsername, NewUserInfo.getEmail());
+            row_real += userMapper.UpdateNewemailByOldusername(oldUsername, NewUserInfo.getEmail());
+            row_assumption += 1;
         }
-        if(!NewUserInfo.getUsername().isEmpty()){   //用户名修改要留到最后
-            userMapper.UpdateNewusernameByOldusername(oldUsername, NewUserInfo.getUsername());
-        }
+        if(row_real != row_assumption)
+            throw new SQLException("插入数据库出现未知错误");
 
         setUserInfoResult.setMessage("修改成功");
         return setUserInfoResult;
@@ -157,17 +163,5 @@ public class UserServiceImpl implements IUserService {
         if(imageData==null) return null;
         String base64Image = Base64.getEncoder().encodeToString(imageData);
         return base64Image;
-    }
-
-    @Override
-    public JsonResult userRecharge(String username, BigDecimal credit, int accountType){
-        JsonResult result = new JsonResult<>(YES);
-        //先确定用户类型
-
-        //取出原来的账户余额，在业务层相加，然后放回
-        BigDecimal originalAccount = userMapper.GetAccountByUsername(username);
-        BigDecimal newAccount = originalAccount.add(credit);
-        userMapper.RechargeAccountByUsername(username,newAccount);
-        return result;
     }
 }

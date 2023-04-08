@@ -1,24 +1,38 @@
 <!--此组件为将所有向管理员发送注册请求的店铺打包，并排版为管理员友好的UI界面-->
 <script setup>
-import RegisterShow from '../Components/RegisterShow.vue'
-import ShopShow from '../Components/ShopShow.vue'
+import ShopShow4Manager from '../Components/ShopShow4Manager.vue'
+import GoodsShow4Manager from '../../Dashboard/Goods/GoodsShow4Manager.vue';
 </script>
 
 <template>
     <div class="wrap" >
-        <h1>待处理</h1>
-        <div class="shops">
-            <div class="shops_ing" v-for="shop in registeringShopList" :key="shop.id">
-                <RegisterShow :shop="shop"/>
-            </div>
-        </div>
-        <div class="ge"></div>
-        <h1>已处理</h1>
-        <div class="shops">
-            <div class="shops_ed" v-for="shop in registeredShopList" :key="shop.id">
-                <ShopShow :shop="shop"/>
-            </div>
-        </div>
+        <el-tabs tab-position="left">
+            <el-tab-pane label="店铺管理">
+                <h1>待处理</h1>
+                    <div class="shops">
+                        <div class="shops_ing" v-for="shop in registeringShopList" :key="shop.id">
+                            <ShopShow4Manager :shop="shop"/>
+                        </div>
+                    </div>
+                <div class="ge"></div>
+                <h1>已处理</h1>
+                <div class="shops">
+                    <div class="shops_ed" v-for="shop in registeredShopList" :key="shop.id">
+                        <ShopShow4Manager :shop="shop"/>
+                    </div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="商品管理">
+                <h1>待处理</h1>
+                    <div>
+                        <div v-for="goods in approvingGoodsList" :key="goods.goodsId">
+                            <GoodsShow4Manager :goods="goods"/>
+                        </div>
+                    </div>
+
+            </el-tab-pane>
+        </el-tabs>
+        
     </div>
 </template>
 
@@ -28,12 +42,24 @@ export default {
     data() {
         return {
             registeredShopList: [],
-            registeringShopList: []
+            registeringShopList: [],
+            approvingGoodsList: [],
+            goods:{
+                goodsname: "goodsname",
+                goodsId: "id",
+                shopname: "shopname",
+                status: 0,
+                goodsPrice:100,
+                goodsStock:20,
+                introduction:"intro",
+                goodsCategory: ['电脑数码', '家用电器']
+            }
         }
     },
     created (){
-        this.getRegisteredShop()
-        this.getRegisteringShop() 
+        this.getRegisteredShop();
+        this.getRegisteringShop() ;
+        this.getApprovingGoods();
     },
     methods: {
         getRegisteredShop() {
@@ -46,6 +72,13 @@ export default {
             this.$axios.get('/getRegisteringShop')
             .then(res => {
                 this.registeringShopList = this.registeringShopList.concat(res.data.data);
+            })
+        },
+        getApprovingGoods() {
+            this.approvingGoodsList = [this.goods]
+            this.$axios.get('/getApprovingGoods')
+            .then(res => {
+                this.approvingGoodsList = this.approvingGoodsList.concat(res.data.data);
             })
         }
     }

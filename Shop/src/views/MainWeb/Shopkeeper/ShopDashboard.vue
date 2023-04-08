@@ -4,7 +4,7 @@ import ShopRegister from '../../../components/MainWeb/Components/ShopRegister.vu
 import MyShopInfo from '../../../components/MainWeb/Components/MyShopInfo.vue'
 import Nav from '../../../components/Public/Nav/ShopkeeperNav.vue'
 import Goods4Shopkeeper from '../../DashBoard/Goods/Goods4Shopkeeper.vue'
-import SearchTop from '../../../components/Dashboard/Goods/SearchG.vue'
+//import SearchTop from '../../../components/Dashboard/Goods/SearchG.vue'
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 
@@ -19,12 +19,12 @@ import { RouterLink, RouterView } from 'vue-router'
                 <ShopRegister class="cont" v-else :shop="shop"/>
             </el-tab-pane>
 
-            <el-tab-pane class="etb" label="商品信息">
+            <el-tab-pane v-if="shop.is_admitted==1" label="商品信息">
                 <!--WrapperGoods class="cont" /-->
                 <Goods4Shopkeeper/>
             </el-tab-pane>
 
-            <el-tab-pane class="etb" label="店铺流水"></el-tab-pane>
+            <el-tab-pane v-if="shop.is_admitted==1" label="店铺流水"></el-tab-pane>
         </el-tabs>
     </section>
 
@@ -34,15 +34,20 @@ import { RouterLink, RouterView } from 'vue-router'
 <script>
 import "../../../constant.js";
 import { interceptor, shopkeeperInterceptor } from "../../../interceptor";
-import Goods4Shopkeepper from '../../DashBoard/Goods/Goods4Shopkeeper.vue'
 export default {
     props: ["shop_id"],
+    components: {
+        MyShopInfo,
+        ShopRegister,
+        Goods4Shopkeeper
+    },
     /*beforeRouteLeave(to, from, next) {
         var localStorage = window.localStorage;
         localStorage.removeItem("toModify");
         console.log("删除");
         next();
     },*/
+    
     data() {
         return {
             isregistered: "",
@@ -65,7 +70,7 @@ export default {
         interceptor(this);
         shopkeeperInterceptor(this);
         this.getMyShopInfo();
-        //this.toModify();
+        this.toModify();
     },
     methods: {
         // 根据当前username取店铺信息
@@ -114,8 +119,7 @@ export default {
                 this.isToModify = 0;
             }
         }
-    },
-    components: { Goods4Shopkeepper }
+    }
 }
 </script>
 

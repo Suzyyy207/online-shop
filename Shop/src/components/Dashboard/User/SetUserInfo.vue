@@ -1,6 +1,7 @@
 <!--个人信息界面-->
 
 <template>
+  
     <el-form :model="form" :rules="rules" ref="form" class="form">
         <UserAvatar class="imgU"></UserAvatar>
         <el-row>
@@ -13,7 +14,6 @@
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'User' : ''"
-                    :disabled="usernameDisabled"
                 >
                 </el-input>
             </el-form-item>
@@ -27,7 +27,6 @@
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'Iphone' : ''"
-                    :disabled="phoneDisabled"
                 ></el-input>
             </el-form-item>
           </el-col>
@@ -37,13 +36,13 @@
           <el-col :span="12">
             <el-form-item label="身份证号" prop="idnum">
                 <el-input 
-                    placeholder="请输入电话号码"
+                    placeholder="请输入身份证号"
                     type="idnum" 
                     v-model="form.idnum" 
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'Postcard' : ''"
-                    :disabled="idnumDisabled"
+                    :disabled="true"
                 ></el-input>
             </el-form-item>
           </el-col>
@@ -57,7 +56,6 @@
                     autocomplete="off"
                     clearable
                     :prefix-icon=" 1 ? 'Message' : ''"
-                    :disabled="emailDisabled"
                 ></el-input>
             </el-form-item>
           </el-col>
@@ -74,13 +72,12 @@
                 autocomplete="off"
                 clearable
                 :prefix-icon=" 1 ? 'Key' : ''"
-                :disabled="passwordDisabled"
               ></el-input>
             </el-form-item>
           </el-col>
           
           <el-col :span="12">
-            <el-form-item label="确认密码" prop="password2" v-if="isModified">
+            <el-form-item label="确认密码" prop="password2">
               <el-input
                   placeholder="确认密码"
                   show-password
@@ -96,8 +93,8 @@
         </el-row>
 
 
-        <el-row v-if="isModified">
-            <el-form-item prop="validCode" >
+        <el-row>
+            <el-form-item label="验证码" prop="validCode" >
                 <el-input 
                 v-model="form.validCode" 
                 placeholder="验证码"
@@ -107,17 +104,25 @@
             <ValidCode @input="createValidCode" />
         </el-row>
   
-        <el-form-item>
-            <el-button class="btn" v-if="isModified" type="primary" @click="setUserInfo('form')">提交</el-button>
-            <el-button class="btn" v-else type="primary" @click="toModify">修改</el-button>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item>
+                <el-button class="btn"  type="primary" @click="setUserInfo('form')">提交</el-button>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item>
+                <el-button class="btn"  type="primary" @click="cancel">取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
     </el-form>
   </template>
   
   <script>
   import "../../../constant.js";
   import { ElMessage, ElMessageBox } from 'element-plus';
-  import { validatePhone, validateUsername, validateIdnum, validateEmail, validatePassword } from "../../../validate";
+  import { validatePhone, validateUsername, validateEmail, validatePassword } from "../../../validate";
   import ValidCode from "../../MainWeb/Components/ValidCode.vue";
   import UserAvatar from "./UserAvatar.vue";
   
@@ -154,17 +159,6 @@
       }
     }
   };
-  const idnumValidator = (rule, value, callback) => {
-    if (!value) {
-      return callback(new Error("身份证号不能为空"));
-    } else {
-      if (validateIdnum(value)) {
-        callback();
-      } else {
-        return callback(new Error('身份证号格式不正确'))
-      }
-    }
-  };
   const emailValidator = (rule, value, callback) => {
     if (!value) {
       return callback(new Error("邮箱不能为空"));
@@ -178,7 +172,7 @@
   };
   
   export default {
-    name: "userInfo",
+    name: "SetUserInfo",
     components:{
       ValidCode,
       UserAvatar
@@ -206,21 +200,22 @@
       };
       return {
         form: {
-          username: "username",
-          phone: "phone",
-          idnum: "440404200404040404",
-          email: "email",
+          username: "",
+          phone: "",
+          idnum: "",
+          email: "",
           validCode: "",
           password: "",
           password2: ""
         },
+        user: {
+          oldusername: "",
+          oldphone: "",
+          oldemail: "",
+          oldpassword: ""
+        },
         validCode: "",
-        isModified: false,
-        usernameDisabled: true,
-        phoneDisabled: true,
         idnumDisabled: true,
-        emailDisabled: true,
-        passwordDisabled: true,
         rules: {
           username: [
             { required: true, validator: usernameValidator, trigger: 'change' },
@@ -229,10 +224,6 @@
           phone: [
             { required: true, validator: phoneValidator, trigger: "change" },
             { required: true, validator: phoneValidator, trigger: "blur" }
-          ],
-          idnum: [
-            { required: true, validator: idnumValidator, trigger: 'change' },
-            { required: true, validator: idnumValidator, trigger: 'blur' }
           ],
           email: [
             { required: true, validator: emailValidator, trigger: 'change' },
@@ -260,18 +251,19 @@
       getUserInfo() {
         var localStorage = window.localStorage;
         this.$axios.post('/getUserInfo', {
-            // 测试版本：自定义username
-            // username: "username"
-            // 正式版本
             username: localStorage.getItem("username")
         })
         .then(res => {
             const user = res.data.data;
-            /*this.form.gender = user.gender;*/
+            this.form.username = user.username;
             this.form.phone = user.phone;
             this.form.idnum = user.idnum;
             this.form.email = user.email;
             this.form.password = user.password;
+            this.user.oldusername = user.username;
+            this.user.oldphone= user.phone;
+            this.user.oldemail= user.email;
+            this.user.oldpassword= user.password;
         })
       },
       reset: function () {
@@ -300,20 +292,24 @@
         this.$refs[form].validate((valid=>{
             if(valid) {
                 var localStorage = window.localStorage;
+                if(this.user.oldusername == this.form.username && this.user.oldphone == this.form.phone && this.user.newemail == this.form.email && this.user.password == this.user.newpassword) {
+                  this.$message.error("您没有修改任何信息，请修改信息后重新提交");
+                  return;
+                }
                 this.$axios.post('/setUserInfo', {
-                    username: localStorage.getItem("username"),
+                    // idnum不传输
+                    oldusername: localStorage.getItem("username"),
                     newusername: this.form.username,
                     newphone: this.form.phone,
-                    idnum: this.form.idnum,
-                    newemail: this.form.email
+                    newemail: this.form.email,
+                    newpassword: this.form.password
                 })
                 .then(res => {
                     if(res.data.state == window.SUCCESS){
                         this.$message.sucess(res.data.message);
                         var localStorage = window.localStorage;
                         localStorage.setItem("username", this.form.username);
-                        // TODO：跳转到一个空白页面后跳转回来
-                        this.$router.push({name:'UserInfoBlank'});
+                        this.$router.go(0);
                     } else {
                         const error_msg = res.data.message.replace(/&$/, '');
                         const msg = error_msg.split("&");
@@ -327,13 +323,6 @@
             }
         }))
       },
-     toModify() {
-        this.usernameDisabled = false;
-        this.phoneDisabled = false;
-        this.emailDisabled = false;
-        this.passwordDisabled = false;
-        this.isModified = true;
-     },
      createValidCode(data){
         this.validCode = data;
     },
@@ -342,6 +331,9 @@
         this.form.usertype="";
         this.form.agreement="";
      },
+     cancel() {
+        this.$router.go(0);
+     }
     }
   }
   </script>

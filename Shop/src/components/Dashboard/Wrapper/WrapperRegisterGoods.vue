@@ -1,37 +1,34 @@
-<!--已申请未批复+已申请被拒绝-->
 <script setup>
     import GoodsShow from '../Goods/GoodsShow.vue'
 </script>
 
 <template>
     <div class="wrap" >
-        <el-tabs tab-position="left">
-            <el-tab-pane label="待审核">
-                <div class="goods">
-                    <div v-for="goods in registeringGoodsList" :key="goods.goodsId">
-                        <GoodsShow :goods="goods"/>
-                    </div>
+        <h2>待审核</h2>
+            <div class="goods">
+                <div v-for="goods in registeringGoodsList" :key="goods.goodsId">
+                    <GoodsShow :goods="goods"/>
                 </div>
-            </el-tab-pane>
-            <el-tab-pane label="申请失败">
-                <div class="goods">
-                    <div v-for="goods in registerationDeniedGoodsList" :key="goods.goodsId">
-                        <GoodsShow :goods="goods"/>
-                    </div>
+            </div>
+        <h2>注册失败</h2>
+            <div class="goods">
+                <div v-for="goods in registerationDeniedGoodsList" :key="goods.goodsId">
+                    <GoodsShow :goods="goods"/>
                 </div>
-            </el-tab-pane>
-            <el-tab-pane label="申请成功">
-                <div class="goods">
-                    <div v-for="goods in registeredGoodsList" :key="goods.goodsId">
-                        <GoodsShow :goods="goods"/>
-                    </div>
+            </div>
+        <h2>注册成功</h2>
+            <div class="goods">
+                <div v-for="goods in registeredGoodsList" :key="goods.goodsId">
+                    <GoodsShow :goods="goods"/>
                 </div>
-            </el-tab-pane>
-        </el-tabs>
+            </div>
     </div>
 </template>
 <script>
 export default {
+    components: {
+        GoodsShow
+    },
     data() {
         return {
             registeringGoodsList: [],
@@ -41,8 +38,8 @@ export default {
                 goodsname: "goodsname",
                 goodsId: "id",
                 registerStatus: 0,
-                modifyStatus: 0,
-                status: 0,
+                modifyStatus: 2,
+                status: 2,
                 goodsPrice:100,
                 goodsStock:20,
                 introduction:"intro",

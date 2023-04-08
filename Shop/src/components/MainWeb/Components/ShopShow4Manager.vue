@@ -8,16 +8,25 @@ const dialogTableVisible = ref(false)
 <template>
   <div class="shop" :shop="shop">
     <a href="#" class="shop_link">
-      <img class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
-      <p class="shopname">{{shop.shopname}}</p>
-      <p class="introdunction">{{shop.introduction}}</p>
+      <img v-if="!shop.avatar" class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
+      <img v-else :src="shop.avatar">
+
+      <p class="shopname">商店名称：{{shop.shopname}}</p>
+      <p class="introdunction">商店简介：{{shop.introduction}}</p>
+      <p v-if="shop.is_admitted==0">申请类型：注册申请</p>
+      <p v-if="shop.is_admitted==3">申请类型：删除申请</p>
+      <p v-if="shop.is_admitted==1">批复状态：已同意注册</p>
+      <p v-if="shop.is_admitted==2||shop.is_admitted==4">批复状态：已拒绝</p>
 
       <el-button class="btn_approval" v-if="isregistered=1" @click="dialogTableVisible = true">
         <p>点击查看详细信息</p>
       </el-button>
-      <p v-else>注册状态：已注册成功</p>
-<!--这里不加标题无法正常关闭-->
+
       <el-dialog  class="information" v-model="dialogTableVisible" title="商家信息">
+        <p v-if="shop.is_admitted==0">申请类型：注册申请</p>
+        <p v-if="shop.is_admitted==3">申请类型：删除申请</p>
+        <p v-if="shop.is_admitted==1">批复状态：已同意注册</p>
+        <p v-if="shop.is_admitted==2||shop.is_admitted==4">批复状态：已拒绝</p>
         <p>店名：{{shop.shopname}}</p>
         <p>店铺id：{{shop.shopid}}</p>
         <p>类别：{{shop.goodstype}}</p>
@@ -27,10 +36,10 @@ const dialogTableVisible = ref(false)
         <p>负责人用户id：{{shop.uid}}</p>
         <p>负责人身份证号码：{{shop.idnum}}</p>
         <p class="bottom">简介：{{shop.introduction}}</p>
-        <template #footer>
+        <template #footer v-if="shop.is_admitted==0||shop.is_admitted==3">
           <span class="dialog-footer">
-            <el-button type="primary" @click="registrationApproved">批准</el-button>
-            <el-button  @click="registrationRejected">拒绝</el-button>
+            <el-button type="primary" @click="shopApplicationApproved">批准</el-button>
+            <el-button  @click="shopApplicationRejected">拒绝</el-button>
           </span>
         </template>
       </el-dialog>
@@ -56,37 +65,37 @@ export default {
     }
   },
   methods: {
-    registrationApproved: function() {
-      this.$axios.post('/registrationApproved', {
-          shopname: this.shop.shopname
+    shopApplicationApproved: function() {
+      this.$axios.post('/shopApplicationApproved', {
+          shopname: this.shop.shopname,
+          approveType: this.shop.is_admitted
         })
       .then(res=>{
         if(res.data.state == window.SUCCESS){
-          this.$message.success("已同意注册！");
+          this.$message.success("已同意店铺申请！");
           setTimeout(() => {
-            // 修改成功后需要刷新页面：跳转到一个空白页面再跳转回来
             this.$router.push({name:'ManagerWebBlank'});
           }, 1000);
         }
         else {
-          this.$message.error("请重试");
+          this.$message.error(res.data.message);
         }
       })
     },
-    registrationRejected: function() {
-      this.$axios.post('/registrationRejected', {
-          shopname: this.shop.shopname
+    shopApplicationRejected: function() {
+      this.$axios.post('/shopApplicationRejected', {
+          shopname: this.shop.shopname,
+          rejectType: this.shop.is_admitted
         })
       .then(res=>{
         if(res.data.state == window.SUCCESS){
-          this.$message.success("已拒绝注册！");
+          this.$message.success(res.data.message);
           setTimeout(() => {
-            // 修改成功后需要刷新页面：跳转到一个空白页面再跳转回来
             this.$router.push({name:'ManagerWebBlank'});
           }, 1000);
         }
         else {
-          this.$message.error("请重试");
+          this.$message.error(res.data.message);
         }
       })
     }
