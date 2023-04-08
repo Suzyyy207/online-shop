@@ -10,7 +10,7 @@ import SetUserInfo from '../../components/Dashboard/User/SetUserInfo.vue'
         
     <Nav></Nav>
     <section>
-        <div v-if="state==0">
+        <div class = "infoshow" v-if="state==0">
             <InfoShow></InfoShow>
             <el-button @click="this.state=1">修改个人信息</el-button>
         </div>
@@ -32,3 +32,7 @@ export default{
     }
 }
 </script>
+
+<style scoped>
+
+</style>
