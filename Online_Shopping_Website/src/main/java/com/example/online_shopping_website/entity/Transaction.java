@@ -4,40 +4,50 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Transaction {
-    Date date;
 
-    String from;
+    int transactionId;
+    Date transactionDate;
 
-    String to;
+    String fromWho;
+
+    String toWho;
+
+    int transactionType;
 
     BigDecimal amount;
 
     BigDecimal balance;
 
-    int transactionType;
-
-    public Date getDate() {
-        return date;
+    public int getTransactionId() {
+        return transactionId;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTransactionId(int transactionId) {
+        this.transactionId = transactionId;
     }
 
-    public String getFrom() {
-        return from;
+    public Date getTransactionDate() {
+        return transactionDate;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
     }
 
-    public String getTo() {
-        return to;
+    public String getFromWho() {
+        return fromWho;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setFromWho(String fromWho) {
+        this.fromWho = fromWho;
+    }
+
+    public String getToWho() {
+        return toWho;
+    }
+
+    public void setToWho(String toWho) {
+        this.toWho = toWho;
     }
 
     public BigDecimal getAmount() {

@@ -148,6 +148,15 @@ public class UserController {
         }
         return result;
     }
+
+    @RequestMapping("/api/getUserTransactions")
+    public JsonResult getUserTransactions(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        JsonResult result = new JsonResult<>();
+
+        result = userService.getUserTransactions(username);
+        return result;
+    }
 }
 
 

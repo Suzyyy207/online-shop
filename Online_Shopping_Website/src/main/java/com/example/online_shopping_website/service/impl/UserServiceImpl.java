@@ -1,5 +1,7 @@
 package com.example.online_shopping_website.service.impl;
 
+import com.example.online_shopping_website.entity.Transaction;
+import com.example.online_shopping_website.mapper.TransactionMapper;
 import com.example.online_shopping_website.mapper.UserMapper;
 import com.example.online_shopping_website.entity.User;
 import com.example.online_shopping_website.service.IUserService;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Base64;
+import java.util.List;
 
 import static com.example.online_shopping_website.entity.constant.AccountType.*;
 import static javax.security.auth.callback.ConfirmationCallback.*;
@@ -21,6 +24,9 @@ import static javax.security.auth.callback.ConfirmationCallback.*;
 public class UserServiceImpl implements IUserService {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private TransactionMapper transactionMapper;
     @Override
     public JsonResult<User> register(User user){
 
@@ -184,6 +190,13 @@ public class UserServiceImpl implements IUserService {
                 System.out.println("账户类型异常");
         }
 
+        return result;
+    }
+    @Override
+    public JsonResult getUserTransactions(String username){
+        JsonResult result = new JsonResult<>(YES);
+        List<Transaction> allTransactionResult = transactionMapper.getAllTransactionsByusername(username);
+        result.setData(allTransactionResult);
         return result;
     }
 }
