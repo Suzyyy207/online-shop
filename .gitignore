@@ -5,6 +5,6 @@
 /runfront.bat
 
 .DS_Store
-./Shop/node_modules
+/Shop/node_modules
 
 /Online_Shopping_Website/src/main/resources/application.properties

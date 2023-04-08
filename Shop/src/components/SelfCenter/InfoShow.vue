@@ -1,7 +1,5 @@
 <template>
     <section>
-      <h1 class="title">Self Center</h1>
-      <div class="main">
 
         <div class="profile">
             <div class="infoShow">
@@ -24,15 +22,7 @@
             </div>
         </div>
 
-        <!--为后续扩展已购买记录预留-->
-        <div class="goodsInfo">
-          <div class="goodsList">
-            <h3 class="goodsTitle">已购买</h3>
-            <!-- 购物记录将在此处通过 JavaScript 动态加载  -->
-          </div>
-        </div>
 
-      </div>
     </section> 
 </template>
 <script>
@@ -143,41 +133,19 @@ export default {
 section{
     margin: 0;
 }
-/*标题*/
-.title{
-    font-family: 'Courier New', Courier, monospace;
-    margin: 30px 0 30px 50px;
-    color:#81A18B;
-    text-shadow: 2px 2px 2px #195844;
-    font-size: 45px;
-    text-align: center;
-    font-weight: bolder;
-}
-.main{
-    display: grid;
-    grid-template-columns: 35% 55%;
-    grid-template-rows: 100%;
-    grid-column-gap: 100px;
-    margin-top: 20px;
-    margin-left:20px
-}
 
 /*个人信息展示与导航*/
 .profile {
     display: flex;
     flex-direction: column;
     grid-column: 1/2;
-    background-color: #fff;
-    border-radius: 15px;
-    color: #303133;
-    border: 2px solid #ebeef5;
-    box-shadow: 2px 2px 12px 2px (0 0 0 / 10%);
     padding: 20px;
     margin-left: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     width: 100%;
     height: auto;
-    gap:20px
+    gap:20px;
+    
 }
 
 .infoShow{
@@ -204,32 +172,5 @@ section{
 .profile .chargeInput{
     width:60%;
     margin-right:20px
-}
-
-/*相关记录*/
-.goodsInfo{
-    grid-column: 2/3;
-    border-radius: 5px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-}
-  
-.goodsList {
-    background-color:#81A18B;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    max-height: 300px;
-    margin-bottom: 20px;
-}
-.goodsTitle {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color:white;
-}
-  
-
-  
+}  
 </style>

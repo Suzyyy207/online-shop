@@ -1,3 +1,7 @@
+<script setup>
+import { RouterLink, RouterView } from 'vue-router'
+</script>
+
 <template>
     <header>
         <nav>
@@ -5,7 +9,7 @@
             <RouterLink to="#">购物车</RouterLink>
             <RouterLink to="#">收藏夹</RouterLink>
             <RouterLink to="/ShopDashboard">我的店铺</RouterLink>
-            <RouterLink to="/UserDashboard">个人中心</RouterLink>
+            <RouterLink to="/shopkeeperSelfCenter">个人中心</RouterLink>
             <RouterLink to="/">退出登录</RouterLink>
         </nav>
     </header>
