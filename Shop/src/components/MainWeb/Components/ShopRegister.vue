@@ -125,20 +125,33 @@
               </el-col>
             </el-row>
 
-            <el-row>
-              <el-col v-if="!this.form.idnumDisabled" :span="12">
+            <el-row v-if="!this.form.idnumDisabled">
+              <el-col :span="12">
                 <el-form-item class="btn">
                   <el-button type="primary" @click="register('form')">注&nbsp;&nbsp;册</el-button>
-                </el-form-item>
-              </el-col>
-              <el-col v-else :span="12">
-                <el-form-item class="btn">
-                  <el-button type="primary" @click="modifyShopInfo('form')">提交</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item class="btn">
                   <el-button type="primary" @click="reset">重&nbsp;&nbsp;置</el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            
+            <el-row v-else>
+              <el-col :span="8">
+                <el-form-item class="btn">
+                  <el-button type="primary" @click="modifyShopInfo('form')">提交</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item class="btn">
+                  <el-button type="primary" @click="reset">重&nbsp;&nbsp;置</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item class="btn">
+                  <el-button type="primary">返&nbsp;&nbsp;回</el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -403,7 +416,9 @@ const idnumValidator = (rule, value, callback) => {
 
 
 <style scoped>
-
+.register{
+  margin:40px 60px;
+}
 
 .register h1{
   text-align: center;
