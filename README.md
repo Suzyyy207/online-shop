@@ -13,7 +13,7 @@
 | 参数名   | 含义   | 类型&备注 |
 | -------- | ------ | --------- |
 | username |  | String |
-| accountType | 账户类型 | INT 普通买家：1(privateAccount个人账户)；商家：1(个人账户) 2（shopAccount商店账户）管理员：3(profitAccount商城利润账户) 4(intermediaryAccount商城购物中间账户) |
+| accountType | 账户类型 | INT ：1(privateAccount个人账户，普通买家和商家都有）2（shopAccount商店账户，商家独有）3(profitAccount商城利润账户，管理员独有)  4(intermediaryAccount商城购物中间账户，管理员独有) |
 | credit | 充值金额 |  **String**（转换不会丢失精度）  |
 
 参数列表 back->front
