@@ -19,12 +19,12 @@ import { RouterLink, RouterView } from 'vue-router'
                 <ShopRegister class="cont" v-else :shop="shop"/>
             </el-tab-pane>
 
-            <el-tab-pane label="商品信息">
+            <el-tab-pane v-if="shop.is_admitted==1" label="商品信息">
                 <!--WrapperGoods class="cont" /-->
                 <Goods4Shopkeeper/>
             </el-tab-pane>
 
-            <el-tab-pane label="店铺流水"></el-tab-pane>
+            <el-tab-pane v-if="shop.is_admitted==1" label="店铺流水"></el-tab-pane>
         </el-tabs>
     </section>
 

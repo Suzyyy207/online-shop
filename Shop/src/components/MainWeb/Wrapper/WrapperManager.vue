@@ -1,8 +1,7 @@
 <!--此组件为将所有向管理员发送注册请求的店铺打包，并排版为管理员友好的UI界面-->
 <script setup>
-import RegisterShow from '../Components/RegisterShow.vue'
-import ShopShow from '../Components/ShopShow.vue'
-import GoodsShow from '../../Dashboard/Goods/GoodsShow.vue';
+import ShopShow4Manager from '../Components/ShopShow4Manager.vue'
+import GoodsShow4Manager from '../../Dashboard/Goods/GoodsShow4Manager.vue';
 </script>
 
 <template>
@@ -12,14 +11,14 @@ import GoodsShow from '../../Dashboard/Goods/GoodsShow.vue';
                 <h1>待处理</h1>
                     <div class="shops">
                         <div class="shops_ing" v-for="shop in registeringShopList" :key="shop.id">
-                            <RegisterShow :shop="shop"/>
+                            <ShopShow4Manager :shop="shop"/>
                         </div>
                     </div>
                 <div class="ge"></div>
                 <h1>已处理</h1>
                 <div class="shops">
                     <div class="shops_ed" v-for="shop in registeredShopList" :key="shop.id">
-                        <ShopShow :shop="shop"/>
+                        <ShopShow4Manager :shop="shop"/>
                     </div>
                 </div>
             </el-tab-pane>
@@ -27,7 +26,7 @@ import GoodsShow from '../../Dashboard/Goods/GoodsShow.vue';
                 <h1>待处理</h1>
                     <div>
                         <div v-for="goods in approvingGoodsList" :key="goods.goodsId">
-                            <GoodsShow :goods="goods"/>
+                            <GoodsShow4Manager :goods="goods"/>
                         </div>
                     </div>
 
@@ -45,7 +44,6 @@ export default {
             registeredShopList: [],
             registeringShopList: [],
             approvingGoodsList: [],
-            approvedGoodsList: [],
             goods:{
                 goodsname: "goodsname",
                 goodsId: "id",
@@ -62,7 +60,6 @@ export default {
         this.getRegisteredShop();
         this.getRegisteringShop() ;
         this.getApprovingGoods();
-        this.getApprovedGoods();
     },
     methods: {
         getRegisteredShop() {
@@ -77,15 +74,8 @@ export default {
                 this.registeringShopList = this.registeringShopList.concat(res.data.data);
             })
         },
-        getApprovedGoods() {
-            this.approvedGoodsList = [this.goods];
-            this.$axios.get('/getApprovedGoods')
-            .then(res => {
-                this.approvedGoodsList = this.approvedGoodsList.concat(res.data.data);
-            })
-        },
         getApprovingGoods() {
-            this.approvingGoodsList = [this.goods];
+            this.approvingGoodsList = [this.goods]
             this.$axios.get('/getApprovingGoods')
             .then(res => {
                 this.approvingGoodsList = this.approvingGoodsList.concat(res.data.data);
