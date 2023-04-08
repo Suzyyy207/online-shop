@@ -255,6 +255,7 @@
         })
         .then(res => {
             const user = res.data.data;
+            this.form.username = user.username;
             this.form.phone = user.phone;
             this.form.idnum = user.idnum;
             this.form.email = user.email;

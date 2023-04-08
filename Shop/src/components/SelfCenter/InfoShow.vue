@@ -31,10 +31,10 @@ export default {
     data() {
       return {
         form: {
-          username: "username",
-          phone: "phone",
-          idnum: "idnum",
-          email: "email",
+          username: "",
+          phone: "",
+          idnum: "",
+          email: "",
           avatar: "",
           account:0
         },
@@ -54,18 +54,18 @@ export default {
         .then(res => {
             const user = res.data.data;
             /*this.form.gender = user.gender;*/
+            this.form.username = user.username;
             this.form.phone = user.phone;
             this.form.idnum = user.idnum;
             this.form.email = user.email;
             this.form.password = user.password;
-            this.form.account = user.account;
+            this.form.account = user.privateAccount;
         })
       },
       getUserAvatar: function() {
         var localStorage = window.localStorage;
 
         this.$axios.post('/getUserAvatar', {
-            // 正式版本
             username: localStorage.getItem("username")
         })
         .then(res => {
