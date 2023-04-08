@@ -2,7 +2,7 @@
 /.idea
 
 /design.md
-/runfront.bat
+/shop/run.bat
 
 .DS_Store
 /Shop/node_modules

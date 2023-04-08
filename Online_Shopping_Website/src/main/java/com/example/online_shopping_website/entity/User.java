@@ -185,6 +185,14 @@ public class User extends BaseEntity implements Serializable {
         this.email = email;
         this.idnum = idnum;
     }
+
+    public User(String username, String phone, String email, String idnum, BigDecimal privateAccount) {
+        this.username = username;
+        this.phone = phone;
+        this.email = email;
+        this.idnum = idnum;
+        this.privateAccount = privateAccount;
+    }
 }
 
 

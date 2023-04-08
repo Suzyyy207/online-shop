@@ -68,7 +68,7 @@ public class UserController {
         String newphone = (String)map.get("newphone");
         String newemail = (String)map.get("newemail");
 
-        JsonResult<User> setUserInfoResult = new JsonResult<>(YES);
+        JsonResult<User> setUserInfoResult = new JsonResult<>(YES,"");
         User NewUserInfo = new User(newusername,newpassword,newphone,newemail);
 
         try{

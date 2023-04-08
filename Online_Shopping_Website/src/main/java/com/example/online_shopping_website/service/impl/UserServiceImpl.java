@@ -109,7 +109,7 @@ public class UserServiceImpl implements IUserService {
         if(user == null){
             throw new UserNotFoundException("用户未找到");
         }
-        User userInfoPart = new User(user.getPhone(), user.getEmail(), user.getIdnum());
+        User userInfoPart = new User(user.getUsername(),user.getPhone(), user.getEmail(), user.getIdnum(),user.getPrivateAccount());
         getUserInfoResult.setData(userInfoPart);
         return getUserInfoResult;
     }
@@ -170,7 +170,7 @@ public class UserServiceImpl implements IUserService {
         switch (userType){
             case admin:
                 if(accountType == profitAccount){
-                    BigDecimal originalProfitAccount = userMapper.GetPrivateAccountByUsername(username);
+                    BigDecimal originalProfitAccount = userMapper.GetProfitAccountByUsername(username);
                     BigDecimal newProfitAccount = originalProfitAccount.add(credit);
                     userMapper.RechargeProfitAccountByUsername(username,newProfitAccount);
                 } else if (accountType == intermediaryAccount) {
@@ -183,7 +183,7 @@ public class UserServiceImpl implements IUserService {
                 if(accountType == privateAccount){
                     BigDecimal originalPrivateAccount = userMapper.GetPrivateAccountByUsername(username);
                     BigDecimal newPriavteAccount = originalPrivateAccount.add(credit);
-                    userMapper.RechargeProfitAccountByUsername(username,newPriavteAccount);
+                    userMapper.RechargePrivateAccountByUsername(username,newPriavteAccount);
                 } else if (accountType == shopAccount) {
                     BigDecimal originalShopAccount = userMapper.GetShopAccountByUsername(username);
                     BigDecimal newShopAccount = originalShopAccount.add(credit);
@@ -193,7 +193,7 @@ public class UserServiceImpl implements IUserService {
             case buyer:
                 BigDecimal originalPrivateAccount = userMapper.GetPrivateAccountByUsername(username);
                 BigDecimal newPriavteAccount = originalPrivateAccount.add(credit);
-                userMapper.RechargeProfitAccountByUsername(username,newPriavteAccount);
+                userMapper.RechargePrivateAccountByUsername(username,newPriavteAccount);
                 break;
             default:
                 result.setState(NO);

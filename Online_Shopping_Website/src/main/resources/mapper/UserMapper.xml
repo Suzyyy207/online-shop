@@ -69,7 +69,7 @@
         UPDATE users SET email = #{Newemail} WHERE username = #{oldusername}
     </update>
 
-    <select id="GetUserTypeByUsername">
+    <select id="GetUserTypeByUsername" resultType="int" >
         SELECT usertype FROM users WHERE username = #{username}
     </select>
 
