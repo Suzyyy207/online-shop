@@ -1,4 +1,4 @@
-package com.example.online_shopping_website.entity;
+package com.example.online_shopping_website.entity.constant;
 
 public class UserType {
     public static final int admin = 0;

@@ -1,4 +1,4 @@
-package com.example.online_shopping_website.entity;
+package com.example.online_shopping_website.entity.constant;
 
 public class AccountType {
     public static final int privateAccount = 1;

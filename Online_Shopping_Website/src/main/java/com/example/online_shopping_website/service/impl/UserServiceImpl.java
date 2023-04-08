@@ -9,16 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Blob;
 import java.util.Base64;
 
-import static com.example.online_shopping_website.entity.AccountType.*;
+import static com.example.online_shopping_website.entity.constant.AccountType.*;
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
 
