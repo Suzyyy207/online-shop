@@ -52,7 +52,9 @@ export default {
                 goodsPrice:100,
                 goodsStock:20,
                 introduction:"intro",
-                goodsCategory: ['电脑数码', '家用电器']
+                goodsCategory: ['电脑数码', '家用电器'],
+                favorites:0,
+                goodsAvatar: []
             }
         }
     },

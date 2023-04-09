@@ -20,7 +20,6 @@ import { RouterLink, RouterView } from 'vue-router'
             </el-tab-pane>
 
             <el-tab-pane v-if="shop.is_admitted==1" label="商品信息">
-                <!--WrapperGoods class="cont" /-->
                 <Goods4Shopkeeper/>
             </el-tab-pane>
 

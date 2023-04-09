@@ -257,9 +257,8 @@ const idnumValidator = (rule, value, callback) => {
     methods: {
       modify:function() {
         var localStorage = window.localStorage;
-        // TODO:goodstype处理
         this.form.shopname = localStorage.getItem('shopname');
-        // this.form.goodstype = localStorage.getItem('goodstype');
+        this.form.goodstype = [localStorage.getItem('goodstype')];
         this.form.introduction = localStorage.getItem('introduction');
         this.form.address = localStorage.getItem('address');
         this.form.idnum = localStorage.getItem('idnum');
@@ -267,6 +266,7 @@ const idnumValidator = (rule, value, callback) => {
         this.form.capital = localStorage.getItem('capital');
         this.form.date = new Date(localStorage.getItem('date'));
         this.toModify = true;
+        console.log(this.form.goodstype)
       },
       register: function (form) {
         // 首先判断需要填写的信息是否已经完全填入
@@ -369,7 +369,7 @@ const idnumValidator = (rule, value, callback) => {
       },
       reset: function () {
         ElMessageBox.confirm(
-          '你确定要重置输入信息吗',
+          '你确定要重置输入信息吗，将恢复店铺原信息',
           '', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',

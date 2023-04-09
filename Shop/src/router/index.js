@@ -61,7 +61,16 @@ const router = createRouter({
 
     // 下述页面是为了调试方便的组件路径，最终需要封装到views中，因此不需要额外添加拦截器
     // 提交项目前保证无组件路径
-    
+    {
+      path: '/GoodsDetail4User/:goodsId',
+      name: 'GoodsDetail4User',
+      component: () => import('../components/MainWeb/Components/GoodsDetail4User.vue')
+    },
+    {
+      path: '/ShopDetail4User/:shopname',
+      name: 'ShopDetail4User',
+      component: () => import('../components/MainWeb/Components/ShopDetail4User.vue')
+    },
     {
       path: '/GoodsRegister',
       name: 'GoodsRegister',

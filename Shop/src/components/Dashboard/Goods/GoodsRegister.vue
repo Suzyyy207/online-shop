@@ -224,7 +224,7 @@ export default {
             callback();
         },
         goodsStockValidator(rule, value, callback) {
-            if (isNaN(Number(value))) {
+            if (isNaN(Number(value)) || Number(value)<0) {
                 this.addForm.goodsStock = 0;
                 return callback(new Error("请输入正确的库存数"));
             }
