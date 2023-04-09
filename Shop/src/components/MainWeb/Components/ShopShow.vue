@@ -1,13 +1,18 @@
 <!--此组件将店铺信息打包，用于向用户展示店铺信息-->
 <template>
-        <div class="shop">
-          <a href="#" class="shop_link">
-                <img class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
-                <p>{{shop.shopname}}</p>
-                <p>{{shop.goodstype}} </p>
-                <p class="intro">{{shop.introduction}}</p>
-          </a>
-        </div>
+  <div class="shop">
+    
+
+    <a href="#" class="shop_link">
+      <img class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
+        <p>{{shop.shopname}}</p>
+        <p>{{shop.goodstype}} </p>
+        <p class="intro">{{shop.introduction}}</p>
+        <router-link :to="{ name: 'ShopDetail4User', params: { shopname: this.shop.shopname } }">
+          进入店铺详情页面
+        </router-link>
+    </a>
+  </div>
     
 </template>
 

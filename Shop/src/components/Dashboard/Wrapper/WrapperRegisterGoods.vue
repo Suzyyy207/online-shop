@@ -43,7 +43,8 @@ export default {
                 goodsPrice:100,
                 goodsStock:20,
                 introduction:"intro",
-                goodsCategory: ['电脑数码', '家用电器']
+                goodsCategory: ['电脑数码', '家用电器'],
+                favorites:0
             }
         }
     },
@@ -74,7 +75,7 @@ export default {
         getRregisterationDeniedGoods() {
             this.registerationDeniedGoodsList = [this.goods];
             var localStorage = window.localStorage;
-            this.$axios.post("/getRegisterationDeniedGoodsByShopname", {
+            this.$axios.post("/getRegistrationDeniedGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
             }).then(res => {
                 this.registerationDeniedGoodsList = res.data.data;
