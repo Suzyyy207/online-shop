@@ -5,7 +5,7 @@ import WrapperGoodsRecord from '../../../components/Dashboard/Wrapper/WrapperGoo
 </script>
 
 <template>
-    <el-tabs tab-position="left">
+    <el-tabs class="nav" tab-position="left">
         <el-tab-pane label="商品注册">
             <GoodsRegister class="cont"/>
         </el-tab-pane>
@@ -27,8 +27,10 @@ export default{
 </script>
 
 <style scoped>
+
 .cont{
     width: 90%;
     margin:10px auto 50px;
 }
+
 </style>

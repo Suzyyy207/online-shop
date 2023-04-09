@@ -4,24 +4,45 @@
 
 <template>
     <div class="wrap" >
-        <h2>待审核</h2>
-        <div class="goods">
-            <div v-for="goods in editingGoodsList" :key="goods.goodsId">
-                <GoodsShow :goods="goods"/>
+        <div class="edit">
+            <h2>待审核</h2>
+            <div class="goods">
+                <div v-for="goods in editingGoodsList" :key="goods.goodsId">
+                    <GoodsShow :goods="goods"/>
+                </div>
+            </div>
+            <div class="pages">
+                <el-button class="pageBtn">上一页</el-button>
+                <span>1/10</span>
+                <el-button class="pageBtn">下一页</el-button>
             </div>
         </div>
 
-        <h2>修改失败</h2>
-        <div class="goods">
-            <div v-for="goods in editDeniedGoodsList" :key="goods.goodsId">
-                <GoodsShow :goods="goods"/>
+        <div class="edit">
+            <h2>修改失败</h2>
+            <div class="goods">
+                <div v-for="goods in editDeniedGoodsList" :key="goods.goodsId">
+                    <GoodsShow :goods="goods"/>
+                </div>
+            </div>
+            <div class="pages">
+                <el-button class="pageBtn">上一页</el-button>
+                <span>1/10</span>
+                <el-button class="pageBtn">下一页</el-button>
             </div>
         </div>
 
-        <h2>修改成功</h2>
-        <div class="goods">
-            <div v-for="goods in editedGoodsList" :key="goods.goodsId">
-                <GoodsShow :goods="goods"/>
+        <div class="edit">
+            <h2>修改成功</h2>
+            <div class="goods">
+                <div v-for="goods in editedGoodsList" :key="goods.goodsId">
+                    <GoodsShow :goods="goods"/>
+                </div>
+            </div>
+            <div class="pages">
+                <el-button class="pageBtn">上一页</el-button>
+                <span>1/10</span>
+                <el-button class="pageBtn">下一页</el-button>
             </div>
         </div>
      
@@ -84,3 +105,41 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+/*小标题*/
+.wrap h2{
+  text-align: left;
+  font-family:"Lucida Console", "Courier New", monospace;
+  font-size: 30px;
+  font-weight: bolder;
+  color:#81A18B;
+  margin-bottom: 30px;
+}
+
+/*包装框*/
+.edit{
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    color: #303133;
+    border: 3px solid #81A18B;
+    transition: .3s;
+    margin-bottom: 40px;
+}
+
+/*翻页按钮*/
+.pages{
+    display: flex;
+    margin:50px auto 0px;
+}
+.pages span{
+    align-content:end;
+    color:#81A18B;
+    font-weight: bolder;
+}
+.pageBtn{
+    display: flex;
+    margin:0 auto;
+}
+</style>
