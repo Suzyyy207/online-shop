@@ -12,7 +12,7 @@
             </div>
         <h2>注册失败</h2>
             <div class="goods">
-                <div v-for="goods in registerationDeniedGoodsList" :key="goods.goodsId">
+                <div v-for="goods in registrationDeniedGoodsList" :key="goods.goodsId">
                     <GoodsShow :goods="goods"/>
                 </div>
             </div>
@@ -32,7 +32,7 @@ export default {
     data() {
         return {
             registeringGoodsList: [],
-            registerationDeniedGoodsList: [],
+            registrationDeniedGoodsList: [],
             registeredGoodsList:[],
             goods:{
                 goodsname: "goodsname",
@@ -44,18 +44,21 @@ export default {
                 goodsStock:20,
                 introduction:"intro",
                 goodsCategory: ['电脑数码', '家用电器'],
-                favorites:0
+                favorites:0,
+                goodsAvatar: []
             }
         }
     },
     created (){
         this.getRegisteringGoods();
         this.getRegisteredGoods();
-        this.getRregisterationDeniedGoods();
+        this.getRegistrationDeniedGoods();
     },
     methods: {
         getRegisteringGoods() {
+            console.log("getinfo")
             this.registeringGoodsList = [this.goods];
+            console.log(this.registeringGoodsList);
             var localStorage = window.localStorage;
             this.$axios.post("/getRegisteringGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
@@ -72,8 +75,8 @@ export default {
                 this.registeredGoodsList = res.data.data;
             })
         },
-        getRregisterationDeniedGoods() {
-            this.registerationDeniedGoodsList = [this.goods];
+        getRegistrationDeniedGoods() {
+            this.registrationDeniedGoodsList = [this.goods];
             var localStorage = window.localStorage;
             this.$axios.post("/getRegistrationDeniedGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
