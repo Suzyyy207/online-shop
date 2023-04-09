@@ -7,10 +7,10 @@
 <template>
     <el-tabs tab-position="left">
         <el-tab-pane label="注册申请">
-            <WrapperRegisterGoods/>
+            <WrapperRegisterGoods class="cont"/>
         </el-tab-pane>
         <el-tab-pane label="修改申请">
-            <WrapperEditGoods/>
+            <WrapperEditGoods class="cont"/>
         </el-tab-pane>
     </el-tabs>
     
@@ -23,3 +23,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.cont{
+    width: 90%;
+    margin:10px auto 50px;
+}
+</style>

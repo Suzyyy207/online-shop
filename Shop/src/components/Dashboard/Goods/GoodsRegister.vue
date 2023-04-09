@@ -1,31 +1,53 @@
 <!-- 添加商品的组件页面-->
 
 <template>
-    <div>
+    <div class="wrap">
+        <h1>商品注册表</h1>
         <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="100px" label-position="top">
             <!-- TODO: icon添加 -->
-            <el-form-item label="商品名称" prop="goodsname"> 
-                <el-input 
-                     v-model="addForm.goodsname"
-                ></el-input>
-            </el-form-item>
+            <el-row>
+                <el-col :span="12" >
+                    <el-form-item class="elItem" label="商品名称" prop="goodsname"> 
+                        <el-input 
+                            v-model="addForm.goodsname"
+                        ></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <!--ykx添加的级联选择器，没有添加数据-->
+                    <el-form-item label="商品种类">
+                            <el-cascader
+                            v-model="value"
+                            :options="options"
+                            :props="props"
+                            @change="handleChange"
+                            />
+                    </el-form-item>
+                </el-col>
+            </el-row>
 
-            <el-form-item label="商品价格" prop="goodsPrice"> 
-                <el-input 
-                    v-model="addForm.goodsPrice" 
-                ></el-input>
-                <span class="input-requirement">商品价格不能小于0，且保留2位小数 </span>
-            </el-form-item>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item class="elItem" label="商品价格" prop="goodsPrice"> 
+                        <el-input 
+                            v-model="addForm.goodsPrice" 
+                        ></el-input>
+                        <span class="hint">商品价格不能小于0，且保留2位小数 </span>
+                    </el-form-item>
+                </el-col>
 
-            <el-form-item label="初始库存" prop="goodsStock"> 
-                <el-input 
-                    v-model="addForm.goodsStock" 
-                ></el-input>
-                <span class="input-requirement">初始库存为不小于0的整数 </span>
-            </el-form-item>
+                <el-col :span="12">
+                    <el-form-item class="elItem" label="初始库存" prop="goodsStock"> 
+                        <el-input 
+                            v-model="addForm.goodsStock" 
+                        ></el-input>
+                        <span class="hint">初始库存为不小于0的整数 </span>
+                    </el-form-item>
+                </el-col>
+            </el-row>
 
             <!--TODO：重新分配类型，做成级联选择器-->
-
+            <!--如果前面的可用 请删除这部分-->
             <el-form-item label="商品类别" prop="goodsCategory">
                 <el-checkbox-group v-model="addForm.goodsCategory">
                     <el-checkbox label="电脑数码" />
@@ -48,8 +70,11 @@
             </el-form-item>
 
             <!--TODO: 简介框需要比其他框height更大-->
-            <el-form-item label="商品简介" prop="introduction">
-                <el-input 
+            <!--ykx修改了 如果还需要更大可以调 :rows 的大小-->
+            <el-form-item label="商品简介" prop="introduction" >
+                <el-input
+                    type="textarea"
+                    :rows="3"
                     placeholder="商品简介（不超过128个字）" 
                     v-model="addForm.introduction" 
                     autocomplete="off"
@@ -57,19 +82,20 @@
                 ></el-input>
             </el-form-item>
 
-
-            <el-upload
-                v-model:file-list="addForm.fileList"
-                auto-upload:false
-                list-type="picture-card"
-                :on-remove="handleChange"
-                ref="upload"
-                :action="''"
-                :auto-upload="false"
-                :on-change="handleChange"
-            >
-                <el-icon><Plus /></el-icon>
-            </el-upload>
+            <el-form-item label="商品图片（可添加多张）">
+                <el-upload
+                    v-model:file-list="addForm.fileList"
+                    auto-upload:false
+                    list-type="picture-card"
+                    :on-remove="handleChange"
+                    ref="upload"
+                    :action="''"
+                    :auto-upload="false"
+                    :on-change="handleChange"
+                >
+                    <el-icon><Plus /></el-icon>
+                </el-upload>
+            </el-form-item>
 
             <el-button 
                 v-if="isModified"
@@ -77,6 +103,21 @@
                 @click="setGoodsInfo('addForm')" 
             >提交
             </el-button>
+
+            <!--原先的按钮不显示，为排版添加两个新按钮，可将相关逻辑放在这里-->
+            <!--在所有表单中应该都不用改变提示词-->
+            <el-row>
+              <el-col :span="12">
+                <el-form-item class="btn">
+                  <el-button type="primary" @click="setGoodsInfo('addForm')">提&nbsp;&nbsp;交</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item class="btn">
+                  <el-button type="primary">重&nbsp;&nbsp;置</el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
 
         </el-form>
     </div>
@@ -262,11 +303,42 @@ export default {
 
  
 <style scoped>
- .el-steps{
-  margin: 15px 0;
+.wrap{
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    color: #303133;
+    border: 3px solid #ebeef5;
+    transition: .3s;
 }
-.el-step__title{
-  font-size: 13px;
+
+.wrap h1{
+  text-align: left;
+  font-family:"Lucida Console", "Courier New", monospace;
+  font-size: 30px;
+  margin-bottom:40px;
+  font-weight: bolder;
+  color:#81A18B;
+}
+
+.elItem{
+    width: 90%;
+}
+
+.hint{
+    color:gray;
+    font-size:12px;
+    margin-left:5px
+}
+.btn button{
+    margin-top: 20px;
+    line-height: 100px;
+    width: 80%;
+    height: 38px;
+    background-color:#81A18B;
+    border-color:#81A18B;
+    justify-items: center;
+
 }
 
 </style>
