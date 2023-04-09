@@ -38,4 +38,6 @@ public interface IUserService {
     JsonResult recharge(String username, BigDecimal credit,int accountType);
 
     JsonResult getUserTransactions(String username);
+
+    JsonResult addToCart(String username, int goodsId, int num);
 }

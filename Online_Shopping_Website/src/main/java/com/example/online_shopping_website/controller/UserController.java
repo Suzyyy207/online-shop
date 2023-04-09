@@ -157,6 +157,17 @@ public class UserController {
         result = userService.getUserTransactions(username);
         return result;
     }
+
+    @RequestMapping("/api/addToCart")
+    public JsonResult addToCart(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        int goodsId = (int)map.get("goodsId");
+        int num = (int)map.get("num");
+
+        JsonResult result = new JsonResult<>(YES);
+        result = userService.addToCart(username, goodsId, num);
+        return result;
+    }
 }
 
 

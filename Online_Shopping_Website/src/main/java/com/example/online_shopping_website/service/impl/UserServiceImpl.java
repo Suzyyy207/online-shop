@@ -211,4 +211,30 @@ public class UserServiceImpl implements IUserService {
         result.setData(allTransactionResult);
         return result;
     }
+
+    @Override
+    public JsonResult addToCart(String username, int goodsId, int addNum){
+        JsonResult result = new JsonResult<>(YES);
+
+        int originalNum;
+        Integer oNum = userMapper.getGoodsNumberInCart(username, goodsId);
+        if(oNum == null)
+            originalNum = 0;
+        else
+            originalNum = oNum;
+        //取出购物车中该商品的数量。判断
+        if(originalNum == 0 && addNum > 0){   //购物车中没有相应商品，插入
+            int newNum = addNum;
+            userMapper.InsertNewGoodsIntoCart(username, goodsId, newNum);
+        }else if ( addNum > 0 || (addNum < 0 && (originalNum + addNum) >= 0)){   //增加购物车中商品数量，或者减少的数量小于等于购物车中已有的数量
+            int newNum = originalNum + addNum;
+            userMapper.UpdateGoodsNumInCart(username, goodsId, newNum);
+        }else if( (originalNum + addNum) < 0 || addNum == 0){  //商品减少的数量大于购物车中原有的数量
+            result.setState(NO);
+        }
+        //移除购物车中数量为0的商品
+        userMapper.DeleteZeroGoodsInCart(username);
+
+        return result;
+    }
 }

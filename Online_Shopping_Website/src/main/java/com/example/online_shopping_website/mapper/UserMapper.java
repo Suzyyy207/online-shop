@@ -112,5 +112,13 @@ public interface UserMapper {
     int RechargeProfitAccountByUsername(String username, BigDecimal credit);
 
     int RechargeIntermediaryAccountByUsername(String username, BigDecimal credit);
+
+    Integer getGoodsNumberInCart(String username, int goodsId);
+
+    void InsertNewGoodsIntoCart(String username, int goodsId, int num);
+
+    void UpdateGoodsNumInCart(String username, int goodsId,  int num);
+
+    void DeleteZeroGoodsInCart(String username);
 }
 
