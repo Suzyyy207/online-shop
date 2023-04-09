@@ -2,6 +2,22 @@
 
 ## 面向用户的店铺&商品展示
 
+### 获取店铺信息 getShopInfoByShopname
+| 接口名      | 方法 | 功能         |
+| ----------- | ---- | ------------ |
+| getShopInfoByShopname | POST | 获取指定店铺信息 |
+
+参数列表 front->back
+| 参数名   | 含义   | 类型&备注 |
+| -------- | ------ | --------- |
+| shopname |  |           |
+
+参数列表 back->front
+| 参数名 | 含义         | 类型&备注         |
+| ------ | ------------ | ----------------- |
+| state  |  |   |
+| data  | shop类 | 包括店铺头像avatar和其他店铺相关信息  |
+
 ### 商品展示 getGoodsInfoByGoodsId
 
 | 接口名      | 方法 | 功能         |
@@ -41,7 +57,7 @@
 | 接口名      | 方法 | 功能         |
 | ----------- | ---- | ------------ |
 | addToFavorites | POST | 收藏商品 |
-| Unfavorited | POST | 取消收藏商品 |
+| Unfavorite | POST | 取消收藏商品 |
 
 参数列表 front->back
 | 参数名   | 含义   | 类型&备注 |
