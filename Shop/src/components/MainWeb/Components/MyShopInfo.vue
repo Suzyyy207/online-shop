@@ -173,6 +173,7 @@ export default {
   grid-template-columns: repeat(50px, 6);
   grid-template-rows: repeat(10%, 10);
   grid-column-gap:0px;
+  grid-row-gap:10px;
   font-size: 20px;
 /*
     background-color: #fff;
@@ -186,13 +187,14 @@ export default {
 .shop .logo{
     grid-row: 1/3;
     grid-column: 1/4;
-    width: 70%;
+    width: 90%;
     height: 90%;
     background-color: #303133;
 }
 
 
 .shop .info1{
+  margin-left: 20px;
   grid-row: 1/3;
   grid-column: 4/11;
   margin-top: -15px;
@@ -251,14 +253,18 @@ export default {
 }
 
 .deleteConfirm .deleteConfirmBtn{
-  display: inline-flex;
+  display: flex;
+  margin: 20px auto;
 }
 
 .deleteConfirm .deleteConfirmBtn .delete{
   font-family: "Brush Script MT", cursive;
+  border-color:gray;
   padding: 10px;
   font-size: large;
   font-size: 20px;
+  margin: 20px auto;
+  width: 40%;
 }
 
 

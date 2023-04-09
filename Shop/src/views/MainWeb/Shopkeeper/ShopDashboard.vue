@@ -15,7 +15,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <section>
         <el-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
             <el-tab-pane label="店铺基本信息">
-                <MyShopInfo class="cont" v-if="isregistered && (!isToModify)" :shop="shop"/>
+                <MyShopInfo class="info" v-if="isregistered && (!isToModify)" :shop="shop"/>
                 <ShopRegister class="cont" v-else :shop="shop"/>
             </el-tab-pane>
 
@@ -124,5 +124,8 @@ export default {
 </script>
 
 <style scoped>
-/*商家注册信息栏*/
+.info{
+    margin: 30px auto;
+    width : 80%;
+}
 </style>
