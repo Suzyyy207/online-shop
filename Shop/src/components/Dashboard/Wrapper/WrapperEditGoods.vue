@@ -123,7 +123,7 @@ export default {
     background-color: #fff;
     border-radius: 15px;
     color: #303133;
-    border: 3px solid #81A18B;
+    border: 3px solid #ebeef5;
     transition: .3s;
     margin-bottom: 40px;
 }
