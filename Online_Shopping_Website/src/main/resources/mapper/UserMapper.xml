@@ -7,17 +7,19 @@
 
     <resultMap id="UserMap" type="com.example.online_shopping_website.entity.User">
         <result column="uid" property="uid"/>
+        <result column="usertype" property="usertype"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
         <result column="shopid" property="shopid"/>
         <result column="phone" property="phone"/>
-        <result column="email" property="email"/>
         <result column="email" property="email"/>
         <result column="idnum" property="idnum"/>
         <result column="is_delete" property="is_delete"/>
         <result column="salt" property="salt"/>
         <result column="avatar" property="avatar"/>
     </resultMap>
+
+
 
     <insert id="Insert" >
         INSERT INTO users(username, password)
@@ -52,21 +54,56 @@
     </update>
 
     <update id="UpdateNewusernameByOldusername">
-        UPDATE users SET username = #{Newusername} WHERE usrename = #{oldusername}
+        UPDATE users SET username = #{Newusername} WHERE username = #{oldusername}
     </update>
 
     <update id="UpdateNewpasswordByOldusername">
-        UPDATE users SET password = #{Newpassword} WHERE usrename = #{oldusername}
+        UPDATE users SET password = #{Newpassword} WHERE username = #{oldusername}
     </update>
 
     <update id="UpdateNewphoneByOldusername">
-        UPDATE users SET phone = #{Newphone} WHERE usrename = #{oldusername}
+        UPDATE users SET phone = #{Newphone} WHERE username = #{oldusername}
     </update>
 
     <update id="UpdateNewemailByOldusername">
-        UPDATE users SET email = #{Newemail} WHERE usrename = #{oldusername}
+        UPDATE users SET email = #{Newemail} WHERE username = #{oldusername}
     </update>
 
+    <select id="GetUserTypeByUsername" resultType="int" >
+        SELECT usertype FROM users WHERE username = #{username}
+    </select>
+
+    <select id="GetPrivateAccountByUsername" resultType="java.math.BigDecimal">
+        SELECT privateAccount FROM users WHERE username = #{username}
+    </select>
+
+    <select id="GetShopAccountByUsername" resultType="java.math.BigDecimal">
+        SELECT shopAccount FROM users WHERE username = #{username}
+    </select>
+
+    <select id="GetProfitAccountByUsername" resultType="java.math.BigDecimal">
+        SELECT profitAccount FROM users WHERE username = #{username}
+    </select>
+
+    <select id="GetIntermediaryAccountByUsername" resultType="java.math.BigDecimal">
+        SELECT intermediaryAccount FROM users WHERE username = #{username}
+    </select>
+
+    <update id="RechargePrivateAccountByUsername">
+        UPDATE users SET privateAccount = #{credit} WHERE username = #{username}
+    </update>
+
+    <update id="RechargeShopAccountByUsername">
+        UPDATE users SET shopAccount = #{credit} WHERE username = #{username}
+    </update>
+
+    <update id="RechargeProfitAccountByUsername">
+        UPDATE users SET profitAccount = #{credit} WHERE username = #{username}
+    </update>
+
+    <update id="RechargeIntermediaryAccountByUsername">
+        UPDATE users SET intermediaryAccount = #{credit} WHERE username = #{username}
+    </update>
 </mapper>
 
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.lang.annotation.Inherited;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
@@ -36,6 +37,16 @@ public class User extends BaseEntity implements Serializable {
     private String salt;
 
     private byte[] avatar;
+
+    private BigDecimal privateAccount;
+
+    public BigDecimal getPrivateAccount() {
+        return privateAccount;
+    }
+
+    public void setPrivateAccount(BigDecimal privateAccount) {
+        this.privateAccount = privateAccount;
+    }
 
     public byte[] getAvatar() {
         return avatar;
@@ -124,6 +135,10 @@ public class User extends BaseEntity implements Serializable {
         this.salt = salt;
     }
 
+    public User(String username) {
+        this.username = username;
+    }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -156,11 +171,11 @@ public class User extends BaseEntity implements Serializable {
         this.idnum = idnum;
     }
 
-    public User(String username, String phone, String email, String idnum) {
+    public User(String username, String password, String phone, String email) {
         this.username = username;
+        this.password = password;
         this.phone = phone;
         this.email = email;
-        this.idnum = idnum;
     }
 
     public User(String username, String password, String phone, String email, String idnum) {
@@ -169,6 +184,14 @@ public class User extends BaseEntity implements Serializable {
         this.phone = phone;
         this.email = email;
         this.idnum = idnum;
+    }
+
+    public User(String username, String phone, String email, String idnum, BigDecimal privateAccount) {
+        this.username = username;
+        this.phone = phone;
+        this.email = email;
+        this.idnum = idnum;
+        this.privateAccount = privateAccount;
     }
 }
 

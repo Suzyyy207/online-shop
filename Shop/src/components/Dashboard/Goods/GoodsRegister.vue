@@ -48,9 +48,9 @@
             </el-form-item>
 
             <!--TODO: 简介框需要比其他框height更大-->
-            <el-form-item label="商品简介" prop="introduction">
+            <el-form-item label="店铺简介" prop="introduction">
                 <el-input 
-                    placeholder="商品简介（不超过128个字）" 
+                    placeholder="店铺简介（不超过128个字）" 
                     v-model="addForm.introduction" 
                     autocomplete="off"
                     Clearable
@@ -76,6 +76,13 @@
                 type="primary" 
                 @click="setGoodsInfo('addForm')" 
             >提交
+            </el-button>
+
+            <el-button 
+                v-else
+                type="primary" 
+                @click="handleUpload('addForm')" 
+            >注&nbsp;&nbsp;册
             </el-button>
 
         </el-form>
@@ -135,34 +142,16 @@ export default {
         getGoodsInfo() {
             if(this.goods!="") {
                 console.log("商品信息修改");
-                this.$axios.post('/getEditingGoodsInfo',{
-                    goodsId: this.goods.goodsId
-                }).then(res => {
-                    if(res.data.state == window.SUCCESS) {
-                        // 显示的是提交但未审批的信息
-                        const goods = res.data.data;
-                        this.isModified = 1;
-                        this.addForm.goodsname = goods.goodsname;
-                        this.addForm.goodsPrice = goods.goodsPrice;
-                        this.addForm.goodsStock = goods.goodsStock;
-                        this.addForm.goodsCategory = goods.goodsCategory;
-                        this.addForm.introduction = goods.introduction;
-                        // TODO：fileList类型转换
-                        this.addForm.fileList = goods.goodsAvatar;
-                    }
-                    else {
-                        // 显示当前商品的信息
-                        this.isModified = 1;
-                        this.addForm.goodsname = this.goods.goodsname;
-                        this.addForm.goodsPrice = this.goods.goodsPrice;
-                        this.addForm.goodsStock = this.goods.goodsStock;
-                        this.addForm.goodsCategory = this.goods.goodsCategory;
-                        this.addForm.introduction = this.goods.introduction;
-                        // TODO：fileList类型转换
-                        this.addForm.fileList = this.goods.goodsAvatar;
-                    }
-                    
-                })
+                this.isModified = 1;
+                this.addForm.goodsname = this.goods.goodsname;
+                this.addForm.goodsPrice = this.goods.goodsPrice;
+                this.addForm.goodsStock = this.goods.goodsStock;
+                this.addForm.goodsCategory = this.goods.goodsCategory;
+                this.addForm.introduction = this.goods.introduction;
+                this.addForm.fileList = this.goods.goodsAvatar;
+                // TODO：fileList类型转换
+
+                //goodsId = this.goods.goodsId
                 console.log(this.goods);
             }
         },
@@ -208,6 +197,53 @@ export default {
             this.addForm.fileList = fileList;
             console.log(this.addForm.fileList.length);
         },
+        handleUpload: function (addForm)  {
+            console.log("here");
+            this.$refs[addForm].validate((valid) => {
+            if (valid) {
+                // 先传输普通数据
+                var localStorage = window.localStorage;
+                this.$axios.post('/goodsRegister', {
+                    shopname: localStorage.getItem("shopname"),
+                    goodsCategory: this.addForm.goodsCategory,
+                    introduction: this.addForm.introduction,
+                    goodsname:this.addForm.goodsname,
+                    goodsPrice: this.addForm.goodsPrice,
+                    goodsStock: this.addForm.goodsStock
+                })
+                .then(res => {
+                    if(res.data.state == window.SUCCESS){
+                        // 然后传输图片
+                        let formData = new FormData();
+                        formData.append("goodsId", res.data.data.goodsId);
+                        for (let i = 0; i < this.addForm.fileList.length; i++) {
+                            formData.append("file", this.addForm.fileList[i].raw);
+                        }
+                        this.$axios.post("/setGoodsPicture", formData, {
+                            headers: { "Content-Type": "multipart/form-data" },
+                        })
+                        .then((res) => {
+                            console.log(res.data);
+                            this.$message.success("提交成功！");
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            this.$message.error("提交失败，请重试");
+                        });
+                    }
+                    else {
+                        this.$message.error("提交失败，请重试");
+                    }
+                })
+                .catch(err => {
+                console.log(err);
+                })
+            } else {
+                console.log("校验失败");
+                return false;
+            }
+          });
+        },
         setGoodsInfo: function (addForm) {
             this.$refs[addForm].validate((valid) => {
             if (valid) {
@@ -235,7 +271,6 @@ export default {
                         .then((res) => {
                             console.log(res.data);
                             this.$message.success("提交成功！");
-                            this.$router.go(0);
                         })
                         .catch((err) => {
                             console.log(err);

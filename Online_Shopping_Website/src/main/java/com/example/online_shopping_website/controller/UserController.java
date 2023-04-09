@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Map;
 
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
@@ -43,8 +45,8 @@ public class UserController {
     }
 
     @RequestMapping("/api/getUserInfo")
-    public JsonResult<User> getUserInfo(@RequestParam("username") String username){
-
+    public JsonResult<User> getUserInfo(@RequestBody User user){
+        String username = user.getUsername();
         JsonResult<User> getUserInfoResult = new JsonResult<>(YES);
         try{
             getUserInfoResult = userService.getUserInfo(username);
@@ -59,12 +61,14 @@ public class UserController {
     }
 
     @RequestMapping("/api/setUserInfo")
-    public JsonResult<User> setUserInfo(@RequestParam("username") String oldusername,
-                                        @RequestParam("newusername") String newusername,
-                                        @RequestParam("newusername") String newpassword,
-                                        @RequestParam("phone") String newphone,
-                                        @RequestParam("email") String newemail){
-        JsonResult<User> setUserInfoResult = new JsonResult<>(YES);
+    public JsonResult<User> setUserInfo(@RequestBody Map<String,Object> map){
+        String oldusername = (String)map.get("oldusername");
+        String newusername = (String)map.get("newusername");
+        String newpassword = (String)map.get("newpassword");
+        String newphone = (String)map.get("newphone");
+        String newemail = (String)map.get("newemail");
+
+        JsonResult<User> setUserInfoResult = new JsonResult<>(YES,"");
         User NewUserInfo = new User(newusername,newpassword,newphone,newemail);
 
         try{
@@ -126,6 +130,31 @@ public class UserController {
             result.setMessage("用户没有头像");
         }
         result.setData(image);
+        return result;
+    }
+
+    @RequestMapping("/api/recharge")
+    public JsonResult recharge(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        BigDecimal credit = new BigDecimal((String) map.get("credit"));
+        int accountType = (int)map.get("accountType");
+        JsonResult result = new JsonResult<>();
+        //异常情况 credit太大或太小
+        BigDecimal zero = new BigDecimal(0);
+        if(credit.compareTo(zero) == -1){   //-1, 0, or 1 = less than, equal to, or greater than .
+            result.setState(NO);
+        }else{
+            result = userService.recharge(username, credit, accountType);
+        }
+        return result;
+    }
+
+    @RequestMapping("/api/getUserTransactions")
+    public JsonResult getUserTransactions(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        JsonResult result = new JsonResult<>();
+
+        result = userService.getUserTransactions(username);
         return result;
     }
 }
