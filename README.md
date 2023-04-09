@@ -23,6 +23,7 @@
 | 接口名      | 方法 | 功能         |
 | ----------- | ---- | ------------ |
 | addToFavorites | POST | 收藏商品 |
+| Unfavorited | POST | 取消收藏商品 |
 
 参数列表 front->back
 | 参数名   | 含义   | 类型&备注 |
@@ -37,8 +38,7 @@
 
 | 接口名      | 方法 | 功能         |
 | ----------- | ---- | ------------ |
-| isFavorited | POST | 收藏商品 |
-| Unfavorited | POST | 取消收藏商品 |
+| isFavorited | POST | 是否已经收藏商品 |
 
 参数列表 front->back
 | 参数名   | 含义   | 类型&备注 |
