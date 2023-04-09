@@ -152,8 +152,6 @@ export default {
   margin: 10px 20px 20px 20px;
   line-height: 100px;
   align-items: center;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-wrap: wrap;
   overflow: auto;

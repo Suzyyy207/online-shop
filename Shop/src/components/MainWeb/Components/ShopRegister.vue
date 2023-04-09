@@ -424,7 +424,12 @@ const idnumValidator = (rule, value, callback) => {
 
 <style scoped>
 .register{
-  margin:40px 60px;
+  margin:20px 60px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  color: #303133;
+  border: 3px solid #ebeef5;
 }
 
 .register h1{

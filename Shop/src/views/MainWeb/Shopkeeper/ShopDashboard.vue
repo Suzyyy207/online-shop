@@ -13,7 +13,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <Nav></Nav>
 
     <section>
-        <el-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
+        <el-tabs :tab-position=tabPosition class="tabs">
             <el-tab-pane label="店铺基本信息">
                 <MyShopInfo class="info" v-if="isregistered && (!isToModify)" :shop="shop"/>
                 <ShopRegister class="cont" v-else :shop="shop"/>
@@ -34,6 +34,8 @@ import { RouterLink, RouterView } from 'vue-router'
 <script>
 import "../../../constant.js";
 import { interceptor, shopkeeperInterceptor } from "../../../interceptor";
+import { ref } from 'vue'
+const tabPosition = ref('left')
 export default {
     props: ["shop_id"],
     components: {
@@ -124,8 +126,12 @@ export default {
 </script>
 
 <style scoped>
+.tabs{
+    margin-top:20px
+}
+
 .info{
     margin: 30px auto;
-    width : 80%;
+    width: 90%;
 }
 </style>
