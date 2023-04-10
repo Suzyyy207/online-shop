@@ -22,7 +22,7 @@ export default{
         getShopAccount() {
             var localStorage = window.localStorage;
             this.$axios.post("/getShopAccount", {
-                shopname: localStorage.getItem("shopname")
+                username: localStorage.getItem("username")
             }).then(res => {
                 this.shopAccount = res.data.data;
             }).catch((err) => {

@@ -1,4 +1,8 @@
 <!--此组件打包所有购物车内信息，向用户展示-->
+<script setup>
+import GoodsInSL from '../ShoppingList/GoodsInSL.vue'
+</script>
+
 <template>
     <div class="wrap">
         <div class="title">
@@ -24,6 +28,18 @@
                         <el-checkbox>店铺：店铺名</el-checkbox>
                     </div>
                     <div class="goods">
+                        <GoodsInSL class="good"/>
+
+
+                    </div>
+                </div>
+                <div class="singleShop">
+                    <div class="shopInfo">
+                        <el-checkbox>店铺：店铺名</el-checkbox>
+                    </div>
+                    <div class="goods">
+                        <GoodsInSL class="good"/>
+                        <GoodsInSL class="good"/>
 
                     </div>
                 </div>
@@ -34,11 +50,10 @@
 
 <style scoped>
 .wrap{
-    width: 80%;
+    width: 85%;
     height: 100%;
     margin:20px auto;
     padding: 10px 0 30px;
-    line-height: 100px;
     background-color: #fff;
     border-radius: 15px;
     color: #303133;
@@ -51,7 +66,7 @@
     display: grid;
     grid-template-columns: 60% 40%;
     padding: 0px 20px;
-    margin: 10px 10px 0 10px;
+    margin: 20px 10px;
 }
 .title > p{
     grid-column: 1/2;
@@ -99,27 +114,41 @@
     color: #3c3c3c;
     display: grid;
     grid-template-columns: 10% 40% 10% 15% 10% 15%;
-    margin-bottom: 0;
+    margin: 20px auto;
+    text-align: center;
 }
-.cartTable > span{
+.cartTable  span{
     margin-top: -7px;
-    font-size:14px;
     color:#3c3c3c;
     justify-content: top;
+    font-size: 20px;
 }
 
 /*按商家展示排版*/
+
 .singleShop{
     padding:0px 20px;
-    margin:0 auto;
+    margin:0px auto 40px;
+}
+.singleShop .shopInfo{
+    margin:30px 10px;
 }
 .singleShop .goods{
     margin-top:-20px;
-    padding:0px 40px;
-    width:100%;
-    height:100px;
+    margin-left: 30px;
+    padding:10px 0px 0 30px;
+    width:95%;
+    height:auto;
     align-items: center;
-    background-color: rgba(128,128,128,0.3);
+    background-color: rgba(128,128,128,0.1);
     border-radius: 15px;
+}
+.singleShop .goods .good{
+    background-color: transparent;
+    border:none;
+    box-shadow: none;
+    width: 100%;
+    height:auto;
+    padding-top:10px;
 }
 </style>
