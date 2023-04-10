@@ -68,7 +68,7 @@ export default {
     shopApplicationApproved: function() {
       this.$axios.post('/shopApplicationApproved', {
           shopname: this.shop.shopname,
-          approveType: this.shop.is_admitted
+          is_admitted: this.shop.is_admitted
         })
       .then(res=>{
         if(res.data.state == window.SUCCESS){
@@ -85,7 +85,7 @@ export default {
     shopApplicationRejected: function() {
       this.$axios.post('/shopApplicationRejected', {
           shopname: this.shop.shopname,
-          rejectType: this.shop.is_admitted
+          is_admitted: this.shop.is_admitted
         })
       .then(res=>{
         if(res.data.state == window.SUCCESS){
