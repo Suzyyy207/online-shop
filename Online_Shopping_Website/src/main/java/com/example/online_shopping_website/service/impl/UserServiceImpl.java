@@ -236,5 +236,14 @@ public class UserServiceImpl implements IUserService {
         userMapper.DeleteZeroGoodsInCart(username);
 
         return result;
+
+
+    }
+
+    @Override
+    public JsonResult getShopAccount(String shopname){
+        JsonResult result = new JsonResult<>(YES);
+
+        return result;
     }
 }
