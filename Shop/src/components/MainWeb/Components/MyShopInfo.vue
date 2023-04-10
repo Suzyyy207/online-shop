@@ -131,7 +131,7 @@ export default {
     cancelRegister() {
       this.$axios.post('/cancelRegister',{
         shopname: localStorage.getItem("shopname"),
-        cancelType: this.shop.is_admitted
+        is_admitted: this.shop.is_admitted
       }).then(res=>{
         if(res.data.state==window.SUCCESS){
           this.$message.success(res.data.message);

@@ -57,7 +57,7 @@ export default {
         goodsApplicationApproved() {
             this.$axios.post('/goodsApplicationApproved',{
                 goodsId: this.goods.goodsId,
-                approveType: this.goods.status
+                status: this.goods.status
             }).then(res => {
                     if(res.data.state == window.SUCCESS){
                        this.$message.success(res.data.message);
@@ -73,7 +73,7 @@ export default {
         goodsApplicationRejected() {
             this.$axios.post('/goodsApplicationRejected',{
                 goodsId: this.goods.goodsId,
-                cancelType: this.goods.status
+                status: this.goods.status
             }).then(res => {
                     if(res.data.state == window.SUCCESS){
                        this.$message.success(res.data.message);
