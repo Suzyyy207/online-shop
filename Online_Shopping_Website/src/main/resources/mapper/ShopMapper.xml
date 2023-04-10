@@ -59,5 +59,17 @@
         VALUES
             (#{shopid}, #{goodtype});
     </insert>
+    
+    <insert id="TransferCapitalToIntemediaryAccount">
+        insert into users
+            (intermediaryAccount)
+        VALUES
+            (#{capital})
+        WHERE usertype = 0
+    </insert>
 
+    <update id="TransferCapitalFromIntemediaryToProfitAccount">
+        UPDATE users SET intermediaryAccount = intermediaryAccount - #{capital} WHERE usertype = 0;
+        UPDATE users SET profitAccount = profitAccount + #{capital} WHERE usertype = 0;
+    </update>
 </mapper>

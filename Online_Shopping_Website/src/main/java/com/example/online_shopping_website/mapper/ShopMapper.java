@@ -1,6 +1,7 @@
 package com.example.online_shopping_website.mapper;
 import com.example.online_shopping_website.entity.Shop;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ShopMapper {
@@ -65,4 +66,8 @@ public interface ShopMapper {
      * @param
      * @return 返回找到的商店
      */
+
+    void TransferCapitalToIntemediaryAccount(BigDecimal capital);
+
+    void TransferCapitalFromIntemediaryToProfitAccount(BigDecimal capital);
 }
