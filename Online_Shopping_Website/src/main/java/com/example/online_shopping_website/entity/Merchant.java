@@ -5,9 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Data
 public class Merchant extends User implements Serializable {
-    private BigDecimal Shopaccount;
+    private float account;
 }

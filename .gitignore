@@ -2,9 +2,8 @@
 /.idea
 
 /design.md
-/shop/run.bat
-
+/test.md
 .DS_Store
 /Shop/node_modules
 
-/Online_Shopping_Website/src/main/resources/application.properties
+application.properties

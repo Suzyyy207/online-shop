@@ -14,7 +14,6 @@
             </div>
             <p>身份证号:{{this.form.idnum}}</p>
             <p>邮箱:{{this.form.email}}</p>
-            <!--这里需要根据用户类型决定展示信息-->
             <p>个人账户余额: <num class="account">{{ this.form.account }}</num></p>
             <div class="charge">
                 <el-input class="chargeInput" v-model='credit'></el-input>
@@ -48,12 +47,12 @@ export default {
     methods: {
       getUserInfo() {
         var localStorage = window.localStorage;
+        console.log("created!");
         this.$axios.post('/getUserInfo', {
             username: localStorage.getItem("username")
         })
         .then(res => {
             const user = res.data.data;
-            /*this.form.gender = user.gender;*/
             this.form.username = user.username;
             this.form.phone = user.phone;
             this.form.idnum = user.idnum;
@@ -96,7 +95,7 @@ export default {
                 username: localStorage.getItem("username"),
                 // accountType为1表示为个人账户充值
                 accountType: 1,
-                credit: this.credit
+                credit: String(this.credit)
             })
             .then(res => {
                 if(res.data.state==window.SUCCESS) {

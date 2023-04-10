@@ -3,7 +3,7 @@
             <p>Welcome!</p>
             <nav>
                 <RouterLink to="/UserWeb">首页</RouterLink>
-                <RouterLink to="#">购物车</RouterLink>
+                <RouterLink to="/userSL">购物车</RouterLink>
                 <RouterLink to="#">收藏夹</RouterLink>
                 <RouterLink to="/userSelfCenter">个人中心</RouterLink>
                 <RouterLink to="/">退出登录</RouterLink>

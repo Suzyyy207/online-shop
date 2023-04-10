@@ -149,9 +149,9 @@
                   <el-button type="primary" @click="reset">重&nbsp;&nbsp;置</el-button>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col v-if="toModify" :span="8">
                 <el-form-item class="btn">
-                  <el-button type="primary">返&nbsp;&nbsp;回</el-button>
+                  <el-button type="primary" @click="cancel">返&nbsp;&nbsp;回</el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -166,6 +166,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { validateIdnum } from "../../../validate";
 import "../../../constant.js";
 import ValidCode from "./ValidCode.vue";
+import ShopDashboard from '../../../views/MainWeb/Shopkeeper/ShopDashboard.vue';
 const idnumValidator = (rule, value, callback) => {
   if (!value) {
     return callback(new Error("身份证号不能为空"));
@@ -215,6 +216,7 @@ const idnumValidator = (rule, value, callback) => {
           validCode: "",
           idnumDisabled: false
         },
+        toModify: false,
         validCode: "",
         rules: {
           shopname: [
@@ -255,15 +257,16 @@ const idnumValidator = (rule, value, callback) => {
     methods: {
       modify:function() {
         var localStorage = window.localStorage;
-        // TODO:goodstype处理
         this.form.shopname = localStorage.getItem('shopname');
-        // this.form.goodstype = localStorage.getItem('goodstype');
+        this.form.goodstype = [localStorage.getItem('goodstype')];
         this.form.introduction = localStorage.getItem('introduction');
         this.form.address = localStorage.getItem('address');
         this.form.idnum = localStorage.getItem('idnum');
         this.form.idnumDisabled = true;
         this.form.capital = localStorage.getItem('capital');
         this.form.date = new Date(localStorage.getItem('date'));
+        this.toModify = true;
+        console.log(this.form.goodstype)
       },
       register: function (form) {
         // 首先判断需要填写的信息是否已经完全填入
@@ -366,7 +369,7 @@ const idnumValidator = (rule, value, callback) => {
       },
       reset: function () {
         ElMessageBox.confirm(
-          '你确定要重置输入信息吗',
+          '你确定要重置输入信息吗，将恢复店铺原信息',
           '', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -408,6 +411,10 @@ const idnumValidator = (rule, value, callback) => {
       },
       addZero(value) {
         return value < 10 ? `0${value}` : value; // 如果数字小于10，就在前面加0，比如9月就变成09月
+      },
+      cancel() {
+        localStorage.removeItem("toModify");
+        this.$router.go(0)
       }
     }
 }
@@ -417,7 +424,12 @@ const idnumValidator = (rule, value, callback) => {
 
 <style scoped>
 .register{
-  margin:40px 60px;
+  margin:20px 60px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  color: #303133;
+  border: 3px solid #ebeef5;
 }
 
 .register h1{
