@@ -137,5 +137,27 @@ public class ShopController {
         return Result;
     }
 
+    @RequestMapping("getShopInfoByShopname")
+    public JsonResult getShopInfoByShopname(@RequestBody Map<String,Object> map){
+        String shopname = (String)map.get("shopname");
+        JsonResult result = shopService.getShopInfoByShopname(shopname);
+        return result;
+    }
+
+    @RequestMapping("/api/shopUnregister")
+    public JsonResult shopUnregister(@RequestBody Map<String,Object> map){
+        String shopname = (String) map.get("shopname");
+        JsonResult result = shopService.shopUnregister(shopname);
+        return result;
+    }
+
+    @RequestMapping("/api/cancelRgister")   //撤销商铺注册/删除申请
+    public  JsonResult cancelRegister(@RequestBody Map<String,Object> map){
+        String shopname = (String) map.get("shopname");
+        int cancelType = (int)map.get("cancelType");
+        JsonResult result = shopService.cancelRegister(shopname, cancelType);
+        return  result;
+    }
+
 
 }

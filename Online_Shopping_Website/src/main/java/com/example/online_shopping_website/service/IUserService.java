@@ -40,4 +40,6 @@ public interface IUserService {
     JsonResult getUserTransactions(String username);
 
     JsonResult addToCart(String username, int goodsId, int num);
+
+    JsonResult getShopAccount(String shopname);
 }

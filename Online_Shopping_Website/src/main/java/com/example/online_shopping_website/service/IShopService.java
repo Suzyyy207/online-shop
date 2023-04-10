@@ -13,4 +13,9 @@ public interface IShopService {
     ShopInfo ShopAdmitAdmittanceCheck(String shopname);
     List<Shop> GetAllNotAdmittedShop();
     Shop GetShopInformationFromUser(String username);
+    JsonResult shopUnregister(String shopname);
+
+    JsonResult cancelRegister(String shopname, int cancelType);
+
+    JsonResult getShopInfoByShopname(String shopname);
 }

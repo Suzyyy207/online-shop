@@ -1,6 +1,7 @@
 package com.example.online_shopping_website.controller;
 
 import com.example.online_shopping_website.entity.User;
+import com.example.online_shopping_website.service.IShopService;
 import com.example.online_shopping_website.service.IUserService;
 import com.example.online_shopping_website.service.ex.*;
 import com.example.online_shopping_website.util.JsonResult;
@@ -20,6 +21,9 @@ import static javax.security.auth.callback.ConfirmationCallback.*;
 public class UserController {
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IShopService shopService;
 
     @RequestMapping("/api/userRegister")
     public JsonResult<User> register(@RequestBody User user){
@@ -130,6 +134,14 @@ public class UserController {
             result.setMessage("用户没有头像");
         }
         result.setData(image);
+        return result;
+    }
+
+
+    @RequestMapping("/api/getShopAccount")
+    public JsonResult getShopAccount(@RequestBody Map<String,Object> map){
+        String shopname = (String)map.get("shopname");
+        JsonResult result = userService.getShopAccount(shopname);
         return result;
     }
 
