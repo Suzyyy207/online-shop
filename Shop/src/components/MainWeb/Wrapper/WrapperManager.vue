@@ -2,6 +2,8 @@
 <script setup>
 import ShopShow4Manager from '../Components/ShopShow4Manager.vue'
 import GoodsShow4Manager from '../../Dashboard/Goods/GoodsShow4Manager.vue';
+import ProfitAccount from '../../../components/Dashboard/Manager/ProfitAccount.vue'
+import IntermediaryAccount from '../../../components/Dashboard/Manager/IntermediaryAccount.vue'
 </script>
 
 <template>
@@ -31,6 +33,17 @@ import GoodsShow4Manager from '../../Dashboard/Goods/GoodsShow4Manager.vue';
                     </div>
 
             </el-tab-pane>
+            <el-tab-pane label="账户信息">
+                <el-tabs>
+                    <el-tab-pane label="商城利润">
+                        <ProfitAccount />
+                    </el-tab-pane>
+                    <el-tab-pane label="中间账户信息">
+                        <IntermediaryAccount />
+                    </el-tab-pane>
+                </el-tabs>
+
+            </el-tab-pane>
         </el-tabs>
         
     </div>
@@ -44,6 +57,8 @@ export default {
             registeredShopList: [],
             registeringShopList: [],
             approvingGoodsList: [],
+            profitAccount: 0,
+            intermediaryAccount: 0,
             goods:{
                 goodsname: "goodsname",
                 goodsId: "id",
@@ -52,7 +67,8 @@ export default {
                 goodsPrice:100,
                 goodsStock:20,
                 introduction:"intro",
-                goodsCategory: ['电脑数码', '家用电器']
+                goodsCategory: ['电脑数码', '家用电器'],
+                goodsAvatar: ""
             }
         }
     },
@@ -79,6 +95,18 @@ export default {
             this.$axios.get('/getApprovingGoods')
             .then(res => {
                 this.approvingGoodsList = this.approvingGoodsList.concat(res.data.data);
+            })
+        },
+        getProfitAccount() {
+            this.$axios.get('/getProfitAccount')
+            .then(res => {
+                this.profitAccount = res.data.data.profitAccount;
+            })
+        },
+        getIntermediaryAccount() {
+            this.$axios.get('/getIntermediaryAccount')
+            .then(res => {
+                this.intermediaryAccount = res.data.data.intermediaryAccount;
             })
         }
     }
