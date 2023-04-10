@@ -58,6 +58,17 @@ const router = createRouter({
       component: () => import('../views/SelfCenter/ShopkeeperSC.vue')
     },
 
+    //新添加的购物车界面，未加拦截器
+    {
+      path: '/userSL',
+      name: 'userShoppingList',
+      component: () => import('../views/ShoppingList/UserSL.vue')
+    },
+    {
+      path: '/shopkeeperSL',
+      name: 'shopkeeperShoppingList',
+      component: () => import('../views/ShoppingList/ShopkeeperSL.vue')
+    },
 
     // 下述页面是为了调试方便的组件路径，最终需要封装到views中，因此不需要额外添加拦截器
     // 提交项目前保证无组件路径
