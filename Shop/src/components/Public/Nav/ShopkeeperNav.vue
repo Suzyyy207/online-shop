@@ -6,7 +6,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <header>
         <nav>
             <RouterLink to="/ShopkeeperWeb">首页</RouterLink>
-            <RouterLink to="#">购物车</RouterLink>
+            <RouterLink to="/shopkeeperSL">购物车</RouterLink>
             <RouterLink to="#">收藏夹</RouterLink>
             <RouterLink to="/ShopDashboard">我的店铺</RouterLink>
             <RouterLink to="/shopkeeperSelfCenter">个人中心</RouterLink>
