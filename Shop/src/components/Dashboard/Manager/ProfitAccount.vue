@@ -17,7 +17,7 @@ export default{
         getProfitAccount() {
             this.$axios.get('/getProfitAccount')
             .then(res => {
-                this.profitAccount = res.data.data.profitAccount;
+                this.profitAccount = res.data.data;
             }).catch((err) => {
                 console.log(err);
                 this.$message.error("获取利润失败，请重试");

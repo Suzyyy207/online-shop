@@ -113,4 +113,83 @@ public class Shop {
         this.goodstype = goodstype;
     }
 
+    public int getShopid() {
+        return shopid;
+    }
+
+    public void setShopid(int shopid) {
+        this.shopid = shopid;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public String getGoodstype() {
+        return goodstype;
+    }
+
+    public void setGoodstype(String goodstype) {
+        this.goodstype = goodstype;
+    }
+
+    public List<String> getGoodstypeList() {
+        return goodstypeList;
+    }
+
+    public void setGoodstypeList(List<String> goodstypeList) {
+        this.goodstypeList = goodstypeList;
+    }
+
+    public String getIDnum() {
+        return IDnum;
+    }
+
+    public void setIDnum(String IDnum) {
+        this.IDnum = IDnum;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCapital() {
+        return capital;
+    }
+
+    public void setCapital(String capital) {
+        this.capital = capital;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getIs_admitted() {
+        return is_admitted;
+    }
+
+    public void setIs_admitted(int is_admitted) {
+        this.is_admitted = is_admitted;
+    }
 }

@@ -1,5 +1,8 @@
 package com.example.online_shopping_website.service.impl;
 
+import com.example.online_shopping_website.entity.Transaction;
+import com.example.online_shopping_website.entity.constant.AccountType;
+import com.example.online_shopping_website.mapper.TransactionMapper;
 import com.example.online_shopping_website.mapper.UserMapper;
 import com.example.online_shopping_website.entity.User;
 import com.example.online_shopping_website.service.IUserService;
@@ -9,14 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.sql.Blob;
+import java.math.BigDecimal;
 import java.util.Base64;
+import java.util.List;
 
+import static com.example.online_shopping_website.entity.constant.AccountType.*;
+import static com.example.online_shopping_website.entity.constant.UserType.*;
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
 
@@ -25,6 +26,9 @@ import static javax.security.auth.callback.ConfirmationCallback.*;
 public class UserServiceImpl implements IUserService {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private TransactionMapper transactionMapper;
     @Override
     public JsonResult<User> register(User user){
 
@@ -98,15 +102,14 @@ public class UserServiceImpl implements IUserService {
     public JsonResult<User> getUserInfo(String username){
 
         JsonResult<User> getUserInfoResult = new JsonResult<>(YES);
-        if(!InfoVerification.isUsernameValid(username)){
-            throw new UsernameInvalidException("用户名异常");
-        }
-
+//        if(!InfoVerification.isUsernameValid(username)){
+//            throw new UsernameInvalidException("用户名异常");
+//        }
         User user = userMapper.SearchByUsername(username);
         if(user == null){
             throw new UserNotFoundException("用户未找到");
         }
-        User userInfoPart = new User(user.getPhone(), user.getEmail(), user.getIdnum());
+        User userInfoPart = new User(user.getUsername(),user.getPhone(), user.getEmail(), user.getIdnum(),user.getPrivateAccount());
         getUserInfoResult.setData(userInfoPart);
         return getUserInfoResult;
     }
@@ -119,7 +122,8 @@ public class UserServiceImpl implements IUserService {
         if(SearchByOldusernameResult == null){
             throw new UserNotFoundException("旧用户名不存在");
         }   //有可能只修改其中一项
-        if( !NewUserInfo.getUsername().isEmpty() && userMapper.SearchByUsername(NewUserInfo.getUsername()) != null){
+        //两种情况1. 不修改（相应项为空） 2.已存在
+        if( !NewUserInfo.getUsername().isEmpty() && userMapper.SearchByUsername(NewUserInfo.getUsername()) != null ){
             throw new UsernameDuplicatedException("新用户名已存在");
         }if( !NewUserInfo.getPhone().isEmpty() && userMapper.SearchByPhone(NewUserInfo.getPhone()) != null){
             throw new PhoneDuplicatedException("新电话号码已存在");
@@ -127,26 +131,19 @@ public class UserServiceImpl implements IUserService {
             throw new EmailDuplicatedException("新电子邮箱已存在");
         }
 
-        int row_real = 0;
-        int row_assumption = 0;
-        if(!NewUserInfo.getUsername().isEmpty()){
-            row_real += userMapper.UpdateNewusernameByOldusername(oldUsername, NewUserInfo.getUsername());
-            row_assumption += 1;
-        }
+
         if(!NewUserInfo.getPassword().isEmpty()){
-            row_real += userMapper.UpdateNewpasswordByOldusername(oldUsername, NewUserInfo.getPassword());
-            row_assumption += 1;
+            userMapper.UpdateNewpasswordByOldusername(oldUsername, NewUserInfo.getPassword());
         }
         if(!NewUserInfo.getPhone().isEmpty()){
-            row_real += userMapper.UpdateNewphoneByOldusername(oldUsername, NewUserInfo.getPhone());
-            row_assumption += 1;
+             userMapper.UpdateNewphoneByOldusername(oldUsername, NewUserInfo.getPhone());
         }
         if(!NewUserInfo.getEmail().isEmpty()){
-            row_real += userMapper.UpdateNewemailByOldusername(oldUsername, NewUserInfo.getEmail());
-            row_assumption += 1;
+            userMapper.UpdateNewemailByOldusername(oldUsername, NewUserInfo.getEmail());
         }
-        if(row_real != row_assumption)
-            throw new SQLException("插入数据库出现未知错误");
+        if(!NewUserInfo.getUsername().isEmpty()){   //用户名修改要留到最后
+            userMapper.UpdateNewusernameByOldusername(oldUsername, NewUserInfo.getUsername());
+        }
 
         setUserInfoResult.setMessage("修改成功");
         return setUserInfoResult;
@@ -163,5 +160,90 @@ public class UserServiceImpl implements IUserService {
         if(imageData==null) return null;
         String base64Image = Base64.getEncoder().encodeToString(imageData);
         return base64Image;
+    }
+
+    @Override
+    public JsonResult recharge(String username, BigDecimal credit, int accountType){
+        JsonResult result = new JsonResult<>(YES);
+        int userType = userMapper.GetUserTypeByUsername(username);
+        //根据userType和accountType来判断，取出原来的账户余额，在业务层相加，然后放回
+        switch (userType){
+            case admin:
+                if(accountType == profitAccount){
+                    BigDecimal originalProfitAccount = userMapper.GetProfitAccountByUsername(username);
+                    BigDecimal newProfitAccount = originalProfitAccount.add(credit);
+                    userMapper.RechargeProfitAccountByUsername(username,newProfitAccount);
+                } else if (accountType == intermediaryAccount) {
+                    BigDecimal originalIntermediaryAccount = userMapper.GetIntermediaryAccountByUsername(username);
+                    BigDecimal newIntermediaryAccount = originalIntermediaryAccount.add(credit);
+                    userMapper.RechargeIntermediaryAccountByUsername(username,newIntermediaryAccount);
+                }
+                break;
+            case merchant:
+                if(accountType == privateAccount){
+                    BigDecimal originalPrivateAccount = userMapper.GetPrivateAccountByUsername(username);
+                    BigDecimal newPriavteAccount = originalPrivateAccount.add(credit);
+                    userMapper.RechargePrivateAccountByUsername(username,newPriavteAccount);
+                } else if (accountType == shopAccount) {
+                    BigDecimal originalShopAccount = userMapper.GetShopAccountByUsername(username);
+                    BigDecimal newShopAccount = originalShopAccount.add(credit);
+                    userMapper.RechargeShopAccountByUsername(username,newShopAccount);
+                }
+                break;
+            case buyer:
+                BigDecimal originalPrivateAccount = userMapper.GetPrivateAccountByUsername(username);
+                BigDecimal newPriavteAccount = originalPrivateAccount.add(credit);
+                userMapper.RechargePrivateAccountByUsername(username,newPriavteAccount);
+                break;
+            default:
+                result.setState(NO);
+                System.out.println("账户类型异常");
+        }
+
+        return result;
+    }
+
+
+    @Override
+    public JsonResult getUserTransactions(String username){
+        JsonResult result = new JsonResult<>(YES);
+        List<Transaction> allTransactionResult = transactionMapper.getAllTransactionsByusername(username);
+        result.setData(allTransactionResult);
+        return result;
+    }
+
+    @Override
+    public JsonResult addToCart(String username, int goodsId, int addNum){
+        JsonResult result = new JsonResult<>(YES);
+
+        int originalNum;
+        Integer oNum = userMapper.getGoodsNumberInCart(username, goodsId);
+        if(oNum == null)
+            originalNum = 0;
+        else
+            originalNum = oNum;
+        //取出购物车中该商品的数量。判断
+        if(originalNum == 0 && addNum > 0){   //购物车中没有相应商品，插入
+            int newNum = addNum;
+            userMapper.InsertNewGoodsIntoCart(username, goodsId, newNum);
+        }else if ( addNum > 0 || (addNum < 0 && (originalNum + addNum) >= 0)){   //增加购物车中商品数量，或者减少的数量小于等于购物车中已有的数量
+            int newNum = originalNum + addNum;
+            userMapper.UpdateGoodsNumInCart(username, goodsId, newNum);
+        }else if( (originalNum + addNum) < 0 || addNum == 0){  //商品减少的数量大于购物车中原有的数量
+            result.setState(NO);
+        }
+        //移除购物车中数量为0的商品
+        userMapper.DeleteZeroGoodsInCart(username);
+
+        return result;
+
+
+    }
+
+    @Override
+    public JsonResult getShopAccount(String shopname){
+        JsonResult result = new JsonResult<>(YES);
+
+        return result;
     }
 }

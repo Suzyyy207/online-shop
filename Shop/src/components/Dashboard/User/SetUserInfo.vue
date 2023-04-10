@@ -3,7 +3,7 @@
 <template>
   
     <el-form :model="form" :rules="rules" ref="form" class="form">
-        <UserAvatar class="imgU"></UserAvatar>
+        <Avatar class="imgU" :type="2"></Avatar>
         <el-row>
           <el-col :span="12">
             <el-form-item label="用户名" prop="username">
@@ -124,7 +124,7 @@
   import { ElMessage, ElMessageBox } from 'element-plus';
   import { validatePhone, validateUsername, validateEmail, validatePassword } from "../../../validate";
   import ValidCode from "../../MainWeb/Components/ValidCode.vue";
-  import UserAvatar from "./UserAvatar.vue";
+  import Avatar from "../../Public/Upload/Avatar.vue";
   
   const passwordValidator = (rule, value, callback) => {
   if (!value) {
@@ -175,7 +175,7 @@
     name: "SetUserInfo",
     components:{
       ValidCode,
-      UserAvatar
+      Avatar
     },
     data() {
       var validCodeValidator = (rule, value, callback) => {
@@ -260,6 +260,7 @@
             this.form.idnum = user.idnum;
             this.form.email = user.email;
             this.form.password = user.password;
+            this.form.password2 = user.password;
             this.user.oldusername = user.username;
             this.user.oldphone= user.phone;
             this.user.oldemail= user.email;

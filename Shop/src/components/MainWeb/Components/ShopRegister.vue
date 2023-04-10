@@ -3,6 +3,8 @@
     <div id="register" class="register">
         <h1 v-if="this.form.idnumDisabled">店铺信息修改</h1>
         <h1 v-else>店 铺 注 册</h1>
+
+        <Avatar :type="1" ></Avatar>
         <el-form :model="form" :rules="rules" ref="form" class="form">
             <el-form-item prop="shopname">
                 <el-input 
@@ -167,6 +169,8 @@ import { validateIdnum } from "../../../validate";
 import "../../../constant.js";
 import ValidCode from "./ValidCode.vue";
 import ShopDashboard from '../../../views/MainWeb/Shopkeeper/ShopDashboard.vue';
+import Avatar from '../../Public/Upload/Avatar.vue';
+
 const idnumValidator = (rule, value, callback) => {
   if (!value) {
     return callback(new Error("身份证号不能为空"));
@@ -186,7 +190,8 @@ const idnumValidator = (rule, value, callback) => {
       }
     },
     components:{
-      ValidCode
+      ValidCode,
+      Avatar
     },
     created() {
       this.modify();

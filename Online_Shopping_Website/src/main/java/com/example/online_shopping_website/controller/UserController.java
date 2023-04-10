@@ -1,6 +1,7 @@
 package com.example.online_shopping_website.controller;
 
 import com.example.online_shopping_website.entity.User;
+import com.example.online_shopping_website.service.IShopService;
 import com.example.online_shopping_website.service.IUserService;
 import com.example.online_shopping_website.service.ex.*;
 import com.example.online_shopping_website.util.JsonResult;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Map;
 
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
@@ -18,6 +21,9 @@ import static javax.security.auth.callback.ConfirmationCallback.*;
 public class UserController {
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IShopService shopService;
 
     @RequestMapping("/api/userRegister")
     public JsonResult<User> register(@RequestBody User user){
@@ -43,8 +49,8 @@ public class UserController {
     }
 
     @RequestMapping("/api/getUserInfo")
-    public JsonResult<User> getUserInfo(@RequestParam("username") String username){
-
+    public JsonResult<User> getUserInfo(@RequestBody User user){
+        String username = user.getUsername();
         JsonResult<User> getUserInfoResult = new JsonResult<>(YES);
         try{
             getUserInfoResult = userService.getUserInfo(username);
@@ -59,12 +65,14 @@ public class UserController {
     }
 
     @RequestMapping("/api/setUserInfo")
-    public JsonResult<User> setUserInfo(@RequestParam("username") String oldusername,
-                                        @RequestParam("newusername") String newusername,
-                                        @RequestParam("newusername") String newpassword,
-                                        @RequestParam("phone") String newphone,
-                                        @RequestParam("email") String newemail){
-        JsonResult<User> setUserInfoResult = new JsonResult<>(YES);
+    public JsonResult<User> setUserInfo(@RequestBody Map<String,Object> map){
+        String oldusername = (String)map.get("oldusername");
+        String newusername = (String)map.get("newusername");
+        String newpassword = (String)map.get("newpassword");
+        String newphone = (String)map.get("newphone");
+        String newemail = (String)map.get("newemail");
+
+        JsonResult<User> setUserInfoResult = new JsonResult<>(YES,"");
         User NewUserInfo = new User(newusername,newpassword,newphone,newemail);
 
         try{
@@ -105,7 +113,7 @@ public class UserController {
 //            return result;
 //    }
     @PostMapping("/api/setUserAvatar")
-    public JsonResult<User> uploadAvatar(@RequestParam("avatar") MultipartFile avatarFile, @RequestParam("username") String username) throws IOException {
+    public JsonResult<User> uploadAvatar(@RequestParam("image") MultipartFile avatarFile,@RequestParam("username") String username) throws IOException {
         User user = new User();
         byte[] avatarData = avatarFile.getBytes();
         userService.UpdateAvatar(username,avatarData);
@@ -126,6 +134,50 @@ public class UserController {
             result.setMessage("用户没有头像");
         }
         result.setData(image);
+        return result;
+    }
+
+
+    @RequestMapping("/api/getShopAccount")
+    public JsonResult getShopAccount(@RequestBody Map<String,Object> map){
+        String shopname = (String)map.get("shopname");
+        JsonResult result = userService.getShopAccount(shopname);
+        return result;
+    }
+
+    @RequestMapping("/api/recharge")
+    public JsonResult recharge(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        BigDecimal credit = new BigDecimal((String) map.get("credit"));
+        int accountType = (int)map.get("accountType");
+        JsonResult result = new JsonResult<>();
+        //异常情况 credit太大或太小
+        BigDecimal zero = new BigDecimal(0);
+        if(credit.compareTo(zero) == -1){   //-1, 0, or 1 = less than, equal to, or greater than .
+            result.setState(NO);
+        }else{
+            result = userService.recharge(username, credit, accountType);
+        }
+        return result;
+    }
+
+    @RequestMapping("/api/getUserTransactions")
+    public JsonResult getUserTransactions(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        JsonResult result = new JsonResult<>();
+
+        result = userService.getUserTransactions(username);
+        return result;
+    }
+
+    @RequestMapping("/api/addToCart")
+    public JsonResult addToCart(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        int goodsId = (int)map.get("goodsId");
+        int num = (int)map.get("num");
+
+        JsonResult result = new JsonResult<>(YES);
+        result = userService.addToCart(username, goodsId, num);
         return result;
     }
 }

@@ -69,13 +69,11 @@ export default {
         })
         .then(res => {
             if(res.data.state==window.SUCCESS) {
-            // 已有头像
-            console.log("success");
-            this.$message.success("收到反馈（根据是否显示图片判断文件传输是否成功）");
-            this.form.avatar = "data:image/jpeg;base64," + res.data.avatar;
+                console.log("success");
+                this.form.avatar = "data:image/jpeg;base64," + res.data.data;
             }
             else {
-            console.log("failure");
+                console.log("failure");
             }
         })
       },

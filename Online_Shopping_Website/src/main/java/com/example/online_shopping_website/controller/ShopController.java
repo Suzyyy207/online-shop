@@ -44,7 +44,6 @@ public class ShopController {
         JsonResult<Shop> result = new JsonResult<>(YES);
         User user = userService.SearchByUsername(username);
 
-
         Shop shop = new Shop(shopname,goodstype,idnum,introduction,address,capital,date,user.getUid());
         try {shopService.open(shop);
         } catch (ShopnameDuplicateException e) { // 店名被占用
@@ -137,4 +136,28 @@ public class ShopController {
         Result.setData(shopService.GetShopInformationFromUser(username));
         return Result;
     }
+
+    @RequestMapping("getShopInfoByShopname")
+    public JsonResult getShopInfoByShopname(@RequestBody Map<String,Object> map){
+        String shopname = (String)map.get("shopname");
+        JsonResult result = shopService.getShopInfoByShopname(shopname);
+        return result;
+    }
+
+    @RequestMapping("/api/shopUnregister")
+    public JsonResult shopUnregister(@RequestBody Map<String,Object> map){
+        String shopname = (String) map.get("shopname");
+        JsonResult result = shopService.shopUnregister(shopname);
+        return result;
+    }
+
+    @RequestMapping("/api/cancelRgister")   //撤销商铺注册/删除申请
+    public  JsonResult cancelRegister(@RequestBody Map<String,Object> map){
+        String shopname = (String) map.get("shopname");
+        int cancelType = (int)map.get("cancelType");
+        JsonResult result = shopService.cancelRegister(shopname, cancelType);
+        return  result;
+    }
+
+
 }
