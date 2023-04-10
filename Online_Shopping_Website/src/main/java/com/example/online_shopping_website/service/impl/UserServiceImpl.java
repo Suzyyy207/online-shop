@@ -119,32 +119,36 @@ public class UserServiceImpl implements IUserService {
         JsonResult<User> setUserInfoResult = new JsonResult<>(YES);
 
         User SearchByOldusernameResult = userMapper.SearchByUsername(oldUsername);
+        System.out.println(SearchByOldusernameResult.getUsername());
+        System.out.println(NewUserInfo.getUsername());
         if(SearchByOldusernameResult == null){
             throw new UserNotFoundException("旧用户名不存在");
-        }   //有可能只修改其中一项
-        //两种情况1. 不修改（相应项为空） 2.已存在
-        if( !NewUserInfo.getUsername().isEmpty() && userMapper.SearchByUsername(NewUserInfo.getUsername()) != null ){
+        }
+        //两种情况1. 不修改（与原来的信息一样） 2.修改
+        //根据新信息找到一行数据，并且新信息与旧信息不一样，就说明存在其他用户的信息与新信息一样
+        if( userMapper.SearchByUsername(NewUserInfo.getUsername()) != null && (NewUserInfo.getUsername() != oldUsername)){
             throw new UsernameDuplicatedException("新用户名已存在");
-        }if( !NewUserInfo.getPhone().isEmpty() && userMapper.SearchByPhone(NewUserInfo.getPhone()) != null){
+        }if( userMapper.SearchByPhone(NewUserInfo.getPhone()) != null && (NewUserInfo.getPhone() != SearchByOldusernameResult.getPhone())){
             throw new PhoneDuplicatedException("新电话号码已存在");
-        }if(!NewUserInfo.getEmail().isEmpty() && userMapper.SearchByEmail(NewUserInfo.getEmail()) != null){
+        }if( userMapper.SearchByEmail(NewUserInfo.getEmail()) != null && (NewUserInfo.getEmail() != SearchByOldusernameResult.getEmail())){
             throw new EmailDuplicatedException("新电子邮箱已存在");
         }
-
-
-        if(!NewUserInfo.getPassword().isEmpty()){
-            userMapper.UpdateNewpasswordByOldusername(oldUsername, NewUserInfo.getPassword());
-        }
-        if(!NewUserInfo.getPhone().isEmpty()){
-             userMapper.UpdateNewphoneByOldusername(oldUsername, NewUserInfo.getPhone());
-        }
-        if(!NewUserInfo.getEmail().isEmpty()){
-            userMapper.UpdateNewemailByOldusername(oldUsername, NewUserInfo.getEmail());
-        }
-        if(!NewUserInfo.getUsername().isEmpty()){   //用户名修改要留到最后
-            userMapper.UpdateNewusernameByOldusername(oldUsername, NewUserInfo.getUsername());
-        }
-
+        userMapper.UpdateNewpasswordByOldusername(oldUsername, NewUserInfo.getPassword());
+        userMapper.UpdateNewphoneByOldusername(oldUsername, NewUserInfo.getPhone());
+        userMapper.UpdateNewemailByOldusername(oldUsername, NewUserInfo.getEmail());
+        userMapper.UpdateNewusernameByOldusername(oldUsername, NewUserInfo.getUsername());
+//        if(!NewUserInfo.getPassword().isEmpty()){
+//
+//        }
+//        if(!NewUserInfo.getPhone().isEmpty()){
+//
+//        }
+//        if(!NewUserInfo.getEmail().isEmpty()){
+//
+//        }
+//        if(!NewUserInfo.getUsername().isEmpty()){   //用户名修改要留到最后
+//
+//        }
         setUserInfoResult.setMessage("修改成功");
         return setUserInfoResult;
     }
