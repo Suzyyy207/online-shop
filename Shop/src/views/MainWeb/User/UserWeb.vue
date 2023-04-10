@@ -20,7 +20,7 @@ const select = ref('')
     <section class="show">
         <h1 class="title">Let's have fun!</h1>
         <br>
-        <WrapperUser/>
+        <WrapperUser class="margin"/>
     </section>
 </template>
 
@@ -50,5 +50,9 @@ export default {
     text-shadow: 2px 2px 2px #195844;
     font-size: 45px;
     font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.margin{
+    margin-bottom: 100px;
 }
 </style>
