@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.example.online_shopping_website.service.impl.InfoVerification;
 
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -39,12 +40,17 @@ public class ShopServiceImpl implements IShopService {
             throw new idDuplicateException("该身份证号已经注册");
         }
         shopMapper.shopOpening(shop);
+        //注册资金转账到商城中间账号
+        BigDecimal capital = new BigDecimal(shop.getCapital());
+        shopMapper.TransferCapitalToIntemediaryAccount(capital);
     }
     @Override
     public Shop shop_admitted(String shopname){
         Shop shop = shopMapper.SearchByShopname(shopname);
-
         shopMapper.updateIsAdmitted(shopname);
+        //注册资金转账到商城利润账号
+        BigDecimal capital = new BigDecimal(shop.getCapital());
+        shopMapper.TransferCapitalFromIntemediaryToProfitAccount(capital);
         return shop;
     }
 

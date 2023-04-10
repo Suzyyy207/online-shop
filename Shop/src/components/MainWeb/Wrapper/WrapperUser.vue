@@ -19,7 +19,12 @@ export default {
     props: ['shop_id'],
     data() {
         return {
-            shoplist: []
+            shoplist: [],
+            shop: {
+                shopname:"shopname",
+                goodstype: "",
+                introduction: ""
+            }
         }
     },
     created (){
@@ -31,6 +36,7 @@ export default {
             .then(res => {
                 this.shoplist = this.shoplist.concat(res.data.data);
             })
+            this.shoplist = [this.shop]
         }
     }
 }

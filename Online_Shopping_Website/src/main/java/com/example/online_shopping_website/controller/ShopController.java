@@ -44,7 +44,6 @@ public class ShopController {
         JsonResult<Shop> result = new JsonResult<>(YES);
         User user = userService.SearchByUsername(username);
 
-
         Shop shop = new Shop(shopname,goodstype,idnum,introduction,address,capital,date,user.getUid());
         try {shopService.open(shop);
         } catch (ShopnameDuplicateException e) { // 店名被占用
@@ -137,4 +136,6 @@ public class ShopController {
         Result.setData(shopService.GetShopInformationFromUser(username));
         return Result;
     }
+
+
 }
