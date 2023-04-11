@@ -26,11 +26,11 @@ import IntermediaryAccount from '../../../components/Dashboard/Manager/Intermedi
             </el-tab-pane>
             <el-tab-pane label="商品管理">
                 <h1>待处理</h1>
-                    <div>
-                        <div v-for="goods in approvingGoodsList" :key="goods.goodsId">
-                            <GoodsShow4Manager :goods="goods"/>
-                        </div>
+                <div class="goods">
+                    <div class="good" v-for="goods in approvingGoodsList" :key="goods.goodsId">
+                        <GoodsShow4Manager :goods="goods"/>
                     </div>
+                </div>
                 <div class="ge"></div>
                 <h1>已处理</h1>
                 <div class="goods">
@@ -154,7 +154,15 @@ h1{
 .shop{
     width: 300px;
 }
-
+.goods{
+    display:flex;
+    overflow: auto;
+    flex-wrap: wrap;
+    column-gap:40px;
+}
+.good{
+    width: 300px;
+}
 .ge{
     width: 100%;
     height:1px;
