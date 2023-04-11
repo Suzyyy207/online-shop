@@ -67,4 +67,21 @@
     <select id="SearchByGoodsId" resultMap="GoodMap">
         SELECT * FROM goods where goodsId = #{goodsId}
     </select>
+
+    <insert id="AddToFavorite">
+        INSERT INTO favorite
+            (username, goodsId)
+        VALUES
+            (#{username}, #{goodsId});
+        UPDATE goods SET favoriteNum = favoriteNum + 1 WHERE goosId = #{goosId};
+    </insert>
+
+    <insert id="Unfavorite">
+        DELETE FROM favorite WHERE username = #{username} AND goodsId = #{goodsId};
+        UPDATE goods SET favoriteNum = favoriteNum - 1 WHERE goosId = #{goosId};
+    </insert>
+
+    <select id="isFavorite" resultType="java.lang.Boolean">
+        SELECT EXISTS(SELECT * from favorite WHERE username = {username} AND goodsId = #{goodsId});
+    </select>
 </mapper>

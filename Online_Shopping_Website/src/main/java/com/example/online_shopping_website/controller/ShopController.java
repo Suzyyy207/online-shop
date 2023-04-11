@@ -139,7 +139,7 @@ public class ShopController {
         return Result;
     }
 
-    @RequestMapping("getShopInfoByShopname")
+    @RequestMapping("/api/getShopInfoByShopname")
     public JsonResult getShopInfoByShopname(@RequestBody Map<String,Object> map){
         String shopname = (String)map.get("shopname");
         JsonResult result = shopService.getShopInfoByShopname(shopname);

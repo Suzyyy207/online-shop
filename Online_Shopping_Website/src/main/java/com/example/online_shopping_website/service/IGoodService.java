@@ -3,6 +3,7 @@ package com.example.online_shopping_website.service;
 import com.example.online_shopping_website.entity.Good;
 import com.example.online_shopping_website.entity.GoodReturn;
 import com.example.online_shopping_website.entity.pic;
+import com.example.online_shopping_website.util.JsonResult;
 
 import java.util.List;
 
@@ -21,4 +22,7 @@ public interface IGoodService {
     int goodsApplicationRejected(int goodsId,int status);
     int cancelApplication(int goodsId);
     GoodReturn getEditingGoodsInfo(int goodsId);
+    JsonResult addToFavorites(String username, int goodsId);
+    JsonResult Unfavorite(String username, int goodsId);
+    JsonResult isFavorite(String username, int goodsId);
 }
