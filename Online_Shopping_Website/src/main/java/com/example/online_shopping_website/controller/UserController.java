@@ -137,20 +137,19 @@ public class UserController {
         return result;
     }
 
-
     @RequestMapping("/api/getShopAccount")
     public JsonResult getShopAccount(@RequestBody Map<String,Object> map){
-        String shopname = (String)map.get("shopname");
-        JsonResult result = userService.getShopAccount(shopname);
+        String username = (String)map.get("username");
+        JsonResult result = userService.getShopAccount(username);
         return result;
     }
-
+    //确保数据库中只有一位管理员（只有一行数据usertype=0）
     @RequestMapping("/api/getProfitAccount")
     public JsonResult getProfitAccount(){
         JsonResult result = userService.getProfitAccount();
         return result;
     }
-
+    //确保数据库中只有一位管理员（只有一行数据usertype=0）
     @RequestMapping("/api/getIntermediaryAccount")
     public JsonResult getIntermediaryAccount(){
         JsonResult result = userService.getIntermediaryAccount();

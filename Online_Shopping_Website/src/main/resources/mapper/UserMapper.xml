@@ -125,11 +125,11 @@
     </delete>
 
     <select id="GetProfitAccount" resultType="java.math.BigDecimal">
-        SELECT profitAccount WHERE usertype = 0;
+        SELECT profitAccount FROM users WHERE usertype = 0;
     </select>
 
     <select id="GetIntermediaryAccount" resultType="java.math.BigDecimal">
-        SELECT intermediaryAccount WHERE usertype = 0;
+        SELECT intermediaryAccount  FROM users WHERE usertype = 0;
     </select>
 </mapper>
 

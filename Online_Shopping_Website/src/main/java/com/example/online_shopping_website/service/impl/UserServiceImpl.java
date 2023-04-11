@@ -228,26 +228,22 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public JsonResult getProfitAccount(){
-        BigDecimal zero = new BigDecimal(0);
         BigDecimal profitAccount = userMapper.GetProfitAccount();
-        Admin admin = new Admin(profitAccount,zero);
-        JsonResult result = new JsonResult<>(YES,admin);
+        JsonResult result = new JsonResult<>(YES,profitAccount);
         return  result;
     }
 
     @Override
     public JsonResult getIntermediaryAccount(){
-        BigDecimal zero = new BigDecimal(0);
-        BigDecimal shopAccount = userMapper.GetIntermediaryAccount();
-        Admin admin = new Admin(zero,shopAccount);
-        JsonResult result = new JsonResult<>(YES,admin);
+        BigDecimal intermediaryAccount = userMapper.GetIntermediaryAccount();
+        JsonResult result = new JsonResult<>(YES,intermediaryAccount);
         return result;
     }
 
     @Override
-    public JsonResult getShopAccount(String shopname){
-        JsonResult result = new JsonResult<>(YES);
-
+    public JsonResult getShopAccount(String username){
+        BigDecimal shopAccount = userMapper.GetShopAccountByUsername(username);
+        JsonResult result = new JsonResult<>(YES, shopAccount);
         return result;
     }
 }
