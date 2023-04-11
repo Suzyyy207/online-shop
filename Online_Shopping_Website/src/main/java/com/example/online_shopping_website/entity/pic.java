@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class pic {
     int goodsId;
     private byte[] pic;
+    int goodspicsID;
 }

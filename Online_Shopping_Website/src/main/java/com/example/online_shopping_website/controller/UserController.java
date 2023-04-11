@@ -69,7 +69,7 @@ public class UserController {
         String newemail = (String)map.get("newemail");
 
         JsonResult<User> setUserInfoResult = new JsonResult<>(YES,"");
-        User NewUserInfo = new User(newusername,newpassword,newphone,newemail);
+        User NewUserInfo = new User(newusername,newpassword,newphone,newemail,"");
 
         try{
             setUserInfoResult = userService.setUserInfo(oldusername, NewUserInfo);
