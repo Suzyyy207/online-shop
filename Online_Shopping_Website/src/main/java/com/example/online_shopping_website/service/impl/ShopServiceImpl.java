@@ -17,6 +17,7 @@ import com.example.online_shopping_website.service.impl.InfoVerification;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Base64;
 import java.util.List;
 
 import static javax.security.auth.callback.ConfirmationCallback.*;
@@ -120,4 +121,17 @@ public class ShopServiceImpl implements IShopService {
             result.setData(shop);
         return result;
     }
+    @Override
+    public void UpdateAvatar(String shopname,byte[] avatar){
+        shopMapper.AvatarUpdate(shopname,avatar);
+    }
+    @Override
+    public String GetAvatar(String shopname){
+        Shop shop = shopMapper.SearchByShopname(shopname);
+        byte[] imageData = shop.getAvatar();
+        if(imageData==null) return null;
+        String base64Image = Base64.getEncoder().encodeToString(imageData);
+        return base64Image;
+    }
+
 }

@@ -72,4 +72,6 @@ public interface ShopMapper {
     void TransferCapitalFromIntemediaryToProfitAccount(BigDecimal capital);
 
     void UnregisterShopByShopname(String shopname);
+    void AvatarUpdate(String shopname,byte[] avatar);
+    void AvatarDelete(String shopname);
 }

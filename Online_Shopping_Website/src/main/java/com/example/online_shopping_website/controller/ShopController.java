@@ -14,7 +14,9 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -157,6 +159,28 @@ public class ShopController {
         int cancelType = (int)map.get("cancelType");
         JsonResult result = shopService.cancelRegister(shopname, cancelType);
         return  result;
+    }
+    @PostMapping("/api/setShopAvatar")
+    public JsonResult<User> setShopAvatar(@RequestParam("image") MultipartFile avatarFile, @RequestParam("shopname") String shopname) throws IOException {
+        byte[] avatarData = avatarFile.getBytes();
+        userService.UpdateAvatar(shopname,avatarData);
+        JsonResult<User> result = new JsonResult<>(YES, "商店头像上传成功");
+        return result;
+    }
+    @PostMapping("/api/getUserAvatar")
+    public JsonResult<String> DownloadAvatar(@RequestBody Shop shop){
+        String shopname = shop.getShopname();
+        String image = shopService.GetAvatar(shopname);
+        JsonResult<String> result = new JsonResult<>();
+        if(image!= null){
+            result.setState(YES);
+            result.setMessage("商店头像返回成功");
+        }else{
+            result.setState(NO);
+            result.setMessage("商店没有头像");
+        }
+        result.setData(image);
+        return result;
     }
 
 

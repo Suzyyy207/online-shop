@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,14 @@ public class Shop {
     private String capital;
     private String date;
     private int is_admitted;
+    private byte[] avatar;
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
+    }
     public String getShopname() {
         return shopname;
     }
