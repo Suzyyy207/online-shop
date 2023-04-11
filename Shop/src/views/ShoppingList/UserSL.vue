@@ -5,15 +5,21 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-    <Nav></Nav>
-    <section class="back">
-        <ShoppingList />
-    </section>
+    <body>
+        <Nav></Nav>
+        <section class="back">
+            <ShoppingList />
+        </section>
+    </body>
 </template>
 
 <style scoped>
+body{
+    background-color: rgba(128,128,128,0.1);
+}
 .back{
     margin-top: 20px;
+    padding-bottom: 30px;
     display: flex;
 }
 </style>

@@ -11,26 +11,33 @@ import IntermediaryAccount from '../../../components/Dashboard/Manager/Intermedi
         <el-tabs tab-position="left">
             <el-tab-pane label="店铺管理">
                 <h1>待处理</h1>
-                    <div class="shops">
-                        <div class="shops_ing" v-for="shop in registeringShopList" :key="shop.id">
-                            <ShopShow4Manager :shop="shop"/>
-                        </div>
+                <div class="shops">
+                    <div class="shop" v-for="shop in registeringShopList" :key="shop.id">
+                        <ShopShow4Manager :shop="shop"/>
                     </div>
+                </div>
                 <div class="ge"></div>
                 <h1>已处理</h1>
                 <div class="shops">
-                    <div class="shops_ed" v-for="shop in registeredShopList" :key="shop.id">
+                    <div class="shop" v-for="shop in registeredShopList" :key="shop.id">
                         <ShopShow4Manager :shop="shop"/>
                     </div>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="商品管理">
                 <h1>待处理</h1>
-                    <div>
-                        <div v-for="goods in approvingGoodsList" :key="goods.goodsId">
-                            <GoodsShow4Manager :goods="goods"/>
-                        </div>
+                <div class="goods">
+                    <div class="good" v-for="goods in approvingGoodsList" :key="goods.goodsId">
+                        <GoodsShow4Manager :goods="goods"/>
                     </div>
+                </div>
+                <div class="ge"></div>
+                <h1>已处理</h1>
+                <div class="goods">
+                    <div class="good">
+                        <GoodsShow4Manager :goods="goods"/>
+                    </div>
+                </div>
 
             </el-tab-pane>
             <el-tab-pane label="账户信息">
@@ -79,12 +86,14 @@ export default {
     },
     methods: {
         getRegisteredShop() {
+            this.approvingGoodsList = [this.goods]
             this.$axios.get('/getRegisteredShop')
             .then(res => {
                 this.registeredShopList = this.registeredShopList.concat(res.data.data);
             })
         },
         getRegisteringShop() {
+            this.approvingGoodsList = [this.goods]
             this.$axios.get('/getRegisteringShop')
             .then(res => {
                 this.registeringShopList = this.registeringShopList.concat(res.data.data);
@@ -116,9 +125,9 @@ export default {
 <style scoped>
 .wrap {
     width: 100%;
-    height: 100%;
-    padding: 25px 25px 25px 40px;
-
+    height: auto;
+    padding: 25px 25px 25px 10px;
+    margin-bottom: 40px;
     line-height: 100px;
     align-items: center;
     justify-items: center;
@@ -140,8 +149,20 @@ h1{
     display:flex;
     overflow: auto;
     flex-wrap: wrap;
+    column-gap:40px;
 }
-
+.shop{
+    width: 300px;
+}
+.goods{
+    display:flex;
+    overflow: auto;
+    flex-wrap: wrap;
+    column-gap:40px;
+}
+.good{
+    width: 300px;
+}
 .ge{
     width: 100%;
     height:1px;

@@ -12,8 +12,8 @@
                     
                 </div>
             </div>
-            <p>身份证号:{{this.form.idnum}}</p>
-            <p>邮箱:{{this.form.email}}</p>
+            <p>身份证号: {{this.form.idnum}}</p>
+            <p>邮箱: {{this.form.email}}</p>
             <p>个人账户余额: <num class="account">{{ this.form.account }}</num></p>
             <div class="charge">
                 <el-input class="chargeInput" v-model='credit'></el-input>
@@ -69,13 +69,11 @@ export default {
         })
         .then(res => {
             if(res.data.state==window.SUCCESS) {
-            // 已有头像
-            console.log("success");
-            this.$message.success("收到反馈（根据是否显示图片判断文件传输是否成功）");
-            this.form.avatar = "data:image/jpeg;base64," + res.data.avatar;
+                console.log("success");
+                this.form.avatar = "data:image/jpeg;base64," + res.data.data;
             }
             else {
-            console.log("failure");
+                console.log("failure");
             }
         })
       },

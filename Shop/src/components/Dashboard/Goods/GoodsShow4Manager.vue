@@ -12,9 +12,10 @@ const dialogTableVisible = ref(false)
       <img v-if="goods.goodsAvatar.length==0" class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
       <img v-else :src="'data:image/jpeg;base64,'+goods.goodsAvatar[0]">
 
-      <p class="goodsName">商品名：{{ goods.goodsname }}</p>
+      <p class="goodsName">{{ goods.goodsname }}</p>
       <p v-if="goods.status==0">申请类型：注册申请</p>
       <p v-if="goods.status==2">申请类型：修改申请</p>
+      
       <el-button class="btnReg"  @click="dialogTableVisible = true">
         <p>点击查看详细信息</p>
       </el-button>

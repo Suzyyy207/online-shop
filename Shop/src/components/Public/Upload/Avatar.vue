@@ -1,0 +1,161 @@
+<!--用户/商铺头像组件-->
+<template>
+  <a @click="deleteAvatar"> 
+    <el-icon><Delete /></el-icon> 
+  </a>
+
+  <div>
+    <el-upload
+      class="avatar-uploader"
+      action="''"
+      :show-file-list="false"
+      :on-success="handleAvatarSuccess"
+      :before-upload="beforeAvatarUpload"
+    >
+      <img v-if="this.base64Data" :src="this.base64Data">
+      <el-icon v-else><Plus /></el-icon>
+    </el-upload>
+
+  </div>
+</template>
+
+<script>
+import "../../../constant"
+export default {
+  props: {
+    type: {
+      // 2:用户头像，1:商店头像
+      type: Boolean,
+      required: true
+    }
+  },
+  data() {
+    return {
+      isUploaded: false,
+      uploadFormat: ['jpg', 'jpeg', 'png', 'bmp'],
+      uploadSize: 5 * 1024 * 1024,
+      base64Data: ""
+    };
+  },
+  created() {
+    this.getAvatar();
+  },
+  methods: {
+    beforeAvatarUpload(file) {
+      const format = file.name.split('.').pop().toLowerCase()
+      const isFormatValid = this.uploadFormat.indexOf(format) !== -1
+      const isSizeValid = file.size <= this.uploadSize
+      if (!isFormatValid) {
+        this.$message.error(`上传图片格式不支持，支持的格式为 ${this.uploadFormat.join(', ')}`)
+        return false
+      }
+      if (!isSizeValid) {
+        this.$message.error(`上传图片大小超出限制，大小不能超过 ${this.uploadSize / 1024 / 1024}MB`)
+        return false
+      }
+      var avatar = new FormData();
+      avatar.append('image', file);
+      if(this.type == window.USER) {
+        avatar.append('username', localStorage.getItem("username"));
+        this.$axios.post('/setUserAvatar', avatar, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(res => {
+          if(res.data.state == window.SUCCESS) {
+            this.$message.success("上传成功");
+            this.getAvatar();
+          }
+          else {
+            this.$message.error(res.data.message);
+          }
+        })
+      } else {
+        avatar.append('shopname', localStorage.getItem("shopname"));
+        this.$axios.post('/setShopAvatar', avatar, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(res => {
+          if(res.data.state == window.SUCCESS) {
+            this.$message.success("上传成功");
+            this.getAvatar();
+          }
+          else {
+            this.$message.error(res.data.message);
+          }
+        })
+      }
+      return false;
+    },
+    getAvatar: function() {
+      var localStorage = window.localStorage;
+      if(this.type == window.USER) {
+        this.$axios.post('/getUserAvatar', {
+          username: localStorage.getItem("username")
+        })
+        .then(res => {
+          if(res.data.state==window.SUCCESS) {
+            // 已有头像
+            console.log("success");
+            this.base64Data = "data:image/jpeg;base64," + res.data.data;
+            console.log(this.type)
+          }
+          else {
+            console.log("failure");
+          }
+        })
+      } else {
+        this.$axios.post('/getShopAvatar', {
+          shopname: localStorage.getItem("shopname")
+        })
+        .then(res => {
+          if(res.data.state==window.SUCCESS) {
+            // 已有头像
+            console.log("success");
+            this.base64Data = "data:image/jpeg;base64," + res.data.data;
+            console.log(this.type)
+          }
+          else {
+            console.log("failure");
+          }
+        })
+      }
+      
+    },
+    deleteAvatar() {
+      var localStorage = window.localStorage;
+      if(this.type == window.USER) {
+        this.$axios.post('/deleteUserAvatar', {
+          username: localStorage.getItem("username")
+        })
+        .then(res => {
+          if(res.data.state==window.SUCCESS) {
+            this.$message.success("头像已删除");
+            this.base64Data = "";
+          }
+        })
+      } else {
+        this.$axios.post('/deleteShopAvatar', {
+          shopname: localStorage.getItem("shopname")
+        })
+        .then(res => {
+          if(res.data.state==window.SUCCESS) {
+            this.$message.success("头像已删除");
+            this.base64Data = "";
+          }
+        })
+      }
+      
+    }
+  }
+};
+</script>
+
+<style>
+.avatar-uploader{
+  display: flex;
+  margin: 0 auto;
+}
+
+</style>

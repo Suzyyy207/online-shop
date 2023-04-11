@@ -88,11 +88,6 @@ const router = createRouter({
       component: () => import('../components/Dashboard/Goods/GoodsRegister.vue')
     },
     {
-      path: '/UserAvatar',
-      name: 'UserAvatar',
-      component: () => import('../components/Dashboard/User/UserAvatar.vue')
-    },
-    {
       path: '/Avatar',
       name: 'Avatar',
       component: () => import('../components/Dashboard/User/UserAvatar.vue')
