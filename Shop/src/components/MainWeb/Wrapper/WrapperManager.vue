@@ -25,23 +25,15 @@ import IntermediaryAccount from '../../../components/Dashboard/Manager/Intermedi
                 </div>
             </el-tab-pane>
             <el-tab-pane label="商品管理">
-                <h1>待处理</h1>
+                <h1>全部申请</h1>
                 <div class="goods">
                     <div class="good" v-for="goods in approvingGoodsList" :key="goods.goodsId">
                         <GoodsShow4Manager :goods="goods"/>
                     </div>
                 </div>
-                <div class="ge"></div>
-                <h1>已处理</h1>
-                <div class="goods">
-                    <div class="good">
-                        <GoodsShow4Manager :goods="goods"/>
-                    </div>
-                </div>
-
             </el-tab-pane>
-            <el-tab-pane label="账户信息">
-                <el-tabs>
+            <el-tab-pane  label="账户信息">
+                <el-tabs tab-position="left">
                     <el-tab-pane label="商城利润">
                         <ProfitAccount />
                     </el-tab-pane>

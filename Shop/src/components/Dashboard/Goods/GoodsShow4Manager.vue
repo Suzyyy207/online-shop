@@ -21,22 +21,24 @@ const dialogTableVisible = ref(false)
       </el-button>
 
       <el-dialog class="information" v-model="dialogTableVisible" title="商品信息">
-        <p>所属店铺：{{ goods.shopname }}</p>
+        <p class="infoTop">所属店铺：{{ goods.shopname }}</p>
         <GoodsDetail :goods="this.goods"></GoodsDetail>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button 
+                type="primary" 
+                @click="this.goodsApplicationApproved()" 
+            >批准
+            </el-button>
 
-        <el-button 
-            type="primary" 
-            @click="this.goodsApplicationApproved()" 
-        >批准
-        </el-button>
-
-        <el-button 
-            type="primary" 
-            @click="this.goodsApplicationRejected()" 
-        >拒绝
-        </el-button>
-      </el-dialog>
-          
+            <el-button 
+                type="primary" 
+                @click="this.goodsApplicationRejected()" 
+            >拒绝
+            </el-button>
+          </span>
+        </template>
+      </el-dialog>   
     </a>
   </div>
 </template>
@@ -94,9 +96,9 @@ export default {
 
 <style>
 .goodsLink{
-    width: 320px;
-    height: 250px;
-    padding: 20px 30px 10px 30px;
+    width: 90%;
+    height: 220px;
+    padding: 20px 30px 10px 20px;
     margin: 10px 20px 20px 20px;
     line-height: 100px;
     align-items: center;
@@ -110,7 +112,7 @@ export default {
     border-radius: 15px;
     color: #303133;
     border: 2px solid #ebeef5;
-    transition: .3s;
+    text-decoration: none;  
 }
 .goodsLink .logo{
     grid-row: 1/3;
@@ -118,7 +120,7 @@ export default {
     width: 80%;
     height: 80%;
 }
-.goodsLink p{
+.goodsLink > p{
   align-items: left;
   padding-top: 5px;
   margin-left: -20px;
@@ -131,19 +133,18 @@ export default {
     grid-column: 1/3;
 }
 
-
+.goodsLink .information .infoTop{
+  margin-top:-40px;
+}
 
 .goodsLink .information p{
-  font-family:"Lucida Console", "Courier New", monospace;
   font-size:20px;
   margin:0px 0px 0px 50px;
   line-height: 40px;
+  font-family: "Brush Script MT", cursive;
+  height: auto;
 }
-.goodsLink .information .bottom{
-  font-family:"Lucida Console", "Courier New", monospace;
-  font-size:20px;
-  margin:0px 0px -70px 50px;
-}
+
 
 .dialog-footer{
   margin-right: 10px;

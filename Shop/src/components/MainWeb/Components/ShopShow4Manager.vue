@@ -122,8 +122,7 @@ export default {
     border-radius: 15px;
     color: #303133;
     border: 2px solid #ebeef5;
-    text-decoration: none;
-    
+    text-decoration: none;  
 }
 .shop_link .logo{
     grid-row: 1/3;

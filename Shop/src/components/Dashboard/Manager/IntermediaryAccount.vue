@@ -1,9 +1,9 @@
 <!--商店余额显示+充值-->
 <template>
-    <p>中间账户余额:{{ this.intermediaryAccount }}</p>
-    <div class="charge">
-        <el-input v-model='credit'></el-input>
-        <el-button @click="recharge">充值</el-button>
+    <p class="charge">中间账户余额:{{ this.intermediaryAccount }}</p>
+    <div class="chargeBtn">
+        <el-input class="input" v-model='credit'></el-input>
+        <el-button class="btn" @click="recharge">充值</el-button>
     </div>
 </template>
 
@@ -59,9 +59,19 @@ export default{
 
 <style scoped>
 
-.cont{
-    width: 90%;
-    margin:10px auto 50px;
+.charge{
+    margin-left:40px;
 }
+
+.chargeBtn{
+    margin-left:40px;
+    display: flex;
+    gap:20px;
+}
+
+.input{
+    width:20%;
+}
+
 
 </style>

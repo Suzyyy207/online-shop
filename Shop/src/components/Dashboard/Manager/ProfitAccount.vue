@@ -1,6 +1,6 @@
 <!--商店余额显示+充值-->
 <template>
-    <p>利润:{{ this.profitAccount }}</p>
+    <p class="profit">利润:{{ this.profitAccount }}</p>
 </template>
 
 <script>
@@ -29,9 +29,8 @@ export default{
 
 <style scoped>
 
-.cont{
-    width: 90%;
-    margin:10px auto 50px;
+.profit{
+    margin-left:40px;
 }
 
 </style>
