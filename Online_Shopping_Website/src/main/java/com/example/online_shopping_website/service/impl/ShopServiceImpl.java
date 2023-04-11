@@ -93,5 +93,31 @@ public class ShopServiceImpl implements IShopService {
         return shop;
     }
 
+    @Override
+    public JsonResult shopUnregister(String shopname){
+        JsonResult result = new JsonResult<>(YES, "提交成功，请等待管理员申请");
+        //TODO:检查商店是否有未完成的订单
 
+
+        shopMapper.UnregisterShopByShopname(shopname);
+        return result;
+    }
+
+    @Override
+    public JsonResult cancelRegister(String shopname, int cancelType){
+        JsonResult result = new JsonResult<>(YES,"撤销成功");
+        //TODO:撤销商品的业务层
+        return result;
+    }
+
+    @Override
+    public JsonResult getShopInfoByShopname(String shopname){
+        JsonResult result = new JsonResult<>(YES);
+        Shop shop = shopMapper.SearchByShopname(shopname);
+        if(shop == null)
+            result.setState(NO);
+        else
+            result.setData(shop);
+        return result;
+    }
 }

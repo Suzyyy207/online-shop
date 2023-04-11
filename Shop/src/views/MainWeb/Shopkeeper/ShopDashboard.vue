@@ -102,7 +102,7 @@ export default {
                 if (res.data.state == window.SUCCESS) {
                     console.log("有头像");
                     this.$message.success("收到反馈（根据是否显示图片判断文件传输是否成功）");
-                    this.shop.avatar = "data:image/jpeg;base64," + res.data.avatar;
+                    this.shop.avatar = "data:image/jpeg;base64," + res.data.data;
                 }
                 else {
                     console.log("没有头像");

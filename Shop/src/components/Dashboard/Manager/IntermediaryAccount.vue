@@ -21,7 +21,7 @@ export default{
         getIntermediaryAccount() {
             this.$axios.get('/getIntermediaryAccount')
             .then(res => {
-                this.intermediaryAccount = res.data.data.intermediaryAccount;
+                this.intermediaryAccount = res.data.data;
             })
         },
         recharge: function() {
@@ -44,7 +44,7 @@ export default{
                 .then(res => {
                     if(res.data.state==window.SUCCESS) {
                         this.$message.success("充值金额：" + this.credit + "（系统默认保留两位小数）！");
-                        this.intermediaryAccount = res.data.data.account;
+                        this.intermediaryAccount = res.data.data;
                         this.credit = 0;
                     }
                     else {
