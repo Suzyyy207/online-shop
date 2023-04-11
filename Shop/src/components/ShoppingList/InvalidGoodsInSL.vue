@@ -1,15 +1,44 @@
 <template>
     <div class="wrap">
         <div class="info">
-            <img :src="'data:image/jpeg;base64,'+goods.goodsAvatar[0]">
-
+            <img src="../../assets/logo.png"/>
             <div class="intro">
-                <span>商品名称: {{ goods.goodsname }}</span>
-                <!--span>商品简介 </span-->
+                <span>商品名称</span>
+                <span>商品简介</span>
             </div>
             <div class="category">
                 <p>分类1</p>
-                <!--p>分类2</p-->
+                <p>分类2</p>
+            </div>
+        </div>
+        <div class="price">
+            <p>￥123.00</p>
+        </div>
+        <div class="amount">
+            <el-input-number size="small" :min="1" :disabled="true"/>
+        </div>
+        <div class="count">
+            <p>￥246.00</p>
+        </div>
+        <div class="btn">
+            <el-button>删除</el-button>
+        </div>
+
+    </div>
+    
+</template>
+<!--template>
+    <div class="wrap">
+        <div class="info">
+            <img :src="'data:image/jpeg;base64,'+goods.goodsAvatar[0]">
+            <img src="../../assets/logo.png"/>
+            <div class="intro">
+                <span>商品名称: {{ goods.goodsname }}</span>
+                <span>商品简介 </span>
+            </div>
+            <div class="category">
+                <p>分类1</p>
+                <p>分类2</p>
             </div>
         </div>
         <div class="price">
@@ -21,7 +50,7 @@
 
     </div>
     
-</template>
+</template-->
 
 <script>
 export default {
@@ -52,15 +81,12 @@ export default {
 <style scoped>
 .wrap{
     display:grid;
-    grid-template-columns: 10% 40% 10% 15% 10% 15%;
+    grid-template-columns: 45% 13% 17% 11% 15%;
     background-color: transparent;
     line-height: 30px;
 }
-.check{
-    grid-column: 1/2;
-}
 .info{
-    grid-column: 2/3;
+    grid-column: 1/2;
     display: grid;
     grid-template-columns: 30% 25% 25%;
     gap:20px;

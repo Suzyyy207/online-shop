@@ -1,6 +1,7 @@
 <!--此组件打包所有购物车内信息，向用户展示-->
 <script setup>
 import GoodsInSL from '../ShoppingList/GoodsInSL.vue'
+import InvalidGoodsInSL from '../ShoppingList/InvalidGoodsInSL.vue'
 </script>
 
 <template>
@@ -28,9 +29,10 @@ import GoodsInSL from '../ShoppingList/GoodsInSL.vue'
                         <el-checkbox>店铺：店铺名</el-checkbox>
                     </div>
                     <div class="goods">
-                        <GoodsInSL class="good"/>
-
-
+                        <div class="goodShow">
+                            <el-checkbox class="check"></el-checkbox>
+                            <GoodsInSL class="good"/>
+                        </div>
                     </div>
                 </div>
                 <div class="singleShop">
@@ -38,9 +40,25 @@ import GoodsInSL from '../ShoppingList/GoodsInSL.vue'
                         <el-checkbox>店铺：店铺名</el-checkbox>
                     </div>
                     <div class="goods">
-                        <GoodsInSL class="good"/>
-                        <GoodsInSL class="good"/>
-
+                        <div class="goodShow">
+                            <el-checkbox class="check"></el-checkbox>
+                            <GoodsInSL class="good"/>
+                        </div>
+                        <div class="goodShow">
+                            <el-checkbox class="check"></el-checkbox>
+                            <GoodsInSL class="good"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="singleShop">
+                    <div class="shopInfo">
+                        <span>店铺：店铺名(已失效商品)</span>
+                    </div>
+                    <div class="invalidGoods">
+                        <div class="invalidShow">
+                            <div></div>
+                            <InvalidGoodsInSL class="invalidGood"/>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -143,7 +161,47 @@ import GoodsInSL from '../ShoppingList/GoodsInSL.vue'
     background-color: rgba(128,128,128,0.1);
     border-radius: 15px;
 }
+.singleShop .invalidGoods{
+    margin-top:-20px;
+    margin-left: 30px;
+    padding:10px 0px 0 30px;
+    width:95%;
+    height:auto;
+    align-items: center;
+    background-color: rgba(128,128,128,0.4);
+    border-radius: 15px;
+}
+
+.singleShop .goods .goodShow{
+    background-color: transparent;
+    border:none;
+    box-shadow: none;
+    width: 100%;
+    height:auto;
+    display: grid;
+    grid-template-columns: 10% 90%;
+}
+.singleShop .invalidGoods .invalidShow{
+    background-color: transparent;
+    border:none;
+    box-shadow: none;
+    width: 100%;
+    height:auto;
+    display: grid;
+    grid-template-columns: 10% 90%;
+}
+.check{
+    margin-top:30px;
+}
 .singleShop .goods .good{
+    background-color: transparent;
+    border:none;
+    box-shadow: none;
+    width: 100%;
+    height:auto;
+    padding-top:10px;
+}
+.singleShop .invalidGoods .invalidGood{
     background-color: transparent;
     border:none;
     box-shadow: none;
