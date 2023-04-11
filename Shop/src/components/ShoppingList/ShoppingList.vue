@@ -7,64 +7,174 @@ import InvalidGoodsInSL from '../ShoppingList/InvalidGoodsInSL.vue'
 <template>
     <div class="wrap">
         <div class="title">
-            <p>购物车(全部 72)</p>
+            <p>购物车(全部 {{ totalCount }})</p>
             <div class="settlement">
-                <p>已选择商品共计：3333元</p>
+                <p>已选择{{ selectedCount }}件商品</p>
+                <p>共计：{{ totalPrice }}元</p>
                 <el-button class="tBtn">结算</el-button>
             </div>
         </div>
         <div class="bar"></div>
+
         <div class="cart">
             <div class="cartTable">
-                <el-checkbox><span>全选</span></el-checkbox>
+                <el-checkbox v-model="allChecked" @change="changeAllStatus">
+                    <span>全选</span>
+                </el-checkbox>
                 <span>商品信息</span>
                 <span>单价</span>
                 <span>数量</span>
                 <span>金额</span>
                 <span>操作</span>
             </div>
+            
             <div class="allGoods">
-                <div class="singleShop">
-                    <div class="shopInfo">
-                        <el-checkbox>店铺：店铺名</el-checkbox>
-                    </div>
+                <div class="singleShop" v-for="shop in validCart" :key="shop.shopname">
+                    <el-checkbox v-model="shop.isChecked" @change="changeShopStatus(shop)">
+                        {{ shop.shopname }}
+                    </el-checkbox>
+                        
                     <div class="goods">
-                        <div class="goodShow">
-                            <el-checkbox class="check"></el-checkbox>
-                            <GoodsInSL class="good"/>
+                        <div class="goodShow" v-for="goods in shop.goodsList" :key="goods.goodsId">
+                            <el-checkbox class="check" v-model="goods.isChecked" />
+                            <GoodsInSL :goods="goods" @reloadPage="handleReloadPage"/>
                         </div>
                     </div>
-                </div>
-                <div class="singleShop">
+
+                </div> 
+            </div>
+
+            <!--失效商品-->
+            <div class="allGoods">
+                <div class="singleShop" v-for="shop in invalidCart" :key="shop.shopname">
                     <div class="shopInfo">
-                        <el-checkbox>店铺：店铺名</el-checkbox>
-                    </div>
-                    <div class="goods">
-                        <div class="goodShow">
-                            <el-checkbox class="check"></el-checkbox>
-                            <GoodsInSL class="good"/>
-                        </div>
-                        <div class="goodShow">
-                            <el-checkbox class="check"></el-checkbox>
-                            <GoodsInSL class="good"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="singleShop">
-                    <div class="shopInfo">
-                        <span>店铺：店铺名(已失效商品)</span>
+                        <span>店铺：{{ shop.shopname }}</span>
                     </div>
                     <div class="invalidGoods">
-                        <div class="invalidShow">
-                            <div></div>
-                            <InvalidGoodsInSL class="invalidGood"/>
+                        <div class="invalidShow" v-for="goods in shop.goodsList" :key="goods.goodsId">
+                            <InvalidGoodsInSL class="invalidGood" :goods="goods" @reloadPage="handleReloadPage"/>
                         </div>
-                    </div>
-                </div>
+                    </div>                       
+                </div> 
             </div>
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            validCart: [],
+            invalidCart: [],
+            allChecked: false,
+            totalCount: 0,
+            goods:{
+                goodsname: "goodsname",
+                goodsId: "id",
+                status: 0,
+                goodsPrice:100,
+                goodsStock:20,
+                introduction:"intro",
+                goodsCategory: ['电脑数码', '家用电器'],
+                favorites:0,
+                goodsAvatar: [],
+                num: 4
+            },
+            goods2:{
+                goodsname: "goodsname",
+                goodsId: "id",
+                status: 0,
+                goodsPrice:100,
+                goodsStock:20,
+                introduction:"intro",
+                goodsCategory: ['电脑数码', '家用电器'],
+                favorites:0,
+                goodsAvatar: [],
+                num: 1
+            },
+            shop:{
+                shopname: "shopname1",
+                goodsList: []
+            }
+        }
+    },
+    created (){
+        this.getValidCart();
+        this.getInvalidCart();
+    },
+    computed: {
+        totalPrice() {
+            let total = 0;
+            for (let shop of this.validCart) {
+                for (let goods of shop.goodsList) {
+                    if (goods.isChecked) {
+                        total += Number(goods.goodsPrice) * Number(goods.num);
+                    }
+                }
+            }
+            return total
+        },
+        selectedCount() {
+            let total = 0;
+            for (let shop of this.validCart) {
+                for (let goods of shop.goodsList) {
+                    if (goods.isChecked) {
+                        total += Number(goods.num);
+                    }
+                }
+            }
+            return total
+        }
+    },
+    methods: {
+        getValidCart() {
+            this.shop.goodsList = [this.goods, this.goods2]
+            this.validCart = [this.shop];
+            var localStorage = window.localStorage;
+            this.$axios.post("/getValidCart", {
+                username: localStorage.getItem("username")
+            }).then(res => {
+                this.validCart = res.data.data;
+            })
+
+            this.validCart = this.validCart.map(shop => {
+                shop.isChecked = false;
+                shop.goodsList = shop.goodsList.map(goods => {
+                    goods.isChecked = false;
+                    this.totalCount += 1;
+                    return goods;
+                });
+                return shop;
+            });
+        },
+        getInvalidCart() {
+            this.shop.goodsList = [this.goods, this.goods2]
+            this.invalidCart = [this.shop];
+            var localStorage = window.localStorage;
+            this.$axios.post("/getInvalidCart", {
+                username: localStorage.getItem("username")
+            }).then(res => {
+                this.invalidCart = res.data.data;
+            })
+        },
+        changeShopStatus(shop) {
+            shop.goodsList.forEach((goods) => {
+                goods.isChecked = shop.isChecked;
+            });
+        },
+        handleReloadPage() {
+            this.$router.go(0)
+        },
+        changeAllStatus() {
+            this.validCart.forEach((shop) => {
+                shop.isChecked = this.allChecked;
+                this.changeShopStatus(shop);
+            });
+        }
+    }
+}
+</script>
 
 <style scoped>
 .wrap{
