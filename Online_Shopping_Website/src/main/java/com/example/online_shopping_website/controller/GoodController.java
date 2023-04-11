@@ -56,6 +56,7 @@ public class GoodController {
             byte[] pic = f.getBytes();
             goodService.picsUpload(goodsId,pic);
         }
+
         return result;
     }
     @RequestMapping("/api/getRegisteringGoodsByShopname")
@@ -243,6 +244,14 @@ public class GoodController {
             result.setState(NO);
             result.setMessage("取消失败");
         }
+        return result;
+    }
+    @RequestMapping("/api/getEditingGoodsInfo")
+    public JsonResult<GoodReturn> getEditingGoodsInfo(@RequestBody Good good){
+        int goodsId = good.getGoodsId();
+        JsonResult<GoodReturn> result = new JsonResult<>();
+        GoodReturn goodReturn = goodService.getEditingGoodsInfo(goodsId);
+        result.setData(goodReturn);
         return result;
     }
 }

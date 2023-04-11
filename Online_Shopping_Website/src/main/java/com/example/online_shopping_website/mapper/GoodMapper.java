@@ -26,7 +26,6 @@ public interface GoodMapper {
 
     List<Good> SearchByRegisterStatus(String shopname,int registerStatus);
     List<Good> SearchByModifyStatus(String shopname,int modifyStatus);
-    List<pic> searchPicByGoodsId(int goodsId);
     Good SearchByGoodsId(int goodsId);
     void setDelete(int goodsId);
 }

@@ -3,6 +3,7 @@ package com.example.online_shopping_website.service.impl;
 import com.example.online_shopping_website.entity.*;
 import com.example.online_shopping_website.mapper.GoodMapper;
 import com.example.online_shopping_website.mapper.ShopMapper;
+import com.example.online_shopping_website.mapper.PicMapper;
 import com.example.online_shopping_website.service.IGoodService;
 import com.example.online_shopping_website.service.ex.GoodnameDuplicateException;
 import com.example.online_shopping_website.service.ex.ShopnameDuplicateException;
@@ -21,6 +22,8 @@ public class GoodServiceImpl implements IGoodService {
     private GoodMapper goodMapper;
     @Autowired
     private ShopMapper shopMapper;
+    @Autowired
+    private PicMapper picMapper;
     @Override
     public Good goodsRegister(String introduction,String goodsname,float goodsPrice,int goodsStock,String goodsCategory,String shopname){
         Good good = goodMapper.SearchByGoodname(goodsname);
@@ -63,7 +66,7 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setModifyStatus(good.getModifyStatus());
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
             List<String> piclist = new ArrayList<>();
-            for(pic pics : goodMapper.searchPicByGoodsId(good.getGoodsId())){
+            for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
                 byte[] imageData = pics.getPic();
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
                 piclist.add(base64Image);
@@ -91,7 +94,7 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setModifyStatus(good.getModifyStatus());
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
             List<String> piclist = new ArrayList<>();
-            for(pic pics : goodMapper.searchPicByGoodsId(good.getGoodsId())){
+            for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
                 byte[] imageData = pics.getPic();
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
                 piclist.add(base64Image);
@@ -118,7 +121,7 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setModifyStatus(good.getModifyStatus());
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
             List<String> piclist = new ArrayList<>();
-            for(pic pics : goodMapper.searchPicByGoodsId(good.getGoodsId())){
+            for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
                 byte[] imageData = pics.getPic();
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
                 piclist.add(base64Image);
@@ -130,7 +133,7 @@ public class GoodServiceImpl implements IGoodService {
     }
     @Override
     public List<pic> picsSearchByGoodsId(int goodsId){
-        List<pic> piclist = goodMapper.searchPicByGoodsId(goodsId);
+        List<pic> piclist = picMapper.searchPicByGoodsId(goodsId);
         return piclist;
     }
     @Override
@@ -231,7 +234,9 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setModifyStatus(good.getModifyStatus());
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
             List<String> piclist = new ArrayList<>();
-            for(pic pics : goodMapper.searchPicByGoodsId(good.getGoodsId())){
+            List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
+            System.out.println(picList);
+            for(pic pics : picList){
                 byte[] imageData = pics.getPic();
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
                 piclist.add(base64Image);
@@ -249,7 +254,7 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setModifyStatus(good.getModifyStatus());
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
             List<String> piclist = new ArrayList<>();
-            for(pic pics : goodMapper.searchPicByGoodsId(good.getGoodsId())){
+            for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
                 byte[] imageData = pics.getPic();
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
                 piclist.add(base64Image);
