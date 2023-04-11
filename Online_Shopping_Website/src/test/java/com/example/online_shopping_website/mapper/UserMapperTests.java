@@ -38,7 +38,7 @@ public class UserMapperTests {
 
     @Test
     public void Register() {
-        User user = new User(2, "till", "123456", "9876547984321",
+        User user = new User(2, "test", "123456", "9876547984321",
                             "123asd456@qq.com", "1289413456", 0, "123");
         int row = userMapper.Register(user);
         System.out.println(row);

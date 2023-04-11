@@ -18,4 +18,6 @@ public interface IShopService {
     JsonResult cancelRegister(String shopname, int cancelType);
 
     JsonResult getShopInfoByShopname(String shopname);
+    void UpdateAvatar(String shopname,byte[] avatar);
+    String GetAvatar(String shopname);
 }

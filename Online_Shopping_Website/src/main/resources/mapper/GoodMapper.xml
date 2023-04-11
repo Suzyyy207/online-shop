@@ -64,4 +64,7 @@
     <select id="SearchByModifyStatus" resultMap="GoodMap">
         SELECT * FROM goods where modifyStatus = #{modifyStatus} and shopname = #{shopname}
     </select>
+    <select id="SearchByGoodsId" resultMap="GoodMap">
+        SELECT * FROM goods where goodsId = #{goodsId}
+    </select>
 </mapper>
