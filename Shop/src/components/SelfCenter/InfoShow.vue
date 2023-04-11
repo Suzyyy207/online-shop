@@ -12,8 +12,8 @@
                     
                 </div>
             </div>
-            <p>身份证号:{{this.form.idnum}}</p>
-            <p>邮箱:{{this.form.email}}</p>
+            <p>身份证号: {{this.form.idnum}}</p>
+            <p>邮箱: {{this.form.email}}</p>
             <p>个人账户余额: <num class="account">{{ this.form.account }}</num></p>
             <div class="charge">
                 <el-input class="chargeInput" v-model='credit'></el-input>
