@@ -109,7 +109,7 @@ public class UserServiceImpl implements IUserService {
         if(user == null){
             throw new UserNotFoundException("用户未找到");
         }
-        User userInfoPart = new User(user.getUsername(),user.getPhone(), user.getEmail(), user.getIdnum(),user.getPrivateAccount());
+        User userInfoPart = new User(user.getUsername(),user.getPassword(),user.getPhone(), user.getEmail(), user.getIdnum(),user.getPrivateAccount());
         getUserInfoResult.setData(userInfoPart);
         return getUserInfoResult;
     }
