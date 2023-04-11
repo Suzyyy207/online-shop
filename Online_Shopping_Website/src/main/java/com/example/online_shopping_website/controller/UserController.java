@@ -145,6 +145,18 @@ public class UserController {
         return result;
     }
 
+    @RequestMapping("/api/getProfitAccount")
+    public JsonResult getProfitAccount(){
+        JsonResult result = userService.getProfitAccount();
+        return result;
+    }
+
+    @RequestMapping("/api/getIntermediaryAccount")
+    public JsonResult getIntermediaryAccount(){
+        JsonResult result = userService.getIntermediaryAccount();
+        return result;
+    }
+
     @RequestMapping("/api/recharge")
     public JsonResult recharge(@RequestBody Map<String,Object> map){
         String username = (String)map.get("username");
@@ -180,6 +192,8 @@ public class UserController {
         result = userService.addToCart(username, goodsId, num);
         return result;
     }
+
+
 }
 
 

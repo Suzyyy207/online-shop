@@ -1,5 +1,6 @@
 package com.example.online_shopping_website.service.impl;
 
+import com.example.online_shopping_website.entity.Admin;
 import com.example.online_shopping_website.entity.Transaction;
 import com.example.online_shopping_website.entity.constant.AccountType;
 import com.example.online_shopping_website.mapper.TransactionMapper;
@@ -222,10 +223,25 @@ public class UserServiceImpl implements IUserService {
         }
         //移除购物车中数量为0的商品
         userMapper.DeleteZeroGoodsInCart(username);
-
         return result;
+    }
 
+    @Override
+    public JsonResult getProfitAccount(){
+        BigDecimal zero = new BigDecimal(0);
+        BigDecimal profitAccount = userMapper.GetProfitAccount();
+        Admin admin = new Admin(profitAccount,zero);
+        JsonResult result = new JsonResult<>(YES,admin);
+        return  result;
+    }
 
+    @Override
+    public JsonResult getIntermediaryAccount(){
+        BigDecimal zero = new BigDecimal(0);
+        BigDecimal shopAccount = userMapper.GetIntermediaryAccount();
+        Admin admin = new Admin(zero,shopAccount);
+        JsonResult result = new JsonResult<>(YES,admin);
+        return result;
     }
 
     @Override
