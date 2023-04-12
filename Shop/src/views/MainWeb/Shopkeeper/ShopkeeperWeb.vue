@@ -52,6 +52,7 @@ export default {
 }
 
 .margin{
+    height: auto;
     margin-bottom: 100px;
 }
 </style>

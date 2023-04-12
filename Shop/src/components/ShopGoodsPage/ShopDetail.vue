@@ -1,6 +1,8 @@
 <!-- 用户可见的店铺详情 -->
+<script setup>
+import GoodsShow from './GoodsShow.vue'
+</script>
 <template>
-    <router-link to="/UserWeb"> 返回 </router-link>
     <div class="wrap">
         <div class="sideInfo">
             <div class="image">
@@ -8,21 +10,28 @@
                 <img v-else :src="'data:image/jpeg;base64,'+shop.avatar">
             </div>
             <div class="info">
-                <p> 店铺名{{ this.shop.shopname }} </p>
+                <p> 店铺名: {{ this.shop.shopname }} </p>
+                <p> 类别：</p>
+                <p> 店铺简介: {{ this.shop.shopname }} </p> 
+                <!--评价预留-->
+                
             </div>
         </div>
         <!-- 商品展示 -->
         <div class="goods">
-            <div v-for="goods in shop.goodslist" :key="goods.goodsname">
-                <!--GoodsShow4User :goods="goods"/-->
-            </div>
+            <GoodsShow class="good"/>
+            <GoodsShow class="good"/>
         </div>
+        <!--div class="goods" v-for="goods in shop.goodslist" :key="goods.goodsname">
+            <GoodsShow4User :goods="goods" class="good"/>
+        </div-->
+        
     </div>
     
 </template>
   
 <script>
-import GoodsShow4User from "./GoodsShow4User.vue"
+import GoodsShow4User from "./GoodsDetail.vue"
 export default {
     data(){
         return {
@@ -77,9 +86,53 @@ export default {
 <style scoped>
 .wrap{
     display: grid;
-    grid-template: 20% 80%;
+    grid-template-columns: 20% 80%;
     margin:0 auto;
+    padding: 20px;
+    width:95%;
     background-color: rgba(128,128,128,0.1);
-    width:80%;
+    border-radius: 15px;
+}
+.sideInfo{
+    display: flex;
+    flex-direction: column;
+    margin:10px;
+    padding: 20px;
+    gap:10px;
+    background-color: rgba(256,256,256,0.7);
+    height: fit-content;
+}
+.image{
+    grid-column: 1/2;
+}
+.image img{
+    width: 100%;
+    height: 100%;
+}
+.info p{
+    line-height: 40px;
+    font-family: "Brush Script MT", cursive;
+}
+.goods{
+    grid-column: 2/3;
+    margin: 10px 20px 10px 20px;
+    padding: 10px 20px 10px 10px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    height:auto;
+    gap:20px;
+}
+.good{
+    width:100%;
+    height: auto;
+    background-color: rgba(256,256,256);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 20% 30% 30% 10%;
+    padding:20px;
+    align-items: center;
+    justify-items: center;
 }
 </style>

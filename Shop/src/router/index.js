@@ -69,6 +69,21 @@ const router = createRouter({
       name: 'shopkeeperShoppingList',
       component: () => import('../views/ShoppingList/ShopkeeperSL.vue')
     },
+    {
+      path: '/Shop4User/:shopname',
+      name: 'Shop4User',
+      component: () => import('../views/ShopShow/UserSS.vue')
+    },
+    {
+      path: '/Shop4Shopkeeper/:shopname',
+      name: 'Shop4Shopkeeper',
+      component: () => import('../views/ShopShow/ShopkeeperSS.vue')
+    },
+    {
+      path: '/Good4User/:shopname',
+      name: 'Good4User',
+      component: () => import('../views/GoodsShow/UserGS.vue')
+    },
 
     // 下述页面是为了调试方便的组件路径，最终需要封装到views中，因此不需要额外添加拦截器
     // 提交项目前保证无组件路径
