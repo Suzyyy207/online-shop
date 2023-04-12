@@ -59,15 +59,12 @@ export default {
 <style scoped>
 .wrap{
     display:grid;
-    grid-template-columns: 10% 40% 10% 15% 10% 15%;
+    grid-template-columns: 45% 13% 17% 11% 15%;
     background-color: transparent;
     line-height: 30px;
 }
-.check{
-    grid-column: 1/2;
-}
 .info{
-    grid-column: 2/3;
+    grid-column: 1/2;
     display: grid;
     grid-template-columns: 30% 25% 25%;
     gap:20px;

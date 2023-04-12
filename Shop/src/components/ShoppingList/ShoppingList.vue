@@ -27,17 +27,19 @@ import InvalidGoodsInSL from '../ShoppingList/InvalidGoodsInSL.vue'
                 <span>金额</span>
                 <span>操作</span>
             </div>
-            
+            <!--class的值不得变更与删除！！！-->
             <div class="allGoods">
                 <div class="singleShop" v-for="shop in validCart" :key="shop.shopname">
-                    <el-checkbox v-model="shop.isChecked" @change="changeShopStatus(shop)">
-                        {{ shop.shopname }}
-                    </el-checkbox>
+                    <div class="shopInfo">
+                        <el-checkbox v-model="shop.isChecked" @change="changeShopStatus(shop)">
+                            店铺：{{ shop.shopname }}
+                        </el-checkbox>
+                    </div>
                         
                     <div class="goods">
                         <div class="goodShow" v-for="goods in shop.goodsList" :key="goods.goodsId">
                             <el-checkbox class="check" v-model="goods.isChecked" />
-                            <GoodsInSL :goods="goods" @reloadPage="handleReloadPage"/>
+                            <GoodsInSL class="good" :goods="goods" @reloadPage="handleReloadPage"/>
                         </div>
                     </div>
 
@@ -52,6 +54,7 @@ import InvalidGoodsInSL from '../ShoppingList/InvalidGoodsInSL.vue'
                     </div>
                     <div class="invalidGoods">
                         <div class="invalidShow" v-for="goods in shop.goodsList" :key="goods.goodsId">
+                            <div></div><!--排版占位div，不要删除！！-->
                             <InvalidGoodsInSL class="invalidGood" :goods="goods" @reloadPage="handleReloadPage"/>
                         </div>
                     </div>                       
