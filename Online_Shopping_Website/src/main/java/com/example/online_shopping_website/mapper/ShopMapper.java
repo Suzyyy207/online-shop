@@ -77,4 +77,6 @@ public interface ShopMapper {
     int GetShopIsAdmitted(String shopname);
     void SetShopNormal(String shopname);
     void SetShopDeleted(String shopname);
+    void SetShopRegistrationRejected(String shopname);
+    void SetShopdeletionRejected(String shopname);
 }

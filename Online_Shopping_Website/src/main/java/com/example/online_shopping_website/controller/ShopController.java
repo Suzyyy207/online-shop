@@ -204,4 +204,11 @@ public class ShopController {
         return result;
     }
 
+    @RequestMapping("/api/shopApplicationRejected")
+    public JsonResult shopApplicationRejected(@RequestBody Map<String,Object> map){
+        String shopname = (String)map.get("shopname");
+        int rejectType = (int)map.get("rejectType");
+        JsonResult result = shopService.shopApplicationRejected(shopname, rejectType);
+        return result;
+    }
 }

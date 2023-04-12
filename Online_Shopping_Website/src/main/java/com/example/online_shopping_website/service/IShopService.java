@@ -22,4 +22,6 @@ public interface IShopService {
     String GetAvatar(String shopname);
     void deleteShopAvatar(String shopname);
     JsonResult shopApplicationApproved(String shopname, int approveType);
+
+    JsonResult shopApplicationRejected(String shopname, int rejectType);
 }

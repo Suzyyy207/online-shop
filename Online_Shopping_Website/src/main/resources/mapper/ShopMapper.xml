@@ -91,4 +91,12 @@
     <update id="SetShopDeleted">
         UPDATE shops SET is_admitted = 5 WHERE shopname = #{shopname};
     </update>
+
+    <update id="SetShopRegistrationRejected">
+        UPDATE shops SET is_admitted = 2 WHERE shopname = #{shopname};
+    </update>
+
+    <update id="SetShopdeletionRejected">
+        UPDATE shops SET is_admitted = 4 WHERE shopname = #{shopname};
+    </update>
 </mapper>

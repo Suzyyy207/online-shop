@@ -162,4 +162,32 @@ public class ShopServiceImpl implements IShopService {
         }
         return result;
     }
+
+    @Override
+    public JsonResult shopApplicationRejected(String shopname, int rejectType){
+        JsonResult result = new JsonResult<>(YES,"批复成功");
+        int stateOfAdmit = shopMapper.GetShopIsAdmitted(shopname);
+        switch (stateOfAdmit){
+            case registrationUnderReview:
+                if(rejectType == adminRejectRegistration)
+                    shopMapper.SetShopRegistrationRejected(shopname);
+                else{
+                    result.setState(NO);
+                    result.setMessage("批复失败，请重试");
+                }
+                break;
+            case deletionUnderReview:
+                if(rejectType == adminRejectDeletion)
+                    shopMapper.SetShopdeletionRejected(shopname);
+                else{
+                    result.setState(NO);
+                    result.setMessage("批复失败，请重试");
+                }
+                break;
+            default:
+                result.setState(NO);
+                result.setMessage("批复失败，请重试");
+        }
+        return result;
+    }
 }
