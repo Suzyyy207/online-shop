@@ -19,6 +19,7 @@
             <el-button class="b" @click="addToCart">加入购物车</el-button>
             <el-button class="b">
                 <router-link :to="{ name:'GoodsDetail', params:{goodsId: this.goods.goodsId}}" target="_blank" class="rt">
+                <!--router-link :to="{ name: 'Goods4User'}" class="rt"-->
                 点击查看详细信息
                 </router-link>
             </el-button>
