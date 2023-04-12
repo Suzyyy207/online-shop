@@ -26,7 +26,7 @@
         <div class="btn">
             <el-button class="b">加入购物车</el-button>
             <el-button class="b">
-                <router-link :to="{ name: 'Good4User'}" class="rt">
+                <router-link :to="{ name: 'Goods4User'}" class="rt">
                 点击查看详细信息
                 </router-link>
             </el-button>
