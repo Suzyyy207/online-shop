@@ -262,16 +262,19 @@ const idnumValidator = (rule, value, callback) => {
     methods: {
       modify:function() {
         var localStorage = window.localStorage;
-        this.form.shopname = localStorage.getItem('shopname');
-        this.form.goodstype = [localStorage.getItem('goodstype')];
-        this.form.introduction = localStorage.getItem('introduction');
-        this.form.address = localStorage.getItem('address');
-        this.form.idnum = localStorage.getItem('idnum');
-        this.form.idnumDisabled = true;
-        this.form.capital = localStorage.getItem('capital');
-        this.form.date = new Date(localStorage.getItem('date'));
-        this.toModify = true;
-        console.log(this.form.goodstype)
+        if(localStorage.getItem("toModify")) {
+          this.form.shopname = localStorage.getItem('shopname');
+          this.form.goodstype = [localStorage.getItem('goodstype')];
+          this.form.introduction = localStorage.getItem('introduction');
+          this.form.address = localStorage.getItem('address');
+          this.form.idnum = localStorage.getItem('idnum');
+          this.form.idnumDisabled = true;
+          this.form.capital = localStorage.getItem('capital');
+          this.form.date = new Date(localStorage.getItem('date'));
+          this.toModify = true;
+          console.log(this.form.goodstype)
+        }
+        
       },
       register: function (form) {
         // 首先判断需要填写的信息是否已经完全填入
@@ -476,5 +479,6 @@ const idnumValidator = (rule, value, callback) => {
 .validcode{
   margin-top:30px;
 }
+
 
 </style>

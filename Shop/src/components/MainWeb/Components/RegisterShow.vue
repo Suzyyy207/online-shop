@@ -8,26 +8,18 @@ const dialogTableVisible = ref(false)
 <template>
   <div class="shop" :shop="shop">
     <a href="#" class="shop_link">
-      <img v-if="!shop.avatar" class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
-      <img v-else :src="shop.avatar">
-
-      <p class="shopName">{{shop.shopname}}</p>
-      <p class="status" v-if="shop.is_admitted==0">申请类型：注册申请</p>
-      <p class="status" v-if="shop.is_admitted==3">申请类型：删除申请</p>
-      <p class="status" v-if="shop.is_admitted==1">批复状态：已同意注册</p>
-      <p class="status" v-if="shop.is_admitted==2||shop.is_admitted==4">批复状态：已拒绝</p>
+      <img v-if="shop.avatar" :src="'data:image/jpeg;base64,' + shop.avatar">
+      <img v-else class="logo" src="@/assets/shop.png"/>
+      
+      <p class="shopname">{{shop.shopname}}</p>
+      <p class="introdunction">{{shop.introduction}}</p>
 
       <el-button class="btn_approval" v-if="isregistered=1" @click="dialogTableVisible = true">
         <p>点击查看详细信息</p>
       </el-button>
-
+      <p v-else>注册状态：已注册成功</p>
+<!--这里不加标题无法正常关闭-->
       <el-dialog  class="information" v-model="dialogTableVisible" title="商家信息">
-        <div class="infoTop">
-          <p v-if="shop.is_admitted==0">申请类型：注册申请</p>
-          <p v-if="shop.is_admitted==3">申请类型：删除申请</p>
-          <p v-if="shop.is_admitted==1">批复状态：已同意注册</p>
-          <p v-if="shop.is_admitted==2||shop.is_admitted==4">批复状态：已拒绝</p>
-        </div>
         <p>店名：{{shop.shopname}}</p>
         <p>店铺id：{{shop.shopid}}</p>
         <p>类别：{{shop.goodstype}}</p>
@@ -37,10 +29,10 @@ const dialogTableVisible = ref(false)
         <p>负责人用户id：{{shop.uid}}</p>
         <p>负责人身份证号码：{{shop.idnum}}</p>
         <p class="bottom">简介：{{shop.introduction}}</p>
-        <template #footer v-if="shop.is_admitted==0||shop.is_admitted==3">
+        <template #footer>
           <span class="dialog-footer">
-            <el-button type="primary" @click="shopApplicationApproved">批准</el-button>
-            <el-button  @click="shopApplicationRejected">拒绝</el-button>
+            <el-button type="primary" @click="registrationApproved">批准</el-button>
+            <el-button  @click="registrationRejected">拒绝</el-button>
           </span>
         </template>
       </el-dialog>
@@ -66,37 +58,37 @@ export default {
     }
   },
   methods: {
-    shopApplicationApproved: function() {
-      this.$axios.post('/shopApplicationApproved', {
-          shopname: this.shop.shopname,
-          is_admitted: this.shop.is_admitted
+    registrationApproved: function() {
+      this.$axios.post('/registrationApproved', {
+          shopname: this.shop.shopname
         })
       .then(res=>{
         if(res.data.state == window.SUCCESS){
-          this.$message.success("已同意店铺申请！");
+          this.$message.success("已同意注册！");
           setTimeout(() => {
+            // 修改成功后需要刷新页面：跳转到一个空白页面再跳转回来
             this.$router.push({name:'ManagerWebBlank'});
           }, 1000);
         }
         else {
-          this.$message.error(res.data.message);
+          this.$message.error("请重试");
         }
       })
     },
-    shopApplicationRejected: function() {
-      this.$axios.post('/shopApplicationRejected', {
-          shopname: this.shop.shopname,
-          is_admitted: this.shop.is_admitted
+    registrationRejected: function() {
+      this.$axios.post('/registrationRejected', {
+          shopname: this.shop.shopname
         })
       .then(res=>{
         if(res.data.state == window.SUCCESS){
-          this.$message.success(res.data.message);
+          this.$message.success("已拒绝注册！");
           setTimeout(() => {
+            // 修改成功后需要刷新页面：跳转到一个空白页面再跳转回来
             this.$router.push({name:'ManagerWebBlank'});
           }, 1000);
         }
         else {
-          this.$message.error(res.data.message);
+          this.$message.error("请重试");
         }
       })
     }
@@ -106,9 +98,9 @@ export default {
 
 <style scoped>
 .shop_link{
-    width: 90%;
-    height: 220px;
-    padding: 20px 30px 10px 20px;
+    width: 320px;
+    height: 250px;
+    padding: 20px 30px 10px 30px;
     margin: 10px 20px 20px 20px;
     line-height: 100px;
     align-items: center;
@@ -122,7 +114,7 @@ export default {
     border-radius: 15px;
     color: #303133;
     border: 2px solid #ebeef5;
-    text-decoration: none;  
+    transition: .3s;
 }
 .shop_link .logo{
     grid-row: 1/3;
@@ -130,19 +122,11 @@ export default {
     width: 80%;
     height: 80%;
 }
-.shop_link > p{
+.shop_link p{
   align-items: left;
-  padding-top: 20px;
+  padding-top: 5px;
   margin-left: -20px;
   line-height: 30px;
-  
-}
-.shop_link .shopName{
-  margin-bottom: 10px;
-  font-size: 16px;
-  grid-column: 2/3;
-  grid-row: 1/2;
-  white-space: pre-wrap;
 }
 
 
@@ -152,18 +136,17 @@ export default {
 }
 
 
-.shop_link .information .infoTop{
-  margin-top:-40px;
-}
+
 .shop_link .information p{
+  font-family:"Lucida Console", "Courier New", monospace;
   font-size:20px;
   margin:0px 0px 0px 50px;
   line-height: 40px;
-  font-family: "Brush Script MT", cursive;
-  height: auto;
 }
 .shop_link .information .bottom{
-  margin:0px 0px 0px 50px;
+  font-family:"Lucida Console", "Courier New", monospace;
+  font-size:20px;
+  margin:0px 0px -70px 50px;
 }
 
 .dialog-footer{

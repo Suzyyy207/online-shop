@@ -25,7 +25,7 @@ export default {
   props: {
     type: {
       // 2:用户头像，1:商店头像
-      type: Boolean,
+      type: Number,
       required: true
     }
   },
