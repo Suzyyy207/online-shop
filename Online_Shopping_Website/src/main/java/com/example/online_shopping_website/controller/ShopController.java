@@ -182,6 +182,19 @@ public class ShopController {
         result.setData(image);
         return result;
     }
+    @PostMapping("/api/getShopInfoByShopname")
+    public JsonResult getShopInfoByShopname(@RequestBody Shop shop){
+        String shopname = shop.getShopname();
+        JsonResult result = shopService.getShopInfoByShopname(shopname);
+        return result;
+    }
+    @PostMapping
+    public JsonResult<Integer> deleteShopAvatar(@RequestBody Shop shop){
+        String shopname = shop.getShopname();
+        JsonResult<Integer> Result = new JsonResult<>(YES);
+        shopService.deleteShopAvatar(shopname);
+        return Result;
+    }
 
 
 }

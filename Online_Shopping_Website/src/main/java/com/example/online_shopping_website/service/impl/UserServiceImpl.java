@@ -246,4 +246,8 @@ public class UserServiceImpl implements IUserService {
         JsonResult result = new JsonResult<>(YES, shopAccount);
         return result;
     }
+    @Override
+    public void deleteUserAvatar(String username){
+        userMapper.AvatarDelete(username);
+    }
 }

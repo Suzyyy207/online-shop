@@ -46,4 +46,5 @@ public interface IUserService {
     JsonResult getProfitAccount();
 
     JsonResult getIntermediaryAccount();
+    void deleteUserAvatar(String username);
 }

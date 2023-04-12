@@ -25,4 +25,5 @@ public interface IGoodService {
     JsonResult addToFavorites(String username, int goodsId);
     JsonResult Unfavorite(String username, int goodsId);
     JsonResult isFavorite(String username, int goodsId);
+    GoodReturn getGoodsInfoByGoodsId(int goodsId);
 }

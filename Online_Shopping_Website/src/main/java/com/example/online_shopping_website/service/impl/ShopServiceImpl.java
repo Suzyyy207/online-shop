@@ -133,5 +133,8 @@ public class ShopServiceImpl implements IShopService {
         String base64Image = Base64.getEncoder().encodeToString(imageData);
         return base64Image;
     }
-
+    @Override
+    public void deleteShopAvatar(String shopname){
+        shopMapper.AvatarDelete(shopname);
+    }
 }

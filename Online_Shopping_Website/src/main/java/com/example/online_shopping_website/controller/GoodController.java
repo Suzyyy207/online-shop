@@ -280,4 +280,19 @@ public class GoodController {
         JsonResult result = goodService.isFavorite(username, goodsId);
         return result;
     }
+    @RequestMapping("/api/getGoodsInfoByGoodsId")
+    public JsonResult<GoodReturn> getGoodsInfoByGoodsId(@RequestBody Good good){
+        int goodsId = good.getGoodsId();
+        JsonResult<GoodReturn> result = new JsonResult<>();
+        GoodReturn goodReturn = goodService.getGoodsInfoByGoodsId(goodsId);
+        if(goodReturn ==null){
+            result.setState(NO);
+            result.setMessage("没有找到该商品");
+        }else {
+            result.setState(YES);
+            result.setMessage("返回成功");
+            result.setData(goodReturn);
+        }
+        return result;
+    }
 }

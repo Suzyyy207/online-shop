@@ -1,5 +1,6 @@
 package com.example.online_shopping_website.controller;
 
+import com.example.online_shopping_website.entity.Shop;
 import com.example.online_shopping_website.entity.User;
 import com.example.online_shopping_website.service.IShopService;
 import com.example.online_shopping_website.service.IUserService;
@@ -191,7 +192,13 @@ public class UserController {
         result = userService.addToCart(username, goodsId, num);
         return result;
     }
-
+    @PostMapping
+    public JsonResult<Integer> deleteUserAvatar(@RequestBody User user){
+        String username = user.getUsername();
+        JsonResult<Integer> Result = new JsonResult<>(YES);
+        userService.deleteUserAvatar(username);
+        return Result;
+    }
 }
 
 

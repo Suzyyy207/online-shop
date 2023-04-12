@@ -291,5 +291,30 @@ public class GoodServiceImpl implements IGoodService {
             result.setState(NO);
         return result;
     }
-
+    @Override
+    public GoodReturn getGoodsInfoByGoodsId(int goodsId){
+        Good good = goodMapper.SearchByGoodsId(goodsId);
+        GoodReturn goodReturn = new GoodReturn();
+        goodReturn.setGoodsPrice(good.getGoodsPrice());
+        goodReturn.setGoodsStock(good.getGoodsStock());
+        goodReturn.setGoodsId(good.getGoodsId());
+        goodReturn.setGoodsname(good.getGoodsname());
+        goodReturn.setIntroduction(good.getIntroduction());
+        goodReturn.setShopname(good.getShopname());
+        goodReturn.setStatus(good.getStatus());
+        goodReturn.setRegisterStatus(good.getRegisterStatus());
+        goodReturn.setModifyStatus(good.getModifyStatus());
+        goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+        goodReturn.setFavoriteNum(good.getFavoriteNum());
+        List<String> piclist = new ArrayList<>();
+        List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
+        System.out.println(picList);
+        for(pic pics : picList){
+            byte[] imageData = pics.getPic();
+            String base64Image = Base64.getEncoder().encodeToString(imageData);
+            piclist.add(base64Image);
+        }
+        goodReturn.setGoodsAvatar(piclist);
+        return goodReturn;
+    }
 }

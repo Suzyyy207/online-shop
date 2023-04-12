@@ -20,4 +20,5 @@ public interface IShopService {
     JsonResult getShopInfoByShopname(String shopname);
     void UpdateAvatar(String shopname,byte[] avatar);
     String GetAvatar(String shopname);
+    void deleteShopAvatar(String shopname);
 }

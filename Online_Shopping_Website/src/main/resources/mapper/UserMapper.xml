@@ -131,6 +131,9 @@
     <select id="GetIntermediaryAccount" resultType="java.math.BigDecimal">
         SELECT intermediaryAccount  FROM users WHERE usertype = 0;
     </select>
+    <update id="AvatarDelete">
+        UPDATE users SET avatar = null WHERE username = #{username}
+    </update>
 </mapper>
 
 
