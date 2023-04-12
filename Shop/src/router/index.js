@@ -80,8 +80,13 @@ const router = createRouter({
       component: () => import('../views/ShopShow/ShopkeeperSS.vue')
     },
     {
-      path: '/Good4User/:shopname',
-      name: 'Good4User',
+      path: '/GoodsDetail/:goodsId',
+      name: 'GoodsDetail',
+      component: () => import('../views/ShopShow/GoodsDetail.vue')
+    },
+    {
+      path: '/Goods4User',
+      name: 'Goods4User',
       component: () => import('../views/GoodsShow/UserGS.vue')
     },
 

@@ -1,7 +1,6 @@
 <!-- 用户可见的商品详情页面 -->
 <template>
     <div>
-
         <!-- TODO: 图片美化（每个商品的img数量不定，建议做成点击放大的缩略图）-->
         <div v-for="avatar in goods.goodsAvatar">
             <img :src="'data:image/jpeg;base64,' + avatar">
@@ -31,6 +30,12 @@
 <script>
 import "../../constant";
 export default {
+    props: {
+        goodsId:{
+            type: String,
+            required: true
+        }
+    },
     data() {
         return {
             goods: {
@@ -38,8 +43,9 @@ export default {
                 goodsname: "",
                 goodsCategory: [],
                 introduction: "",
-                goodsStocks: "",
-                goodsPrice: 0,
+                goodsStocks: 23,
+                goodsPrice: 23,
+                favorites: 0
             },
             favorited: false,
             num: 1,
@@ -61,7 +67,7 @@ export default {
     methods:{
         getGoodsInfoByGoodsId() {
             this.$axios.post('/getGoodsInfoByGoodsId', {
-                goodsId: this.$route.params.goodsId
+                goodsId: this.goodsId
             })
             .then(res=>{
                 const goods = res.data.data;
@@ -70,7 +76,9 @@ export default {
                 this.goods.goodsCategory = goods.goodsCategory;
                 this.goods.introduction = goods.introduction;
                 this.goods.goodsStocks = goods.goodsStocks;
+                this.goods.favorites = goods.favorites;
                 this.goods.goodsPrice = parseFloat(goods.goodsPrice);
+                this.totalPrice = this.goods.goodsPrice;
                 this.isFavorited();
             })
         },

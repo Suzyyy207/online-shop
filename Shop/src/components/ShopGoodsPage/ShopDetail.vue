@@ -11,39 +11,55 @@ import GoodsShow from './GoodsShow.vue'
             </div>
             <div class="info">
                 <p> 店铺名: {{ this.shop.shopname }} </p>
-                <p> 类别：</p>
-                <p> 店铺简介: {{ this.shop.shopname }} </p> 
+                <p> 类别：{{ this.shop.goodstype }}</p>
+                <p> 店铺简介: {{ this.shop.introduction }} </p> 
                 <!--评价预留-->
                 
             </div>
         </div>
         <!-- 商品展示 -->
         <div class="goods">
-            <GoodsShow class="good"/>
-            <GoodsShow class="good"/>
+            <div class="goods" v-for="goods in shop.goodslist" :key="goods.goodsname">
+                <GoodsShow :goods="goods" class="good"/>
+            </div>
         </div>
-        <!--div class="goods" v-for="goods in shop.goodslist" :key="goods.goodsname">
-            <GoodsShow4User :goods="goods" class="good"/>
-        </div-->
+        
         
     </div>
     
 </template>
   
 <script>
-import GoodsShow4User from "./GoodsDetail.vue"
 export default {
+    props: {
+        shopname: {
+            type: String,
+            required: true
+        }
+    },
     data(){
         return {
             shop: {
                 shopname: "",
                 avatar: "",
-                goodslist: []
+                goodslist: [],
+                goodstype: [],
+                introduction: ""
+            },
+            goods: {
+                goodsAvatar: [],
+                goodsname: "goodsname",
+                goodsCategory: [],
+                introduction: "intro",
+                goodsStocks: 0,
+                goodsPrice: 0,
+                favorites: 1,
+                goodsId: "id"
             }
         }
     },
     components: {
-        GoodsShow4User
+        GoodsShow
     },
     created() {
         this.getShopInfo();
@@ -57,27 +73,23 @@ export default {
             })
         },
         getShopInfo() {
-            // this.goods.goodsAvatar = []
-            // this.shop.goodslist = [this.goods]
-            // console.log(this.shop.goodslist)
+            this.shop.goodslist = [this.goods, this.goods]
             this.$axios.post("/getShopInfoByShopname", {
-                shopname: this.$route.params.shopname
+                shopname: this.shopname
             })
             .then((res) => {
                 if(res.data.state == window.SUCCESS){
                     const shop = res.data.data;
                     this.shop.shopname = shop.shopname;
                     this.shop.avatar = shop.avatar;
+                    this.shop.introduction = shop.introduction;
+                    this.shop.goodstype = shop.goodstype;
                     this.getValidGoods();
                 }
                 else {
                     this.$message.error("加载失败，请重试");
                 }
             })
-            .catch((err) => {
-                console.log(err);
-                this.$message.error("加载失败，请重试");
-            });
         }
     }
 }

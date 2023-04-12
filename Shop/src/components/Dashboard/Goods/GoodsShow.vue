@@ -14,13 +14,9 @@ const dialogTableVisible = ref(false)
       <img v-else :src="'data:image/jpeg;base64,'+goods.goodsAvatar[0]">
 
       <p class="goodsName">商品名：{{ goods.goodsname }}</p>
-      <el-button class="btnReg"  @click="dialogTableVisible = true">
+      <el-button class="btnReg">
         <p>点击查看详细信息</p>
       </el-button>
-
-      <el-dialog class="information" v-model="dialogTableVisible" title="商品信息">
-        <GoodsInfo4Shopkeeper :goods="this.goods"/>
-      </el-dialog>
           
     </a>
   </div>
