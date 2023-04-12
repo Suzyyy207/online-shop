@@ -8,7 +8,7 @@
       <img v-else :src="'data:image/jpeg;base64,'+goods.goodsAvatar[0]">
 
       <p class="goodsName">商品名：{{ goods.goodsname }}</p>
-      <el-button class="btnReg"  @click="showDetail">
+      <el-button class="btnReg"  @click="showGoodsDetail">
         <p>点击查看详细信息</p>
       </el-button>
     
@@ -30,11 +30,9 @@ export default {
       GoodsInfo4Shopkeeper
     },
     methods: {
-        showDetail() {
-            var localStorage = window.localStorage;
-            localStorage.setItem("goodsDetailId",this.goods.goodsId);
-            this.$emit("showGoodsDetail"); 
-        }
+      showGoodsDetail() {
+        this.$emit('showGoodsDetail', {goods:this.goods});
+      }
     }
 }
 </script>

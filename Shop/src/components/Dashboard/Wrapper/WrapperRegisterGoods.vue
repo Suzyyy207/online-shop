@@ -1,14 +1,16 @@
 <script setup>
     import GoodsShow from '../Goods/GoodsShow.vue'
+    import GoodsShow4Shopkeeper from '../Goods/GoodsShow4Shopkeeper.vue';
+    import GoodsInfo4Shopkeeper from '../Goods/GoodsInfo4Shopkeeper.vue';
 </script>
 
 <template>
-    <div class="wrap" >
+    <div class="wrap" v-if="!isShowGoodsDetail">
         <div class="edit">
             <h2>待审核</h2>
             <div class="goods">
                 <div v-for="goods in registeringGoodsList" :key="goods.goodsId">
-                    <GoodsShow :goods="goods"/>
+                    <GoodsShow4Shopkeeper @showGoodsDetail="showGoodsDetail" :goods="goods"/>
                 </div>
             </div>
             <div class="pages">
@@ -22,7 +24,7 @@
             <h2>注册失败</h2>
             <div class="goods">
                 <div v-for="goods in registrationDeniedGoodsList" :key="goods.goodsId">
-                    <GoodsShow :goods="goods"/>
+                    <GoodsShow4Shopkeeper @showGoodsDetail="showGoodsDetail" :goods="goods"/>
                 </div>
             </div>
             <div class="pages">
@@ -36,7 +38,7 @@
             <h2>注册成功</h2>
             <div class="goods">
                 <div v-for="goods in registeredGoodsList" :key="goods.goodsId">
-                    <GoodsShow :goods="goods"/>
+                    <GoodsShow4Shopkeeper @showGoodsDetail="showGoodsDetail" :goods="goods"/>
                 </div>
             </div>
             <div class="pages">
@@ -46,6 +48,10 @@
             </div>
         </div>
 
+    </div>
+
+    <div v-else>
+        <GoodsInfo4Shopkeeper :goods="showGoods" @cancelShowGoodsDetail="cancelShowGoodsDetail" />
     </div>
 </template>
 
@@ -70,6 +76,20 @@ export default {
                 goodsStock:20,
                 introduction:"intro",
                 goodsCategory: ['电脑数码', '家用电器'],
+                favorites:0,
+                goodsAvatar: []
+            },
+            isShowGoodsDetail: false,
+            showGoods: {
+                goodsname: "",
+                goodsId: "",
+                registerStatus: 0,
+                modifyStatus: 0,
+                status: 0,
+                goodsPrice:0,
+                goodsStock:0,
+                introduction:"",
+                goodsCategory: [],
                 favorites:0,
                 goodsAvatar: []
             }
@@ -109,6 +129,25 @@ export default {
             }).then(res => {
                 this.registerationDeniedGoodsList = res.data.data;
             })
+        },
+        showGoodsDetail(arg) {
+            console.log(arg.goods)
+            this.showGoods.goodsname = arg.goods.goodsname
+            this.showGoods.goodsId = arg.goods.goodsId
+            this.showGoods.registerStatus = arg.goods.registerStatus
+            this.showGoods.modifyStatus = arg.goods.modifyStatus
+            this.showGoods.status = arg.goods.status
+            this.showGoods.goodsPrice = arg.goods.goodsPrice
+            this.showGoods.goodsStock = arg.goods.goodsStock
+            this.showGoods.introduction = arg.goods.introduction
+            this.showGoods.goodsCategory = arg.goods.goodsCategory
+            this.showGoods.favorites = arg.goods.favorites
+            this.showGoods.goodsAvatar = arg.goods.goodsAvatar
+            console.log(this.showGoods)
+            this.isShowGoodsDetail = true;
+        },
+        cancelShowGoodsDetail() {
+            this.isShowGoodsDetail = false
         }
     }
 }

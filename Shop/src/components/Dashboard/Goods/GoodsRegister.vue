@@ -2,7 +2,8 @@
 
 <template>
     <div class="wrap">
-        <h1>商品注册表</h1>
+        <h1 v-if="isModified">商品信息修改</h1>
+        <h1 v-else>商品注册表</h1>
         <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="100px" label-position="top">
             <!-- TODO: icon添加 -->
             <el-row>
@@ -69,8 +70,6 @@
                 </el-checkbox-group>
             </el-form-item>
 
-            <!--TODO: 简介框需要比其他框height更大-->
-            <!--ykx修改了 如果还需要更大可以调 :rows 的大小-->
             <el-form-item label="商品简介" prop="introduction" >
                 <el-input
                     type="textarea"
@@ -97,24 +96,16 @@
                 </el-upload>
             </el-form-item>
 
-            <el-button 
-                v-if="isModified"
-                type="primary" 
-                @click="setGoodsInfo('addForm')" 
-            >提交
-            </el-button>
-
-            <!--原先的按钮不显示，为排版添加两个新按钮，可将相关逻辑放在这里-->
-            <!--在所有表单中应该都不用改变提示词-->
             <el-row>
               <el-col :span="12">
                 <el-form-item class="btn">
-                  <el-button type="primary" @click="setGoodsInfo('addForm')">提&nbsp;&nbsp;交</el-button>
+                  <el-button v-if="isModified" type="primary" @click="setGoodsInfo('addForm')">提&nbsp;&nbsp;交</el-button>
+                  <el-button v-else type="primary" @click="goodsRegister('addForm')">注&nbsp;&nbsp;册</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item class="btn">
-                  <el-button type="primary">重&nbsp;&nbsp;置</el-button>
+                  <el-button type="primary" @click="resetForm">重&nbsp;&nbsp;置</el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -135,7 +126,7 @@ export default {
     },
     data(){
         return {
-            isModified: 0,
+            isModified: false,
             addForm: {
                 goodsname:'',
                 goodsPrice: 0,
@@ -175,6 +166,7 @@ export default {
     methods:{
         getGoodsInfo() {
             if(this.goods!="") {
+                this.isModified = true;
                 console.log("商品信息修改");
                 this.$axios.post('/getEditingGoodsInfo',{
                     goodsId: this.goods.goodsId
@@ -261,40 +253,71 @@ export default {
                     goodsname:this.addForm.goodsname,
                     goodsPrice: this.addForm.goodsPrice,
                     goodsStock: this.addForm.goodsStock
-                })
-                .then(res => {
+                }).then(res => {
                     if(res.data.state == window.SUCCESS){
-                        // 然后传输图片
-                        let formData = new FormData();
-                        formData.append("goodsId", res.data.data.goodsId);
-                        for (let i = 0; i < this.addForm.fileList.length; i++) {
-                            formData.append("file", this.addForm.fileList[i].raw);
-                        }
-                        this.$axios.post("/setGoodsPicture", formData, {
-                            headers: { "Content-Type": "multipart/form-data" },
-                        })
-                        .then((res) => {
-                            console.log(res.data);
-                            this.$message.success("提交成功！");
-                            this.$router.go(0);
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            this.$message.error("提交失败，请重试");
-                        });
+                        this.setGoodsAvatar(res.data.data);
                     }
                     else {
                         this.$message.error("提交失败，请重试");
                     }
-                })
-                .catch(err => {
-                console.log(err);
+                }).catch(err => {
+                    console.log(err);
                 })
             } else {
                 console.log("校验失败");
                 return false;
             }
           });
+        },
+        goodsRegister: function (addForm) {
+            this.$refs[addForm].validate((valid) => {
+            if (valid) {
+                // 先传输普通数据
+                var localStorage = window.localStorage;
+                this.$axios.post('/goodsRegister', {
+                    shopname: localStorage.getItem("shopname"),
+                    goodsCategory: this.addForm.goodsCategory.join(';'),
+                    introduction: this.addForm.introduction,
+                    goodsname:this.addForm.goodsname,
+                    goodsPrice: this.addForm.goodsPrice,
+                    goodsStock: this.addForm.goodsStock
+                }).then(res => {
+                    if(res.data.state == window.SUCCESS){
+                        this.setGoodsAvatar(res.data.data);
+                    }
+                    else {
+                        this.$message.error("提交失败，请重试");
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            } else {
+                console.log("校验失败");
+                return false;
+            }
+          });
+        },
+        setGoodsAvatar: function(goodsId) {
+            let formData = new FormData();
+            formData.append("goodsId", goodsId);
+            for (let i = 0; i < this.addForm.fileList.length; i++) {
+                formData.append("file", this.addForm.fileList[i].raw);
+            }
+            this.$axios.post("/setGoodsPicture", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+            .then((res) => {
+                console.log(res.data);
+                this.$message.success("提交成功！");
+                this.$router.go(0);
+            })
+            .catch((err) => {
+                console.log(err);
+                this.$message.error("提交失败，请重试");
+            });
+        },
+        resetForm() {
+            this.$refs.addForm.resetFields();
         }
     }
 }

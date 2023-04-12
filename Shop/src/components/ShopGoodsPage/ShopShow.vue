@@ -1,7 +1,7 @@
 <!--此组件将店铺信息打包，用于向用户展示店铺信息-->
 <template>
   <div class="shop">
-    
+     
 
     <a href="#" class="shop_link">
       <img v-if="shop.avatar" :src="'data:image/jpeg;base64,' + shop.avatar">

@@ -1,6 +1,9 @@
 <!-- 用户可见的商品详情页面 -->
 <template>
+
     <div class="wrap">
+        
+
         <div class="shopName">
             <h1 class="title">店铺名</h1>
         </div>
@@ -10,27 +13,27 @@
             <div class="image">
                 <img src="@/assets/logo.png"/>
                 <el-pagination background layout="prev, pager, next" :total="1000" />
-                <!--div v-for="avatar in goods.goodsAvatar">
+                <div v-for="avatar in goods.goodsAvatar">
                     <img :src="'data:image/jpeg;base64,' + avatar">
-                </div-->
+                </div>
             </div>
             
             <div class="info">
                 <div class="basicInfo">
-                    <p>商品名：吃吃吃吃吃吃{{ goods.goodsname }}</p>
-                    <p>商品类别：大大的肥料{{ goods.goodsCategory }}</p>
-                    <p>商品简介：特别特别伟大的好吃的，特别值得{{ goods.introduction }}</p>
+                    <p>商品名：{{ goods.goodsname }}</p>
+                    <p>商品类别：{{ goods.goodsCategory }}</p>
+                    <p>商品简介：{{ goods.introduction }}</p>
                     <div class="left">
                         <p>商品价格：￥{{ goods.goodsPrice }}</p>
-                        <p>商品库存：1222{{ goods.goodsStocks }}</p>
+                        <p>商品库存：{{ goods.goodsStocks }}</p>
                     </div>
                 </div>
                 
                 <div class="buyInfo">
+                    <p>收藏量：{{ goods.favorites }}</p>
+
                     <!-- TODO: 累计销量-->
-                    <!--p>累计销量：{{ goods.sales }}</p-->
-                    <p>收藏量：100000{{ goods.favorites }}</p>
-                    <p>购买量：300{{ goods.favorites }}</p>
+                    <p>购买量：300</p>
                 </div>
                 
                 <div class="buy">
@@ -68,15 +71,22 @@
 <script>
 import "../../constant";
 export default {
+    props: {
+        goodsId:{
+            type: String,
+            required: true
+        }
+    },
     data() {
         return {
             goods: {
                 goodsAvatar: [],
-                goodsname: "",
+                goodsname: "商品名",
                 goodsCategory: [],
-                introduction: "",
-                goodsStocks: "",
-                goodsPrice: 0,
+                introduction: "intro",
+                goodsStocks: 23,
+                goodsPrice: 23,
+                favorites: 0
             },
             favorited: false,
             num: 1,
@@ -98,7 +108,7 @@ export default {
     methods:{
         getGoodsInfoByGoodsId() {
             this.$axios.post('/getGoodsInfoByGoodsId', {
-                goodsId: this.$route.params.goodsId
+                goodsId: this.goodsId
             })
             .then(res=>{
                 const goods = res.data.data;
@@ -107,7 +117,9 @@ export default {
                 this.goods.goodsCategory = goods.goodsCategory;
                 this.goods.introduction = goods.introduction;
                 this.goods.goodsStocks = goods.goodsStocks;
+                this.goods.favorites = goods.favorites;
                 this.goods.goodsPrice = parseFloat(goods.goodsPrice);
+                this.totalPrice = this.goods.goodsPrice;
                 this.isFavorited();
             })
         },
