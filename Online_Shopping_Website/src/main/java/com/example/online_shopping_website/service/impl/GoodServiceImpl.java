@@ -42,8 +42,12 @@ public class GoodServiceImpl implements IGoodService {
     @Override
     public void setGoodsInformation(String introduction,String goodsname,float goodsPrice,int goodsStock,String goodsCategory,String shopname,int goodsId){
         Good good = goodMapper.SearchByGoodname(goodsname);
-        if (good != null) {
+        Good goodTrue =goodMapper.SearchByGoodsId(goodsId);
+        if (good != null&&goodTrue.getGoodsId()!=good.getGoodsId()) {
             throw new GoodnameDuplicateException("尝试注册的商品名[" + goodsname + "]已经被占用");
+        }
+        if(shopname ==null){
+            shopname = goodTrue.getShopname();
         }
         goodMapper.insertGoodByUser(introduction,goodsname,goodsPrice,goodsStock,goodsCategory, -goodsId,-goodsId,-goodsId,shopname);
         goodMapper.UpdateStatus(goodsId,2);

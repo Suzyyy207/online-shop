@@ -188,7 +188,7 @@ public class ShopController {
         JsonResult result = shopService.getShopInfoByShopname(shopname);
         return result;
     }
-    @PostMapping
+    @PostMapping("deleteShopAvatar")
     public JsonResult<Integer> deleteShopAvatar(@RequestBody Shop shop){
         String shopname = shop.getShopname();
         JsonResult<Integer> Result = new JsonResult<>(YES);
