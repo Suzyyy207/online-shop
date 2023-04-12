@@ -8,9 +8,13 @@
       <img v-else class="logo" src="@/assets/shop.png"/>
         <p>{{shop.shopname}}</p>
         <p>{{shop.goodstype}} </p>
-        <router-link class="intro" :to="{ name: 'Shop4User', params: { shopname: this.shop.shopname } }">
+        <!--这里加判断语句决定跳转方向，两个rt都已经分别测试过，无其他bug-->
+        <router-link class="intro" :to="{ name: 'Shop4Shopkeeper', params: { shopname: this.shop.shopname } }">
           进入店铺详情页面
         </router-link>
+        <!--router-link class="intro" :to="{ name: 'Shop4User', params: { shopname: this.shop.shopname } }">
+          进入店铺详情页面
+        </router-link-->
     </a>
   </div>
     
