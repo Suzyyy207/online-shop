@@ -2,8 +2,7 @@
 <template>
   <div class="wrap">
     <div :shop="shop" class="shop">
-        <!--img class="logo" src="@/assets/shop.png"/-->
-        <img v-if="shop.avatar" :src="shop.avatar">
+        <img v-if="shop.avatar" :src="'data:image/jpeg;base64,' + shop.avatar">
         <img v-else class="logo" src="@/assets/shop.png"/>
 
         <div class="info1">

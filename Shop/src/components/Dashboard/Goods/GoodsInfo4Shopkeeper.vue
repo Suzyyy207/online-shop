@@ -1,6 +1,8 @@
 <!-- 商家查看商品详情 -->
 <template>
     <div>
+        <el-button @click="cancelShowGoodsDetail">返回</el-button>
+
         <!-- 进度条 -->
         <el-card>
             <el-steps :active="activeIndex">
@@ -181,6 +183,9 @@ export default {
             .catch(err => {
                 console.log(err);
             })
+        },
+        cancelShowGoodsDetail() {
+            this.$emit("cancelShowGoodsDetail"); 
         }
     }
 }

@@ -1,16 +1,20 @@
 <!--此组件将店铺信息打包，用于向用户展示店铺信息-->
 <template>
   <div class="shop">
-    
+     
 
     <a href="#" class="shop_link">
       <img v-if="shop.avatar" :src="'data:image/jpeg;base64,' + shop.avatar">
       <img v-else class="logo" src="@/assets/shop.png"/>
         <p>{{shop.shopname}}</p>
         <p>{{shop.goodstype}} </p>
-        <router-link class="intro" :to="{ name: 'Shop4User', params: { shopname: this.shop.shopname } }">
+        <!--这里加判断语句决定跳转方向，两个rt都已经分别测试过，无其他bug-->
+        <router-link class="intro" :to="{ name: 'Shop4Shopkeeper', params: { shopname: this.shop.shopname } }">
           进入店铺详情页面
         </router-link>
+        <!--router-link class="intro" :to="{ name: 'Shop4User', params: { shopname: this.shop.shopname } }">
+          进入店铺详情页面
+        </router-link-->
     </a>
   </div>
     

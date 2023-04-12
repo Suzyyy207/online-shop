@@ -1,16 +1,18 @@
 <script setup>
     import GoodsShow from '../Goods/GoodsShow.vue'
+    import GoodsShow4Shopkeeper from '../Goods/GoodsShow4Shopkeeper.vue';
+    import GoodsInfo4Shopkeeper from '../Goods/GoodsInfo4Shopkeeper.vue';
 </script>
 
 <template>
-    <div class="wrap" >
+    <div class="wrap">
         <el-tabs tab-position="left">
             <el-tab-pane label="在售商品">
-                <div class="show">
+                <div class="show" v-if="!isShowGoodsDetail">
                     <h1>在售商品表</h1>
                     <div class="goods">
                         <div v-for="goods in validGoodsList" :key="goods.goodsId">
-                            <GoodsShow :goods="goods"/>
+                            <GoodsShow4Shopkeeper @showGoodsDetail="showGoodsDetail" :goods="goods"/>
                         </div>
                     </div>
                     <div class="pages">
@@ -18,15 +20,19 @@
                         <span>1/10</span>
                         <el-button class="pageBtn">下一页</el-button>
                     </div>
+                </div>
+
+                <div v-else>
+                    <GoodsInfo4Shopkeeper :goods="showGoods" @cancelShowGoodsDetail="cancelShowGoodsDetail" />
                 </div>
             </el-tab-pane>
 
             <el-tab-pane label="已下架">
-                <div class="show">
+                <div class="show" v-if="!isShowGoodsDetail2">
                     <h1>已下架商品表</h1>
                     <div class="goods">
                         <div v-for="goods in invalidGoodsList" :key="goods.goodsId">
-                            <GoodsShow :goods="goods"/>
+                            <GoodsShow4Shopkeeper @showGoodsDetail="showGoodsDetail2" :goods="goods"/>
                         </div>
                     </div>
                     <div class="pages">
@@ -35,9 +41,14 @@
                         <el-button class="pageBtn">下一页</el-button>
                     </div>
                 </div>
+
+                <div v-else>
+                    <GoodsInfo4Shopkeeper :goods="showGoods" @cancelShowGoodsDetail="cancelShowGoodsDetail2" />
+                </div>
             </el-tab-pane>
         </el-tabs>
     </div>
+
 </template>
 <script>
 export default {
@@ -53,6 +64,34 @@ export default {
                 goodsStock:20,
                 introduction:"intro",
                 goodsCategory: ['电脑数码', '家用电器'],
+                favorites:0,
+                goodsAvatar: []
+            },
+            isShowGoodsDetail: false,
+            showGoods: {
+                goodsname: "",
+                goodsId: "",
+                registerStatus: 0,
+                modifyStatus: 0,
+                status: 0,
+                goodsPrice:0,
+                goodsStock:0,
+                introduction:"",
+                goodsCategory: [],
+                favorites:0,
+                goodsAvatar: []
+            },
+            isShowGoodsDetail2: false,
+            showGoods2: {
+                goodsname: "",
+                goodsId: "",
+                registerStatus: 0,
+                modifyStatus: 0,
+                status: 0,
+                goodsPrice:0,
+                goodsStock:0,
+                introduction:"",
+                goodsCategory: [],
                 favorites:0,
                 goodsAvatar: []
             }
@@ -80,6 +119,44 @@ export default {
             }).then(res => {
                 this.validGoodsList = res.data.data;
             })
+        },
+        showGoodsDetail(arg) {
+            console.log(arg.goods)
+            this.showGoods.goodsname = arg.goods.goodsname
+            this.showGoods.goodsId = arg.goods.goodsId
+            this.showGoods.registerStatus = arg.goods.registerStatus
+            this.showGoods.modifyStatus = arg.goods.modifyStatus
+            this.showGoods.status = arg.goods.status
+            this.showGoods.goodsPrice = arg.goods.goodsPrice
+            this.showGoods.goodsStock = arg.goods.goodsStock
+            this.showGoods.introduction = arg.goods.introduction
+            this.showGoods.goodsCategory = arg.goods.goodsCategory
+            this.showGoods.favorites = arg.goods.favorites
+            this.showGoods.goodsAvatar = arg.goods.goodsAvatar
+            console.log(this.showGoods)
+            this.isShowGoodsDetail = true;
+        },
+        cancelShowGoodsDetail() {
+            this.isShowGoodsDetail = false
+        },
+        showGoodsDetail2(arg) {
+            console.log(arg.goods)
+            this.showGoods.goodsname = arg.goods.goodsname
+            this.showGoods.goodsId = arg.goods.goodsId
+            this.showGoods.registerStatus = arg.goods.registerStatus
+            this.showGoods.modifyStatus = arg.goods.modifyStatus
+            this.showGoods.status = arg.goods.status
+            this.showGoods.goodsPrice = arg.goods.goodsPrice
+            this.showGoods.goodsStock = arg.goods.goodsStock
+            this.showGoods.introduction = arg.goods.introduction
+            this.showGoods.goodsCategory = arg.goods.goodsCategory
+            this.showGoods.favorites = arg.goods.favorites
+            this.showGoods.goodsAvatar = arg.goods.goodsAvatar
+            console.log(this.showGoods)
+            this.isShowGoodsDetail2 = true;
+        },
+        cancelShowGoodsDetail2() {
+            this.isShowGoodsDetail2 = false
         }
     }
 }

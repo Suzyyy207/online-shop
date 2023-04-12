@@ -8,16 +8,23 @@
                 <!--span>商品简介 </span-->
             </div>
             <div class="category">
-                <p>分类1</p>
+                <p>{{ goods.goodsCategory }}</p>
                 <!--p>分类2</p-->
             </div>
         </div>
         <div class="price">
             <p>￥{{ goods.goodsPrice }}</p>
         </div>
+        <div class="amount">
+            {{ goods.num }}
+        </div>
+        <div class="count">
+            <p>￥{{ Number(goods.goodsPrice)*Number(goods.num) }}</p>
+        </div>
         <div class="btn">
             <el-button @click="deleteGoodsFromCart">删除</el-button>
         </div>
+
 
     </div>
     
@@ -52,15 +59,12 @@ export default {
 <style scoped>
 .wrap{
     display:grid;
-    grid-template-columns: 10% 40% 10% 15% 10% 15%;
+    grid-template-columns: 45% 13% 17% 11% 15%;
     background-color: transparent;
     line-height: 30px;
 }
-.check{
-    grid-column: 1/2;
-}
 .info{
-    grid-column: 2/3;
+    grid-column: 1/2;
     display: grid;
     grid-template-columns: 30% 25% 25%;
     gap:20px;
