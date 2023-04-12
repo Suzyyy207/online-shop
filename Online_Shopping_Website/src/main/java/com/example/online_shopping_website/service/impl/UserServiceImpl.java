@@ -155,40 +155,27 @@ public class UserServiceImpl implements IUserService {
     public JsonResult recharge(String username, BigDecimal credit, int accountType){
         JsonResult result = new JsonResult<>(YES);
         int userType = userMapper.GetUserTypeByUsername(username);
-        //根据userType和accountType来判断，取出原来的账户余额，在业务层相加，然后放回
+        //根据userType和accountType来判断，直接在mapper层加上。
         switch (userType){
             case admin:
-                if(accountType == profitAccount){
-                    BigDecimal originalProfitAccount = userMapper.GetProfitAccountByUsername(username);
-                    BigDecimal newProfitAccount = originalProfitAccount.add(credit);
-                    userMapper.RechargeProfitAccountByUsername(username,newProfitAccount);
-                } else if (accountType == intermediaryAccount) {
-                    BigDecimal originalIntermediaryAccount = userMapper.GetIntermediaryAccountByUsername(username);
-                    BigDecimal newIntermediaryAccount = originalIntermediaryAccount.add(credit);
-                    userMapper.RechargeIntermediaryAccountByUsername(username,newIntermediaryAccount);
-                }
+                if(accountType == profitAccount)
+                    userMapper.RechargeProfitAccountByUsername(username, credit);
+                else if (accountType == intermediaryAccount)
+                    userMapper.RechargeIntermediaryAccountByUsername(username, credit);
                 break;
             case merchant:
-                if(accountType == privateAccount){
-                    BigDecimal originalPrivateAccount = userMapper.GetPrivateAccountByUsername(username);
-                    BigDecimal newPriavteAccount = originalPrivateAccount.add(credit);
-                    userMapper.RechargePrivateAccountByUsername(username,newPriavteAccount);
-                } else if (accountType == shopAccount) {
-                    BigDecimal originalShopAccount = userMapper.GetShopAccountByUsername(username);
-                    BigDecimal newShopAccount = originalShopAccount.add(credit);
-                    userMapper.RechargeShopAccountByUsername(username,newShopAccount);
-                }
+                if(accountType == privateAccount)
+                    userMapper.RechargePrivateAccountByUsername(username, credit);
+                else if (accountType == shopAccount)
+                    userMapper.RechargeShopAccountByUsername(username, credit);
                 break;
             case buyer:
-                BigDecimal originalPrivateAccount = userMapper.GetPrivateAccountByUsername(username);
-                BigDecimal newPriavteAccount = originalPrivateAccount.add(credit);
-                userMapper.RechargePrivateAccountByUsername(username,newPriavteAccount);
+                userMapper.RechargePrivateAccountByUsername(username,credit);
                 break;
             default:
                 result.setState(NO);
                 System.out.println("账户类型异常");
         }
-
         return result;
     }
 

@@ -83,13 +83,13 @@ public class UserController {
             setUserInfoResult.addMessage("修改失败：用户未找到;");
         } catch(UsernameDuplicatedException e){
             setUserInfoResult.setState(NO);
-            setUserInfoResult.addMessage("修改失败：用户名已存在;");
+            setUserInfoResult.addMessage("修改失败：该用户名已其他用户使用;");
         }catch(PhoneDuplicatedException e){
             setUserInfoResult.setState(NO);
-            setUserInfoResult.addMessage("修改失败：手机号已存在;");
+            setUserInfoResult.addMessage("修改失败：该手机号已被其他用户使用;");
         }catch(EmailDuplicatedException e){
             setUserInfoResult.setState(NO);
-            setUserInfoResult.addMessage("修改失败：邮箱已被存在;");
+            setUserInfoResult.addMessage("修改失败：该邮箱已被其他用户使用;");
         }catch(SQLException e){             //操作数据库时出错
             setUserInfoResult.setState(NO);
             setUserInfoResult.setMessage("修改失败：出现未知错误;");
@@ -162,14 +162,8 @@ public class UserController {
         String username = (String)map.get("username");
         BigDecimal credit = new BigDecimal((String) map.get("credit"));
         int accountType = (int)map.get("accountType");
-        JsonResult result = new JsonResult<>();
-        //异常情况 credit太大或太小
-        BigDecimal zero = new BigDecimal(0);
-        if(credit.compareTo(zero) == -1){   //-1, 0, or 1 = less than, equal to, or greater than .
-            result.setState(NO);
-        }else{
-            result = userService.recharge(username, credit, accountType);
-        }
+
+        JsonResult result = userService.recharge(username, credit, accountType);
         return result;
     }
 

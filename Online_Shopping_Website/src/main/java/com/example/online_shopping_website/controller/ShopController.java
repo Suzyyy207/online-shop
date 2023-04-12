@@ -196,5 +196,12 @@ public class ShopController {
         return Result;
     }
 
+    @RequestMapping("/api/shopApplicationApproved")
+    public JsonResult shopApplicationApproved(@RequestBody Map<String,Object> map){
+        String shopname = (String)map.get("shopname");
+        int approveType = (int)map.get("approveType");
+        JsonResult result = shopService.shopApplicationApproved(shopname, approveType);
+        return result;
+    }
 
 }

@@ -6,20 +6,17 @@ import com.example.online_shopping_website.mapper.ShopMapper;
 import com.example.online_shopping_website.entity.User;
 import com.example.online_shopping_website.mapper.UserMapper;
 import com.example.online_shopping_website.service.IShopService;
-import com.example.online_shopping_website.service.IUserService;
 import com.example.online_shopping_website.service.ex.*;
 import com.example.online_shopping_website.util.JsonResult;
-import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.online_shopping_website.service.impl.InfoVerification;
 
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
 
+import static com.example.online_shopping_website.entity.constant.admit.*;
 import static javax.security.auth.callback.ConfirmationCallback.*;
 
 @Service
@@ -136,5 +133,33 @@ public class ShopServiceImpl implements IShopService {
     @Override
     public void deleteShopAvatar(String shopname){
         shopMapper.AvatarDelete(shopname);
+    }
+
+    @Override
+    public JsonResult shopApplicationApproved(String shopname, int approveType){
+        JsonResult result = new JsonResult<>(YES,"批复成功");
+        int stateOfAdmit = shopMapper.GetShopIsAdmitted(shopname);
+        switch (stateOfAdmit){
+            case registrationUnderReview:
+                if(approveType == adminApproveRegistration)
+                    shopMapper.SetShopNormal(shopname);
+                else{
+                    result.setState(NO);
+                    result.setMessage("批复失败，请重试");
+                }
+                break;
+            case deletionUnderReview:
+                if(approveType == adminApproveDeletion)
+                    shopMapper.SetShopDeleted(shopname);
+                else{
+                    result.setState(NO);
+                    result.setMessage("批复失败，请重试");
+                }
+                break;
+            default:
+                result.setState(NO);
+                result.setMessage("批复失败，请重试");
+        }
+        return result;
     }
 }

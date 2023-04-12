@@ -79,4 +79,16 @@
     <update id="AvatarDelete">
         UPDATE shops SET avatar = null WHERE shopname = #{shopname}
     </update>
+    
+    <select id="GetShopIsAdmitted" resultType="int">
+        SELECT is_admitted FROM shopd WHERE shopname = #{shopname};
+    </select>
+
+    <update id="SetShopNormal">
+        UPDATE shops SET is_admitted = 1 WHERE shopname = #{shopname};
+    </update>
+
+    <update id="SetShopDeleted">
+        UPDATE shops SET is_admitted = 5 WHERE shopname = #{shopname};
+    </update>
 </mapper>
