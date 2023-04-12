@@ -79,10 +79,16 @@ const router = createRouter({
       name: 'Shop4Shopkeeper',
       component: () => import('../views/ShopShow/ShopkeeperSS.vue')
     },
+    //Good因为后端没写好 所以没有加参数！！之后需要补充
     {
-      path: '/Good4User/:shopname',
-      name: 'Good4User',
+      path: '/Goods4User',
+      name: 'Goods4User',
       component: () => import('../views/GoodsShow/UserGS.vue')
+    },
+    {
+      path: '/Goods4Shopkeeper',
+      name: 'Goods4Shopkeeper',
+      component: () => import('../views/GoodsShow/ShopkeeperGS.vue')
     },
 
     // 下述页面是为了调试方便的组件路径，最终需要封装到views中，因此不需要额外添加拦截器

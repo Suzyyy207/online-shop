@@ -1,30 +1,67 @@
 <!-- 用户可见的商品详情页面 -->
 <template>
-    <div>
-
-        <!-- TODO: 图片美化（每个商品的img数量不定，建议做成点击放大的缩略图）-->
-        <div v-for="avatar in goods.goodsAvatar">
-            <img :src="'data:image/jpeg;base64,' + avatar">
+    <div class="wrap">
+        <div class="shopName">
+            <h1 class="title">店铺名</h1>
         </div>
 
-        <p>商品类型：{{ goods.goodsname }}</p>
-        <p>商品类别：{{ goods.goodsCategory }}</p>
-        <p>商品简介：{{ goods.introduction }}</p>
-        <p>商品库存：{{ goods.goodsStocks }}</p>
-        <p>商品价格：{{ goods.goodsPrice }}</p>
+        <div class="infoBuy">
+            <!-- TODO: 图片美化（每个商品的img数量不定，建议做成点击放大的缩略图）-->
+            <div class="image">
+                <img src="@/assets/logo.png"/>
+                <el-pagination background layout="prev, pager, next" :total="1000" />
+                <!--div v-for="avatar in goods.goodsAvatar">
+                    <img :src="'data:image/jpeg;base64,' + avatar">
+                </div-->
+            </div>
             
-        <!-- TODO: 累计销量-->
-        <!--p>累计销量：{{ goods.sales }}</p-->
-        <p>收藏量：{{ goods.favorites }}</p>
+            <div class="info">
+                <div class="basicInfo">
+                    <p>商品名：吃吃吃吃吃吃{{ goods.goodsname }}</p>
+                    <p>商品类别：大大的肥料{{ goods.goodsCategory }}</p>
+                    <p>商品简介：特别特别伟大的好吃的，特别值得{{ goods.introduction }}</p>
+                    <div class="left">
+                        <p>商品价格：￥{{ goods.goodsPrice }}</p>
+                        <p>商品库存：1222{{ goods.goodsStocks }}</p>
+                    </div>
+                </div>
+                
+                <div class="buyInfo">
+                    <!-- TODO: 累计销量-->
+                    <!--p>累计销量：{{ goods.sales }}</p-->
+                    <p>收藏量：100000{{ goods.favorites }}</p>
+                    <p>购买量：300{{ goods.favorites }}</p>
+                </div>
+                
+                <div class="buy">
+                    <div class="add">
+                        <el-input-number v-model="num" :min="1" @change="handleChange" :value-on-clear="1" />
+                        <p>总价：{{ this.totalPrice }}</p>
+                    </div>
+                    <div class="buyBtn">
+                        <el-button class="btn" @click="addToCart"> 加入购物车 </el-button>
+                        <el-button class="btn"> 购买 </el-button>
+                        <!-- TODO: 收藏美化 -->
+                        <el-button class="btn" v-if="favorited" @click="Unfavorite"> 取消收藏 </el-button>
+                        <el-button class="btn" v-else @click="addToFavorites"> 收藏 </el-button>
+                    </div>
+                    
+                </div>
 
-        <el-input-number v-model="num" :min="1" @change="handleChange" :value-on-clear="1" />
-        <el-button @click="addToCart"> 加入购物车 </el-button>
+                
 
-        <!-- TODO: 收藏美化 -->
-        <el-button v-if="favorited" @click="Unfavorite"> 取消收藏 </el-button>
-        <el-button v-else @click="addToFavorites"> 收藏 </el-button>
 
-        <p>总价：{{ this.totalPrice }}</p>
+            </div>
+        </div>
+
+        <div class="detail">
+            <el-tabs type="border-card">
+                <el-tab-pane label="商品详情">预留</el-tab-pane>
+                <el-tab-pane label="评价">预留</el-tab-pane>
+                <el-tab-pane label="专享服务">预留</el-tab-pane>
+            </el-tabs>
+        </div>
+
     </div>
 </template>
  
@@ -137,11 +174,92 @@ export default {
 
  
 <style scoped>
- .el-steps{
-  margin: 15px 0;
+
+.wrap{
+    display: grid;
+    gap:30px;
+    height:auto
 }
-.el-step__title{
-  font-size: 13px;
+.wrap .title{
+    width:40%;
+    margin: 10px auto;
+    padding: 10px 0;
+    text-align: center;
+    color:#81A18B;
+    font-size: 45px;
+    font-family: "Brush Script MT", cursive;
+    border: 2px solid #ebeef5;
+    border-radius: 10px;
 }
 
+.wrap .infoBuy{
+    padding: 40px 40px;
+    margin: 0px auto;
+    border: 2px solid #ebeef5;
+    border-radius: 5px;
+    width: 90%;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    column-gap: 30px;
+}
+
+.wrap .detail{
+    margin:0 auto;
+    width: 90%;
+}
+
+.image img{
+    width:90%;
+    height: 90%;
+    background-color:rgba(128,128,128,0.3);
+    margin-bottom: 10px;
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    font-family: "Brush Script MT", cursive;
+    font-size: 20px;
+}
+.info .basicInfo{
+    line-height: 30px;
+    background-color: rgba(129,161,139,0.1);
+    padding: 20px;
+    width:fit-content;
+}
+
+.info .left{
+    display: flex;
+    gap:20px;
+}
+
+.info .buyInfo{
+    margin:20px 0;
+    padding: 20px;
+    width:fit-content;
+    display: flex;
+    gap:20px;
+    background:#FFF2E8;
+    
+}
+.buy{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}
+
+.buy .add{
+    display: flex;
+    gap:20px;
+}
+.buy .buyBtn{
+    margin-top:20px;
+    display: flex;
+    gap:10px; 
+}
+
+.btn{
+    width:30%
+}
 </style>
