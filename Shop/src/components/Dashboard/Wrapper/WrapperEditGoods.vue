@@ -9,7 +9,7 @@
         <div class="edit">
             <h2>待审核</h2>
             <div class="goods">
-                <div v-for="goods in editingGoodsList" :key="goods.goodsId">
+                <div class="goods" v-for="goods in editingGoodsList" :key="goods.goodsId">
                     <GoodsShow4Shopkeeper @showGoodsDetail="showGoodsDetail" :goods="goods"/>
                 </div>
             </div>
@@ -23,7 +23,7 @@
         <div class="edit">
             <h2>修改失败</h2>
             <div class="goods">
-                <div v-for="goods in editDeniedGoodsList" :key="goods.goodsId">
+                <div class="goods" v-for="goods in editDeniedGoodsList" :key="goods.goodsId">
                     <GoodsShow4Shopkeeper @showGoodsDetail="showGoodsDetail" :goods="goods"/>
                 </div>
             </div>
@@ -37,7 +37,7 @@
         <div class="edit">
             <h2>修改成功</h2>
             <div class="goods">
-                <div v-for="goods in editedGoodsList" :key="goods.goodsId">
+                <div class="goods" v-for="goods in editedGoodsList" :key="goods.goodsId">
                     <GoodsShow4Shopkeeper @showGoodsDetail="showGoodsDetail" :goods="goods"/>
                 </div>
             </div>
@@ -56,6 +56,7 @@
 
 </template>
 <script>
+import '../../../constant'
 export default {
     data() {
         return {
@@ -167,6 +168,12 @@ export default {
     border: 3px solid #ebeef5;
     transition: .3s;
     margin-bottom: 40px;
+}
+
+/*商品陈列*/
+.goods{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 /*翻页按钮*/

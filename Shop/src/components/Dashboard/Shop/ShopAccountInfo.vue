@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import "../../../constant"
 export default{
     data() {
         return {
@@ -33,7 +34,7 @@ export default{
         recharge: function() {
             var localStorage = window.localStorage;
             console.log(this.credit);
-            if (isNaN(Number(this.credit))|this.credit<0){
+            if (isNaN(Number(this.credit))|this.credit<=0){
                 this.$message.error("充值失败，请输入符合要求的正浮点数");
             } else {
                 const credit = String(this.credit);
