@@ -81,7 +81,7 @@
     </update>
     
     <select id="GetShopIsAdmitted" resultType="int">
-        SELECT is_admitted FROM shopd WHERE shopname = #{shopname};
+        SELECT is_admitted FROM shops WHERE shopname = #{shopname};
     </select>
 
     <update id="SetShopNormal">

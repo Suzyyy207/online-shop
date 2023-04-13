@@ -199,7 +199,7 @@ public class ShopController {
     @RequestMapping("/api/shopApplicationApproved")
     public JsonResult shopApplicationApproved(@RequestBody Map<String,Object> map){
         String shopname = (String)map.get("shopname");
-        int approveType = (int)map.get("approveType");
+        int approveType = (int)map.get("is_admitted");
         JsonResult result = shopService.shopApplicationApproved(shopname, approveType);
         return result;
     }
@@ -207,7 +207,7 @@ public class ShopController {
     @RequestMapping("/api/shopApplicationRejected")
     public JsonResult shopApplicationRejected(@RequestBody Map<String,Object> map){
         String shopname = (String)map.get("shopname");
-        int rejectType = (int)map.get("rejectType");
+        int rejectType = (int)map.get("is_admitted");
         JsonResult result = shopService.shopApplicationRejected(shopname, rejectType);
         return result;
     }
