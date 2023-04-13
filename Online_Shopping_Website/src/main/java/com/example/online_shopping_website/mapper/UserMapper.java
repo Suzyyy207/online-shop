@@ -120,5 +120,9 @@ public interface UserMapper {
     void UpdateGoodsNumInCart(String username, int goodsId,  int num);
 
     void DeleteZeroGoodsInCart(String username);
+    BigDecimal GetProfitAccount();
+    BigDecimal GetIntermediaryAccount();
+    void AvatarDelete(String username);
+
 }
 

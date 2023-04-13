@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static javax.security.auth.callback.ConfirmationCallback.NO;
 import static javax.security.auth.callback.ConfirmationCallback.YES;
@@ -252,6 +253,46 @@ public class GoodController {
         JsonResult<GoodReturn> result = new JsonResult<>();
         GoodReturn goodReturn = goodService.getEditingGoodsInfo(goodsId);
         result.setData(goodReturn);
+        return result;
+    }
+
+
+    @RequestMapping("/api/addToFavorites")
+    public JsonResult addToFavorites(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        int goodsId = (int)map.get("goodsId");
+        JsonResult result = goodService.addToFavorites(username, goodsId);
+        return result;
+    }
+
+    @RequestMapping("/api/Unfavorite")
+    public JsonResult Unfavorite(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        int goodsId = (int)map.get("goodsId");
+        JsonResult result = goodService.Unfavorite(username, goodsId);
+        return result;
+    }
+
+    @RequestMapping("/api/isFavorite")
+    public JsonResult isFavorite(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        int goodsId = (int)map.get("goodsId");
+        JsonResult result = goodService.isFavorite(username, goodsId);
+        return result;
+    }
+    @RequestMapping("/api/getGoodsInfoByGoodsId")
+    public JsonResult<GoodReturn> getGoodsInfoByGoodsId(@RequestBody Good good){
+        int goodsId = good.getGoodsId();
+        JsonResult<GoodReturn> result = new JsonResult<>();
+        GoodReturn goodReturn = goodService.getGoodsInfoByGoodsId(goodsId);
+        if(goodReturn ==null){
+            result.setState(NO);
+            result.setMessage("没有找到该商品");
+        }else {
+            result.setState(YES);
+            result.setMessage("返回成功");
+            result.setData(goodReturn);
+        }
         return result;
     }
 }

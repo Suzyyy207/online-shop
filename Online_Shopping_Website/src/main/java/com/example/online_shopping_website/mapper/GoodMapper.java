@@ -28,4 +28,7 @@ public interface GoodMapper {
     List<Good> SearchByModifyStatus(String shopname,int modifyStatus);
     Good SearchByGoodsId(int goodsId);
     void setDelete(int goodsId);
+    void AddToFavorite(String username, int goodsId);
+    void Unfavorite(String username, int goodsId);
+    Boolean isFavorite(String username, int goodsId);
 }
