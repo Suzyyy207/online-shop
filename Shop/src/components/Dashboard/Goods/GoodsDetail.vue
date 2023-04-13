@@ -13,7 +13,7 @@
             <p>商品类型：{{ goods.goodsname }}</p>
             <p>商品类别：{{ goods.goodsCategory }}</p>
             <p>商品简介：{{ goods.introduction }}</p>
-            <p>商品库存：{{ goods.goodsStocks }}</p>
+            <p>商品库存：{{ goods.goodsStock }}</p>
             <p>商品价格：{{ goods.goodsPrice }}</p>
         </div>        
         

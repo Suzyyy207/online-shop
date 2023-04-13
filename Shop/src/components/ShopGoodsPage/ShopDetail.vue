@@ -52,7 +52,7 @@ export default {
                 goodsname: "goodsname",
                 goodsCategory: [],
                 introduction: "intro",
-                goodsStocks: 0,
+                goodsStock: 0,
                 goodsPrice: 0,
                 favorites: 1,
                 goodsId: "id"
