@@ -352,7 +352,7 @@ public class GoodServiceImpl implements IGoodService {
         goodReturn.setRegisterStatus(good.getRegisterStatus());
         goodReturn.setModifyStatus(good.getModifyStatus());
         goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
-        goodReturn.setFavoriteNum(good.getFavoriteNum());
+        goodReturn.setFavorites(good.getFavoriteNum());
         List<String> piclist = new ArrayList<>();
         List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
         System.out.println(picList);

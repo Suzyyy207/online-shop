@@ -20,5 +20,5 @@ public class GoodReturn {
     String introduction;
     String shopname;
     List<String> goodsAvatar;
-    int favoriteNum;
+    int favorites;
 }
