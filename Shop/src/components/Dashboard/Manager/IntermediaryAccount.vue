@@ -1,4 +1,4 @@
-<!--商店余额显示+充值-->
+<!--商城中间账户余额显示+充值-->
 <template>
     <p class="charge">中间账户余额:{{ this.intermediaryAccount }}</p>
     <div class="chargeBtn">
@@ -8,10 +8,12 @@
 </template>
 
 <script>
+import "../../../constant"
 export default{
     data() {
         return {
-            intermediaryAccount: 0
+            intermediaryAccount: 0,
+            credit: 0
         }
     },
     created (){
@@ -27,7 +29,7 @@ export default{
         recharge: function() {
             var localStorage = window.localStorage;
             console.log(this.credit);
-            if (isNaN(Number(this.credit))|this.credit<0){
+            if (isNaN(Number(this.credit))|this.credit<=0){
                 this.$message.error("充值失败，请输入符合要求的正浮点数");
             } else {
                 const credit = String(this.credit);

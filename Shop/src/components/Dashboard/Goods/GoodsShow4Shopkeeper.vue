@@ -55,7 +55,7 @@ export default {
     border-radius: 15px;
     color: #303133;
     border: 2px solid #ebeef5;
-    transition: .3s;
+    text-decoration: none;
 }
 .goodsLink .logo{
     grid-row: 1/3;
@@ -66,8 +66,11 @@ export default {
 .goodsLink p{
   align-items: left;
   padding-top: 5px;
-  margin-left: -20px;
-  line-height: 30px;
+  margin-left: -10px;
+  line-height: 25px;
+}
+.goodsLink .goodsName{
+  padding-top: 100px;
 }
 
 
