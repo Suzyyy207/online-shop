@@ -13,7 +13,7 @@
         </div>
         
         <div class="buy">
-            <el-input-number v-model="num" :min="1" :value-on-clear="1" />
+            <el-input-number class="num" v-model="num" :min="1" :value-on-clear="1" />
         </div>
         <div class="btn">
             <el-button class="b" @click="addToCart">加入购物车</el-button>
