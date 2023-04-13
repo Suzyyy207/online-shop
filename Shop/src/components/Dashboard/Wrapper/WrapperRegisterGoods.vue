@@ -57,6 +57,7 @@
 
 
 <script>
+import "../../../constant"
 export default {
     components: {
         GoodsShow

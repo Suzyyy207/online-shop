@@ -30,6 +30,7 @@ import GoodsShow from './GoodsShow.vue'
 </template>
   
 <script>
+import "../../constant"
 export default {
     props: {
         shopname: {
