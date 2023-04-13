@@ -139,7 +139,7 @@ public class ShopController {
         return Result;
     }
 
-    @RequestMapping("getShopInfoByShopname")
+    @RequestMapping("/api/getShopInfoByShopname")
     public JsonResult getShopInfoByShopname(@RequestBody Map<String,Object> map){
         String shopname = (String)map.get("shopname");
         JsonResult result = shopService.getShopInfoByShopname(shopname);
@@ -182,6 +182,33 @@ public class ShopController {
         result.setData(image);
         return result;
     }
+    @PostMapping("/api/getShopInfoByShopname")
+    public JsonResult getShopInfoByShopname(@RequestBody Shop shop){
+        String shopname = shop.getShopname();
+        JsonResult result = shopService.getShopInfoByShopname(shopname);
+        return result;
+    }
+    @PostMapping("deleteShopAvatar")
+    public JsonResult<Integer> deleteShopAvatar(@RequestBody Shop shop){
+        String shopname = shop.getShopname();
+        JsonResult<Integer> Result = new JsonResult<>(YES);
+        shopService.deleteShopAvatar(shopname);
+        return Result;
+    }
 
+    @RequestMapping("/api/shopApplicationApproved")
+    public JsonResult shopApplicationApproved(@RequestBody Map<String,Object> map){
+        String shopname = (String)map.get("shopname");
+        int approveType = (int)map.get("approveType");
+        JsonResult result = shopService.shopApplicationApproved(shopname, approveType);
+        return result;
+    }
 
+    @RequestMapping("/api/shopApplicationRejected")
+    public JsonResult shopApplicationRejected(@RequestBody Map<String,Object> map){
+        String shopname = (String)map.get("shopname");
+        int rejectType = (int)map.get("rejectType");
+        JsonResult result = shopService.shopApplicationRejected(shopname, rejectType);
+        return result;
+    }
 }

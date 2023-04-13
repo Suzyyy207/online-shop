@@ -1,5 +1,6 @@
 package com.example.online_shopping_website.controller;
 
+import com.example.online_shopping_website.entity.Shop;
 import com.example.online_shopping_website.entity.User;
 import com.example.online_shopping_website.service.IShopService;
 import com.example.online_shopping_website.service.IUserService;
@@ -82,13 +83,13 @@ public class UserController {
             setUserInfoResult.addMessage("修改失败：用户未找到;");
         } catch(UsernameDuplicatedException e){
             setUserInfoResult.setState(NO);
-            setUserInfoResult.addMessage("修改失败：用户名已存在;");
+            setUserInfoResult.addMessage("修改失败：该用户名已其他用户使用;");
         }catch(PhoneDuplicatedException e){
             setUserInfoResult.setState(NO);
-            setUserInfoResult.addMessage("修改失败：手机号已存在;");
+            setUserInfoResult.addMessage("修改失败：该手机号已被其他用户使用;");
         }catch(EmailDuplicatedException e){
             setUserInfoResult.setState(NO);
-            setUserInfoResult.addMessage("修改失败：邮箱已被存在;");
+            setUserInfoResult.addMessage("修改失败：该邮箱已被其他用户使用;");
         }catch(SQLException e){             //操作数据库时出错
             setUserInfoResult.setState(NO);
             setUserInfoResult.setMessage("修改失败：出现未知错误;");
@@ -137,11 +138,22 @@ public class UserController {
         return result;
     }
 
-
     @RequestMapping("/api/getShopAccount")
     public JsonResult getShopAccount(@RequestBody Map<String,Object> map){
-        String shopname = (String)map.get("shopname");
-        JsonResult result = userService.getShopAccount(shopname);
+        String username = (String)map.get("username");
+        JsonResult result = userService.getShopAccount(username);
+        return result;
+    }
+    //确保数据库中只有一位管理员（只有一行数据usertype=0）
+    @RequestMapping("/api/getProfitAccount")
+    public JsonResult getProfitAccount(){
+        JsonResult result = userService.getProfitAccount();
+        return result;
+    }
+    //确保数据库中只有一位管理员（只有一行数据usertype=0）
+    @RequestMapping("/api/getIntermediaryAccount")
+    public JsonResult getIntermediaryAccount(){
+        JsonResult result = userService.getIntermediaryAccount();
         return result;
     }
 
@@ -150,14 +162,8 @@ public class UserController {
         String username = (String)map.get("username");
         BigDecimal credit = new BigDecimal((String) map.get("credit"));
         int accountType = (int)map.get("accountType");
-        JsonResult result = new JsonResult<>();
-        //异常情况 credit太大或太小
-        BigDecimal zero = new BigDecimal(0);
-        if(credit.compareTo(zero) == -1){   //-1, 0, or 1 = less than, equal to, or greater than .
-            result.setState(NO);
-        }else{
-            result = userService.recharge(username, credit, accountType);
-        }
+
+        JsonResult result = userService.recharge(username, credit, accountType);
         return result;
     }
 
@@ -179,6 +185,13 @@ public class UserController {
         JsonResult result = new JsonResult<>(YES);
         result = userService.addToCart(username, goodsId, num);
         return result;
+    }
+    @PostMapping("deleteUserAvatar")
+    public JsonResult<Integer> deleteUserAvatar(@RequestBody User user){
+        String username = user.getUsername();
+        JsonResult<Integer> Result = new JsonResult<>(YES);
+        userService.deleteUserAvatar(username);
+        return Result;
     }
 }
 

@@ -7,6 +7,7 @@ import com.example.online_shopping_website.mapper.PicMapper;
 import com.example.online_shopping_website.service.IGoodService;
 import com.example.online_shopping_website.service.ex.GoodnameDuplicateException;
 import com.example.online_shopping_website.service.ex.ShopnameDuplicateException;
+import com.example.online_shopping_website.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+
+import static javax.security.auth.callback.ConfirmationCallback.NO;
+import static javax.security.auth.callback.ConfirmationCallback.YES;
 
 
 @Service
@@ -38,8 +42,12 @@ public class GoodServiceImpl implements IGoodService {
     @Override
     public void setGoodsInformation(String introduction,String goodsname,float goodsPrice,int goodsStock,String goodsCategory,String shopname,int goodsId){
         Good good = goodMapper.SearchByGoodname(goodsname);
-        if (good != null) {
+        Good goodTrue =goodMapper.SearchByGoodsId(goodsId);
+        if (good != null&&goodTrue.getGoodsId()!=good.getGoodsId()) {
             throw new GoodnameDuplicateException("尝试注册的商品名[" + goodsname + "]已经被占用");
+        }
+        if(shopname ==null){
+            shopname = goodTrue.getShopname();
         }
         goodMapper.insertGoodByUser(introduction,goodsname,goodsPrice,goodsStock,goodsCategory, -goodsId,-goodsId,-goodsId,shopname);
         goodMapper.UpdateStatus(goodsId,2);
@@ -264,6 +272,53 @@ public class GoodServiceImpl implements IGoodService {
         return goodReturn;
     }
 
+    //在数据表favorite插入一次收藏记录。相应的在goods表对favorite num字段加一
+    @Override
+    public JsonResult addToFavorites(String username, int goodsId){
+        JsonResult result = new JsonResult<>(YES);
+        goodMapper.AddToFavorite(username, goodsId);
+        return result;
+    }
+    //在数据表favorite删除相应的收藏记录。相应的在goods表对favorite num字段减一
+    @Override
+    public JsonResult Unfavorite(String username, int goodsId){
+        JsonResult result = new JsonResult<>(YES);
+        goodMapper.Unfavorite(username, goodsId);
+        return result;
+    }
 
-
+    @Override
+    public JsonResult isFavorite(String username, int goodsId){
+        JsonResult result = new JsonResult<>(YES);
+        Boolean isExist = goodMapper.isFavorite(username, goodsId);
+        if(!isExist)
+            result.setState(NO);
+        return result;
+    }
+    @Override
+    public GoodReturn getGoodsInfoByGoodsId(int goodsId){
+        Good good = goodMapper.SearchByGoodsId(goodsId);
+        GoodReturn goodReturn = new GoodReturn();
+        goodReturn.setGoodsPrice(good.getGoodsPrice());
+        goodReturn.setGoodsStock(good.getGoodsStock());
+        goodReturn.setGoodsId(good.getGoodsId());
+        goodReturn.setGoodsname(good.getGoodsname());
+        goodReturn.setIntroduction(good.getIntroduction());
+        goodReturn.setShopname(good.getShopname());
+        goodReturn.setStatus(good.getStatus());
+        goodReturn.setRegisterStatus(good.getRegisterStatus());
+        goodReturn.setModifyStatus(good.getModifyStatus());
+        goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+        goodReturn.setFavoriteNum(good.getFavoriteNum());
+        List<String> piclist = new ArrayList<>();
+        List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
+        System.out.println(picList);
+        for(pic pics : picList){
+            byte[] imageData = pics.getPic();
+            String base64Image = Base64.getEncoder().encodeToString(imageData);
+            piclist.add(base64Image);
+        }
+        goodReturn.setGoodsAvatar(piclist);
+        return goodReturn;
+    }
 }

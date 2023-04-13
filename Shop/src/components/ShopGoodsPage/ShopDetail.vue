@@ -19,7 +19,7 @@ import GoodsShow from './GoodsShow.vue'
         </div>
         <!-- 商品展示 -->
         <div class="goods">
-            <div class="goods" v-for="goods in shop.goodslist" :key="goods.goodsname">
+            <div v-for="goods in shop.goodslist" :key="goods.goodsname">
                 <GoodsShow :goods="goods" class="good"/>
             </div>
         </div>

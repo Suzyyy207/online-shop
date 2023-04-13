@@ -11,8 +11,9 @@
                 <div class="show" v-if="!isShowGoodsDetail">
                     <h1>在售商品表</h1>
                     <div class="goods">
-                        <div v-for="goods in validGoodsList" :key="goods.goodsId">
+                        <div class="goods" v-for="goods in validGoodsList" :key="goods.goodsId">
                             <GoodsShow4Shopkeeper @showGoodsDetail="showGoodsDetail" :goods="goods"/>
+
                         </div>
                     </div>
                     <div class="pages">
@@ -31,7 +32,7 @@
                 <div class="show" v-if="!isShowGoodsDetail2">
                     <h1>已下架商品表</h1>
                     <div class="goods">
-                        <div v-for="goods in invalidGoodsList" :key="goods.goodsId">
+                        <div class="goods" v-for="goods in invalidGoodsList" :key="goods.goodsId">
                             <GoodsShow4Shopkeeper @showGoodsDetail="showGoodsDetail2" :goods="goods"/>
                         </div>
                     </div>
@@ -166,7 +167,7 @@ export default {
 <style scoped>
 
 .show{
-    margin:10px 30px 10px 30px;
+    margin:10px 30px 50px 30px;
     padding: 30px;
     background-color: #fff;
     border-radius: 15px;
@@ -182,6 +183,11 @@ export default {
   margin-bottom:40px;
   font-weight: bolder;
   color:#81A18B;
+}
+
+.goods{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 /*翻页按钮*/

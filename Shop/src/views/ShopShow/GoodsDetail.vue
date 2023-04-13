@@ -4,7 +4,7 @@ import GoodsDetail from '../../components/ShopGoodsPage/GoodsDetail.vue';
 </script>
 
 <template>
-    <Nav />
+    <Nav></Nav>
     <GoodsDetail :goodsId="this.goodsId" />
 </template>
 

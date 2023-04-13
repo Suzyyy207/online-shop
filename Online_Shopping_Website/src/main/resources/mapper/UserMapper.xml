@@ -90,19 +90,19 @@
     </select>
 
     <update id="RechargePrivateAccountByUsername">
-        UPDATE users SET privateAccount = #{credit} WHERE username = #{username}
+        UPDATE users SET privateAccount = privateAccount + #{credit} WHERE username = #{username}
     </update>
 
     <update id="RechargeShopAccountByUsername">
-        UPDATE users SET shopAccount = #{credit} WHERE username = #{username}
+        UPDATE users SET shopAccount = shopAccount + #{credit} WHERE username = #{username}
     </update>
 
     <update id="RechargeProfitAccountByUsername">
-        UPDATE users SET profitAccount = #{credit} WHERE username = #{username}
+        UPDATE users SET profitAccount = profitAccount + #{credit} WHERE username = #{username}
     </update>
 
     <update id="RechargeIntermediaryAccountByUsername">
-        UPDATE users SET intermediaryAccount = #{credit} WHERE username = #{username}
+        UPDATE users SET intermediaryAccount = intermediaryAccount + #{credit} WHERE username = #{username}
     </update>
 
     <select id="getGoodsNumberInCart" resultType="java.lang.Integer">
@@ -124,6 +124,16 @@
         DELETE FROM cart WHERE username = #{username} AND num = 0
     </delete>
 
+    <select id="GetProfitAccount" resultType="java.math.BigDecimal">
+        SELECT profitAccount FROM users WHERE usertype = 0;
+    </select>
+
+    <select id="GetIntermediaryAccount" resultType="java.math.BigDecimal">
+        SELECT intermediaryAccount  FROM users WHERE usertype = 0;
+    </select>
+    <update id="AvatarDelete">
+        UPDATE users SET avatar = null WHERE username = #{username}
+    </update>
 </mapper>
 
 
