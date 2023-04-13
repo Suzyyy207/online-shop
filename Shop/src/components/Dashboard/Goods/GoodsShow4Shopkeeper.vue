@@ -4,8 +4,10 @@
   <div class="goods">
     <a href="#" class="goodsLink">
 
-      <img v-if="goods.goodsAvatar.length==0" class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
-      <img v-else :src="'data:image/jpeg;base64,'+goods.goodsAvatar[0]">
+      <!--img v-if="goods.goodsAvatar.length==0" class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
+      <img v-else :src="'data:image/jpeg;base64,'+goods.goodsAvatar[0]"-->
+
+{{ goods.goodsAvatar.length }}
 
       <p class="goodsName">商品名：{{ goods.goodsname }}</p>
       <el-button class="btnReg"  @click="showGoodsDetail">

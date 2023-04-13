@@ -3,10 +3,11 @@
     <div class="wrapGD">
         <div class="image">
             <!--img src="@/assets/logo.png"-->
-            <el-pagination class="pages" background layout="prev, pager, next" :total="50" size="small"/>
+            <!--el-pagination class="pages" background layout="prev, pager, next" :total="50" size="small"/>
             <div v-for="avatar in goods.goodsAvatar">
                 <img :src="'data:image/jpeg;base64,' + avatar">
-            </div>
+            </div-->
+            <ShowPics :goodsAvatar="goods.goodsAvatar" />
         </div>
         
         <div class="infoGD">
@@ -22,12 +23,16 @@
  
 <script>
 import "../../../constant";
+import ShowPics from "../../Public/Upload/ShowPics.vue"
 export default {
     props: {
         goods: {
             type: Object,
             required: true
         }
+    },
+    components:{
+        ShowPics
     }
 }
 </script>

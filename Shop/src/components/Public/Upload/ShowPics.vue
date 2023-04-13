@@ -6,6 +6,7 @@
         <img :src="'data:image/jpeg;base64,' + avatar">
     </div>
     <el-pagination
+        class="pages"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-size="pageSize"
@@ -29,7 +30,9 @@ export default {
         };
     },
     created() {
-        this.totalAvatars = this.goodsAvatar.length
+        this.totalAvatars = this.goodsAvatar.length;
+        console.log(this.goodsAvatar)
+        console.log(this.totalAvatars)
     },
     computed: {
         currentAvatars() {
@@ -138,5 +141,8 @@ export default {
 
 .btn{
     width:30%
+}
+.pages{
+    margin-top:10px;
 }
 </style>
