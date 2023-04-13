@@ -286,6 +286,7 @@ export default {
                         this.setGoodsAvatar(res.data.data);
                     }
                     else {
+                        console.log(res.data.message)
                         this.$message.error("提交失败，请重试");
                     }
                 }).catch(err => {

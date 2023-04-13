@@ -11,11 +11,8 @@
         <div class="infoBuy">
             <!-- TODO: 图片美化（每个商品的img数量不定，建议做成点击放大的缩略图）-->
             <div class="image">
-                <img src="@/assets/logo.png"/>
-                <el-pagination background layout="prev, pager, next" :total="1000" />
-                <div v-for="avatar in goods.goodsAvatar">
-                    <img :src="'data:image/jpeg;base64,' + avatar">
-                </div>
+                <ShowPics :goodsAvatar="goods.goodsAvatar" />
+
             </div>
             
             <div class="info">
@@ -51,9 +48,6 @@
                     
                 </div>
 
-                
-
-
             </div>
         </div>
 
@@ -70,12 +64,16 @@
  
 <script>
 import "../../constant";
+import ShowPics from "../../components/Public/Upload/ShowPics.vue"
 export default {
     props: {
         goodsId:{
             type: String,
             required: true
         }
+    },
+    components: {
+        ShowPics
     },
     data() {
         return {

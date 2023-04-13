@@ -67,11 +67,14 @@ export default {
   },
   methods: {
     shopApplicationApproved: function() {
+      console.log(this.shop.shopname)
+      console.log(this.shop.is_admitted)
       this.$axios.post('/shopApplicationApproved', {
           shopname: this.shop.shopname,
           is_admitted: this.shop.is_admitted
         })
       .then(res=>{
+        console.log(res.data.state)
         if(res.data.state == window.SUCCESS){
           this.$message.success("已同意店铺申请！");
           setTimeout(() => {

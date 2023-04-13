@@ -36,7 +36,6 @@ export default {
             .then(res => {
                 this.shoplist = this.shoplist.concat(res.data.data);
             })
-            this.shoplist = [this.shop]
         }
     }
 }

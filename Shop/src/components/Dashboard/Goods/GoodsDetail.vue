@@ -2,7 +2,7 @@
 <template>
     <div class="wrapGD">
         <div class="image">
-            <img src="@/assets/logo.png">
+            <!--img src="@/assets/logo.png"-->
             <el-pagination class="pages" background layout="prev, pager, next" :total="50" size="small"/>
             <div v-for="avatar in goods.goodsAvatar">
                 <img :src="'data:image/jpeg;base64,' + avatar">
