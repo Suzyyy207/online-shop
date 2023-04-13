@@ -190,7 +190,8 @@ export default {
 .wrap{
     display: grid;
     gap:30px;
-    height:auto
+    height:auto;
+    margin:30px auto 50px;
 }
 .wrap .title{
     width:40%;
