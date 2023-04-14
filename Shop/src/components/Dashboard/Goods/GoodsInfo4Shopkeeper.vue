@@ -117,6 +117,7 @@ export default {
     },
     created(){
         this.getGoodsInfo();
+        console.log(this.goods.goodsAvatar)
     },
     methods:{
         getGoodsInfo() {
@@ -144,7 +145,7 @@ export default {
                 case 1:
                     this.activeIndex = 3;
                     break;
-                case 4: 
+                case 3: 
                     this.activeIndex = 4;
                     break;
             }

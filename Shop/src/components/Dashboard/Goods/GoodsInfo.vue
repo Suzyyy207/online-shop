@@ -57,6 +57,7 @@
                 >下架
                 </el-button>
             </div>
+            
             <div v-if="this.activeIndex==4">
                 <el-button 
                     type="primary" 
@@ -115,7 +116,7 @@ export default {
                 case 1:
                     this.activeIndex = 3;
                     break;
-                case 4: 
+                case 3: 
                     this.activeIndex = 4;
                     break;
             }
