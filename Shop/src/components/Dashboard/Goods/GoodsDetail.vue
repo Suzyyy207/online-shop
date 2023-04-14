@@ -1,14 +1,14 @@
 <!--公共组件，展示商品详细信息-->
 <template>
     <div class="wrapGD">
-        <div class="image">
+        
             <!--img src="@/assets/logo.png"-->
             <!--el-pagination class="pages" background layout="prev, pager, next" :total="50" size="small"/>
             <div v-for="avatar in goods.goodsAvatar">
                 <img :src="'data:image/jpeg;base64,' + avatar">
             </div-->
-            <ShowPics :goodsAvatar="goods.goodsAvatar" />
-        </div>
+            <ShowPics :goodsAvatar="goods.goodsAvatar" class="image"/>
+        
         
         <div class="infoGD">
             <p>商品名称：{{ goods.goodsname }}</p>
@@ -41,7 +41,7 @@ export default {
 <style scoped>
 .wrapGD{
     display: grid;
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 50% 50%;
     margin-top: 20px;
 }
 
@@ -58,8 +58,9 @@ export default {
     background: rgba(128,128,128,0.1);
 }
 .infoGD{
-    padding: 20px;
+    padding: 0px;
     line-height: 50px;
+    margin-left: -20px;
 }
 .pages{
     margin-top:10px;

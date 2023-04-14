@@ -273,7 +273,7 @@ public class GoodServiceImpl implements IGoodService {
     public GoodReturn getEditingGoodsInfo(int goodsId){
         Good good = goodMapper.SearchByGoodsId(goodsId);
         GoodReturn goodReturn = new GoodReturn();
-        if(good.getStatus() == 0){
+        if(good.getStatus() == 1){
             goodReturn.setGoodsPrice(good.getGoodsPrice());
             goodReturn.setGoodsStock(good.getGoodsStock());
             goodReturn.setGoodsId(good.getGoodsId());

@@ -57,6 +57,7 @@
                 >下架
                 </el-button>
             </div>
+            
             <div v-if="this.activeIndex==4">
                 <el-button 
                     type="primary" 

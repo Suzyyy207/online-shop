@@ -117,6 +117,7 @@ export default {
     },
     created(){
         this.getGoodsInfo();
+        console.log(this.goods.goodsAvatar)
     },
     methods:{
         getGoodsInfo() {

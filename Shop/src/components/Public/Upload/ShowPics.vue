@@ -2,7 +2,7 @@
 <template>
 
 <div class="image">
-    <img :src="'data:image/jpeg;base64,' + goodsAvatar[currentPage-1]">
+    <img :src="'data:image/jpeg;base64,' + goodsAvatar[currentPage-1]" class="showpics">
     <el-pagination
         class="pages"
         @current-change="handleCurrentChange"
@@ -49,95 +49,14 @@ export default {
  
 <style scoped>
 
-.wrap{
-    display: grid;
-    gap:30px;
-    height:auto;
-    margin:30px auto 50px;
-}
-.wrap .title{
-    width:40%;
-    margin: 10px auto;
-    padding: 10px 0;
-    text-align: center;
-    color:#81A18B;
-    font-size: 45px;
-    font-family: "Brush Script MT", cursive;
-    border: 2px solid #ebeef5;
-    border-radius: 10px;
-}
 
-.wrap .infoBuy{
-    padding: 40px 40px;
-    margin: 0px auto;
-    border: 2px solid #ebeef5;
-    border-radius: 5px;
-    width: 90%;
-    display: grid;
-    grid-template-columns: 40% 60%;
-    column-gap: 30px;
-}
 
-.wrap .detail{
-    margin:0 auto;
-    width: 90%;
-}
-
-.image img{
-    width:90%;
-    height: 90%;
+.showpics{
+    width:100%;
+    height: 100%;
     background-color:rgba(128,128,128,0.3);
     margin-bottom: 10px;
 }
 
-.info{
-    display: flex;
-    flex-direction: column;
-    gap:10px;
-    font-family: "Brush Script MT", cursive;
-    font-size: 20px;
-}
-.info .basicInfo{
-    line-height: 30px;
-    background-color: rgba(129,161,139,0.1);
-    padding: 20px;
-    width:fit-content;
-}
 
-.info .left{
-    display: flex;
-    gap:20px;
-}
-
-.info .buyInfo{
-    margin:20px 0;
-    padding: 20px;
-    width:fit-content;
-    display: flex;
-    gap:20px;
-    background:#FFF2E8;
-    
-}
-.buy{
-    display: flex;
-    flex-direction: column;
-    gap:20px;
-}
-
-.buy .add{
-    display: flex;
-    gap:20px;
-}
-.buy .buyBtn{
-    margin-top:20px;
-    display: flex;
-    gap:10px; 
-}
-
-.btn{
-    width:30%
-}
-.pages{
-    margin-top:10px;
-}
 </style>
