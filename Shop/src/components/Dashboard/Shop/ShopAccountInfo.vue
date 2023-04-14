@@ -25,6 +25,7 @@ export default{
             this.$axios.post("/getShopAccount", {
                 username: localStorage.getItem("username")
             }).then(res => {
+                console.log(res.data.data);
                 this.shopAccount = res.data.data;
             }).catch((err) => {
                 console.log(err);
@@ -50,8 +51,9 @@ export default{
                 })
                 .then(res => {
                     if(res.data.state==window.SUCCESS) {
+                        console.log(res.data.data);
                         this.$message.success("充值金额：" + this.credit + "（系统默认保留两位小数）！");
-                        this.shopAccount = res.data.data;
+                        this.getShopAccount();
                         this.credit = 0;
                     }
                     else {

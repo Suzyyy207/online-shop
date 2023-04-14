@@ -3,7 +3,7 @@
 <template>
   
     <el-form :model="form" :rules="rules" ref="form" class="form">
-        <Avatar class="imgU" :type="2"></Avatar>
+        <Avatar :type="2"></Avatar>
         <el-row>
           <el-col :span="12">
             <el-form-item label="用户名" prop="username">
@@ -306,8 +306,10 @@
                     newpassword: this.form.password
                 })
                 .then(res => {
+                  console.log(res.data.state)
+                  console.log(window.SUCCESS)
                     if(res.data.state == window.SUCCESS){
-                        this.$message.sucess(res.data.message);
+                        this.$message.success(res.data.message);
                         var localStorage = window.localStorage;
                         localStorage.setItem("username", this.form.username);
                         this.$router.go(0);
@@ -349,14 +351,7 @@
   margin:20px;
 }
 
-.imgU{
-  width:100px;
-  height: 100px;
-  margin:20px auto;
-  display: flex;
-  border: 3px dashed gray; /* 3像素宽的黑色虚线边框 */
-  background-color: rgba(128, 128, 128, 0.2); /* 透明灰色背景 */
-}
+
 
 .form .btn {
   line-height: 100px;

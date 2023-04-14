@@ -11,11 +11,8 @@
         <div class="infoBuy">
             <!-- TODO: 图片美化（每个商品的img数量不定，建议做成点击放大的缩略图）-->
             <div class="image">
-                <img src="@/assets/logo.png"/>
-                <el-pagination background layout="prev, pager, next" :total="1000" />
-                <div v-for="avatar in goods.goodsAvatar">
-                    <img :src="'data:image/jpeg;base64,' + avatar">
-                </div>
+                <ShowPics :goodsAvatar="goods.goodsAvatar" />
+
             </div>
             
             <div class="info">
@@ -25,7 +22,7 @@
                     <p>商品简介：{{ goods.introduction }}</p>
                     <div class="left">
                         <p>商品价格：￥{{ goods.goodsPrice }}</p>
-                        <p>商品库存：{{ goods.goodsStocks }}</p>
+                        <p>商品库存：{{ goods.goodsStock }}</p>
                     </div>
                 </div>
                 
@@ -51,9 +48,6 @@
                     
                 </div>
 
-                
-
-
             </div>
         </div>
 
@@ -70,12 +64,16 @@
  
 <script>
 import "../../constant";
+import ShowPics from "../../components/Public/Upload/ShowPics.vue"
 export default {
     props: {
         goodsId:{
             type: String,
             required: true
         }
+    },
+    components: {
+        ShowPics
     },
     data() {
         return {
@@ -84,7 +82,7 @@ export default {
                 goodsname: "商品名",
                 goodsCategory: [],
                 introduction: "intro",
-                goodsStocks: 23,
+                goodsStock: 23,
                 goodsPrice: 23,
                 favorites: 0
             },
@@ -116,7 +114,7 @@ export default {
                 this.goods.goodsname = goods.goodsname;
                 this.goods.goodsCategory = goods.goodsCategory;
                 this.goods.introduction = goods.introduction;
-                this.goods.goodsStocks = goods.goodsStocks;
+                this.goods.goodsStock = goods.goodsStock;
                 this.goods.favorites = goods.favorites;
                 this.goods.goodsPrice = parseFloat(goods.goodsPrice);
                 this.totalPrice = this.goods.goodsPrice;
