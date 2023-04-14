@@ -165,7 +165,7 @@ public class GoodServiceImpl implements IGoodService {
         return piclist;
     }
     @Override
-    public List<Good> getApprovingGoods(){
+    public List<GoodReturn> getApprovingGoods(){
         List<Good> goodListA = goodMapper.SearchByRegisterStatusRegisterStatusOnly(0);
         List<Good> goodListB = goodMapper.SearchByModifyStatusModifyStatusOnly(1);
         List<Good> goodList = new ArrayList<>();
@@ -193,7 +193,7 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setGoodsAvatar(piclist);
             goodReturnList.add(goodReturn);
         }
-        return goodList;
+        return goodReturnList;
     }
     @Override
     public int goodsOffShelve(int goodsId){

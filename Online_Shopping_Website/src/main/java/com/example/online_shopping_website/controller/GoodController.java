@@ -165,9 +165,9 @@ public class GoodController {
         return result;
     }
     @RequestMapping("/api/getApprovingGoods")
-    public JsonResult<List<Good>> getApprovingGoods(){
-        JsonResult<List<Good>> result = new JsonResult<>();
-        List<Good> goodList = goodService.getApprovingGoods();
+    public JsonResult<List<GoodReturn>> getApprovingGoods(){
+        JsonResult<List<GoodReturn>> result = new JsonResult<>();
+        List<GoodReturn> goodList = goodService.getApprovingGoods();
         if(goodList==null){
             result.setState(NO);
             result.setMessage("没有待批复的商品");
