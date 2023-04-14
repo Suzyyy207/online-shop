@@ -253,6 +253,7 @@ public class GoodController {
         JsonResult<GoodReturn> result = new JsonResult<>();
         GoodReturn goodReturn = goodService.getEditingGoodsInfo(goodsId);
         result.setData(goodReturn);
+        result.setState(YES);
         return result;
     }
 
