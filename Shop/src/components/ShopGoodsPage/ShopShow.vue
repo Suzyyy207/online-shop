@@ -4,7 +4,7 @@
      
 
     <a href="#" class="shop_link">
-      <img v-if="shop.avatar" :src="'data:image/jpeg;base64,' + shop.avatar">
+      <img v-if="shop.avatar" :src="'data:image/jpeg;base64,' + shop.avatar" class="logo">
       <img v-else class="logo" src="@/assets/shop.png"/>
         <p>{{shop.shopname}}</p>
         <p>{{shop.goodstype}} </p>
