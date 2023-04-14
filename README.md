@@ -7,7 +7,7 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 
 | 接口名      | 地址             | 方法 | 功能         |
 | ----------- | ---------------- | ---- | ------------ |
-| getUserInfo | /api/getuserInfo | POST | 获取用户信息 |
+| getUserInfo | /api/getUserInfo | POST | 获取用户信息 |
 
 参数列表 front->back
 | 参数名   | 含义   | 类型&备注 |
@@ -19,7 +19,7 @@ commit示例: feat(front):userInfo add API /getUserInfo to get user info
 | 参数名 | 含义         | 类型&备注         |
 | ------ | ------------ | ----------------- |
 | state  | 传输是否成功 | YES（0）和NO（1） |
-| data   | user类       | phone;idnum;email; privateAccount（个人账户余额） |
+| data   | user类       | username;password;phone;idnum;email; privateAccount（个人账户余额） |
 |测试：登录->个人中心，可以显示包括头像在内的用户信息|||
 
 ### 个人信息修改
@@ -91,13 +91,23 @@ commit示例: feat(front):downloadImg add API /getUserAvatar to get img only
 | ---------- | ---------- | -------- |
 |  username  |  用户名  |    |
 
+### 用户头像删除  
+
+| 接口名        | 地址               | 方法 | 功能         |
+| ------------- | ------------------ | ---- | ------------ |
+| deleteUserAvatar |  | POST | |
+
+参数列表 front->back
+
+|  参数名  |  含义  |  类型&备注  |
+| ---------- | ---------- | -------- |
+|  username  |  用户名  |    |
+
 参数列表 back->front
 
 | 参数名 | 含义                   | 类型&备注                                       |
 | ------ | ---------------------- | ----------------------------------------------- |
-| state  | 是否有头像             |                                                 |
-| avatar | base64形式的图像数据 | 
- |
+| state  | 是否成功             |                                                 |
 
 
  测试：在用户信息修改处统一测试
@@ -524,6 +534,24 @@ PS.这里只涉及前端需要的数据，后端/数据库具体怎么设计你�
 | 参数名 | 含义         | 类型&备注         |
 | ------ | ------------ | ----------------- |
 | state  | 是否修改成功 | YES（0）和NO（1） |
+
+### 店铺头像删除  
+
+| 接口名        | 地址               | 方法 | 功能         |
+| ------------- | ------------------ | ---- | ------------ |
+| deleteShopAvatar |  | POST | |
+
+参数列表 front->back
+
+|  参数名  |  含义  |  类型&备注  |
+| ---------- | ---------- | -------- |
+|  shopname  |    |    |
+
+参数列表 back->front
+
+| 参数名 | 含义                   | 类型&备注                                       |
+| ------ | ---------------------- | ----------------------------------------------- |
+| state  | 是否成功             |                                                 |
 
 ### 商品信息显示 goodsInfo
 | 接口名      | 方法 | 功能         |

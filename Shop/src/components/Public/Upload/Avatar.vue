@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import "../../../constant"
+import "../../../constant";
+var avatar = new FormData();
 export default {
   props: {
     type: {
@@ -54,7 +55,6 @@ export default {
         this.$message.error(`上传图片大小超出限制，大小不能超过 ${this.uploadSize / 1024 / 1024}MB`)
         return false
       }
-      var avatar = new FormData();
       avatar.append('image', file);
       if(this.type == window.USER) {
         avatar.append('username', localStorage.getItem("username"));
@@ -80,8 +80,7 @@ export default {
             }
           }).then(res => {
             if(res.data.state == window.SUCCESS) {
-              console.log(localStorage.getItem("shopname"))
-              //console.log(avatar)
+              this.$message.success("店铺头像上传成功");
               const reader = new FileReader();
               reader.readAsDataURL(file);
               reader.onload = () => {
@@ -156,15 +155,19 @@ export default {
           }
         })
       } else {
-        this.$axios.post('/deleteShopAvatar', {
-          shopname: localStorage.getItem("shopname")
-        })
-        .then(res => {
-          if(res.data.state==window.SUCCESS) {
-            this.$message.success("头像已删除");
-            this.base64Data = "";
-          }
-        })
+        if(localStorage.getItem("shopname")) {
+          this.$axios.post('/deleteShopAvatar', {
+            shopname: localStorage.getItem("shopname")
+          })
+          .then(res => {
+            if(res.data.state==window.SUCCESS) {
+              this.$message.success("头像已删除");
+              this.base64Data = "";
+            }
+          })
+        } else {
+          this.base64Data = ""
+        }
       }
     },
     setShopAvatar() {

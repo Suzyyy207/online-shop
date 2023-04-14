@@ -127,6 +127,7 @@ export default {
                 shopname: localStorage.getItem("shopname")
             }).then(res => {
                 this.registerationDeniedGoodsList = res.data.data;
+                console.log(this.registrationDeniedGoodsList)
             })
         },
         showGoodsDetail(arg) {
