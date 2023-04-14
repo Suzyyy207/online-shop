@@ -131,22 +131,24 @@ export default {
             }
         },
         isFavorited() {
-            this.$axios.post('/isFavorited',{
-                goodsId: this.goods.goodsId,
+            this.$axios.post('/isFavorite',{
+                goodsId: parseInt(this.goodsId),
                 username: localStorage.getItem("username")
             }).then(res => {
+                console.log("isfa")
+                console.log(res.data)
                 if(res.data.state == window.SUCCESS) {
                     this.favorited = true;
                 }
             })
         },
         addToCart() {
-            console.log(this.num)
             this.$axios.post('/addToCart',{
-                goodsId: this.goods.goodsId,
+                goodsId: parseInt(this.goodsId),
                 username: localStorage.getItem("username"),
                 num: this.num
             }).then(res => {
+                console.log(res.data)
                 if(res.data.state == window.SUCCESS) {
                     this.$message.success("已成功添加至购物车！");
                 } else {
@@ -155,7 +157,7 @@ export default {
         },
         addToFavorites() {
             this.$axios.post('/addToFavorites',{
-                goodsId: this.goods.goodsId,
+                goodsId: parseInt(this.goodsId),
                 username: localStorage.getItem("username")
             }).then(res => {
                 if(res.data.state == window.SUCCESS) {
@@ -167,7 +169,7 @@ export default {
         },
         Unfavorite() {
             this.$axios.post('/Unfavorite',{
-                goodsId: this.goods.goodsId,
+                goodsId: parseInt(this.goodsId),
                 username: localStorage.getItem("username")
             }).then(res => {
                 if(res.data.state == window.SUCCESS) {
