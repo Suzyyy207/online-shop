@@ -167,7 +167,7 @@ public class ShopController {
         JsonResult<User> result = new JsonResult<>(YES, "商店头像上传成功");
         return result;
     }
-    @PostMapping("/api/getShopAvatar")
+    @PostMapping("/api/getShopAvatarByUsername")
     public JsonResult<String> DownloadAvatar(@RequestBody Shop shop){
         String shopname = shop.getShopname();
         String image = shopService.GetAvatar(shopname);

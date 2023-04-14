@@ -1,4 +1,4 @@
-<!--用户/商铺头像组件-->
+<!--用户/商铺：注册/修改信息的头像组件-->
 <template>
   <div class="upload">
       <a class="element" @click="deleteAvatar"> 
@@ -25,7 +25,7 @@ import "../../../constant"
 export default {
   props: {
     type: {
-      // 2:用户头像，1:商店头像
+      // 1:商店信息修改，2:用户信息修改
       type: Number,
       required: true
     }
@@ -72,20 +72,39 @@ export default {
           }
         })
       } else {
-        avatar.append('shopname', localStorage.getItem("shopname"));
-        this.$axios.post('/setShopAvatar', avatar, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+        if(localStorage.getItem("shopname")) {
+          avatar.append('shopname', localStorage.getItem("shopname"));
+          this.$axios.post('/setShopAvatar', avatar, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }).then(res => {
+            if(res.data.state == window.SUCCESS) {
+              console.log(localStorage.getItem("shopname"))
+              //console.log(avatar)
+              const reader = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onload = () => {
+                this.base64Data = reader.result;
+              };
+              reader.onerror = error => {
+                console.log('Error: ', error);
+              };
+            } else {
+                this.$message.error(res.data.message);
+              }
+          })
+          } else {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              this.base64Data = reader.result;
+            };
+            reader.onerror = error => {
+              console.log('Error: ', error);
+            };
           }
-        }).then(res => {
-          if(res.data.state == window.SUCCESS) {
-            this.$message.success("上传成功");
-            this.getAvatar();
-          }
-          else {
-            this.$message.error(res.data.message);
-          }
-        })
+         
       }
       return false;
     },
@@ -107,7 +126,7 @@ export default {
           }
         })
       } else {
-        this.$axios.post('/getShopAvatar', {
+        this.$axios.post('/getShopAvatarByShopname', {
           shopname: localStorage.getItem("shopname")
         })
         .then(res => {
@@ -147,7 +166,30 @@ export default {
           }
         })
       }
-      
+    },
+    setShopAvatar() {
+      avatar.append('shopname', localStorage.getItem("shopname"));
+        this.$axios.post('/setShopAvatar', avatar, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(res => {
+          if(res.data.state == window.SUCCESS) {
+            this.$message.success("上传成功");
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              this.base64Data = reader.result;
+              console.log(this.base64Data)
+            };
+            reader.onerror = error => {
+              console.log('Error: ', error);
+            };
+          }
+          else {
+            this.$message.error(res.data.message);
+          }
+        })
     }
   }
 };
