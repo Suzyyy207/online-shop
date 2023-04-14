@@ -6,7 +6,6 @@ import com.example.online_shopping_website.mapper.ShopMapper;
 import com.example.online_shopping_website.mapper.PicMapper;
 import com.example.online_shopping_website.service.IGoodService;
 import com.example.online_shopping_website.service.ex.GoodnameDuplicateException;
-import com.example.online_shopping_website.service.ex.ShopnameDuplicateException;
 import com.example.online_shopping_website.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -352,7 +351,7 @@ public class GoodServiceImpl implements IGoodService {
         goodReturn.setRegisterStatus(good.getRegisterStatus());
         goodReturn.setModifyStatus(good.getModifyStatus());
         goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
-        goodReturn.setFavorites(good.getFavoriteNum());
+        goodReturn.setFavorites(good.getFavorites());
         List<String> piclist = new ArrayList<>();
         List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
         System.out.println(picList);
