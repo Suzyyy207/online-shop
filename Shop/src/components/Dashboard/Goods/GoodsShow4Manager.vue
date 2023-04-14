@@ -63,7 +63,8 @@ export default {
                 status: this.goods.status
             }).then(res => {
                     if(res.data.state == window.SUCCESS){
-                       this.$message.success(res.data.message);
+                      this.$message.success(res.data.message);
+                      this.$emit('reload');
                     }
                     else {
                         this.$message.error("操作失败，请重试");
@@ -80,7 +81,7 @@ export default {
             }).then(res => {
                     if(res.data.state == window.SUCCESS){
                        this.$message.success(res.data.message);
-                       this.$router.go(0);
+                       this.$emit('reload');
                     }
                     else {
                         this.$message.error("操作失败，请重试");

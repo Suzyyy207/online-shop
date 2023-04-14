@@ -70,15 +70,19 @@ export default {
             this.$axios.post("/getValidGoodsByShopname", {
                 shopname: this.shop.shopname
             }).then(res => {
+                console.log("getValidGoods")
+                console.log(res.data)
                 this.shop.goodslist = res.data.data;
             })
         },
         getShopInfo() {
+            console.log("getShopInfo")
             this.shop.goodslist = [this.goods, this.goods]
             this.$axios.post("/getShopInfoByShopname", {
                 shopname: this.shopname
             })
             .then((res) => {
+                console.log(res.data)
                 if(res.data.state == window.SUCCESS){
                     const shop = res.data.data;
                     this.shop.shopname = shop.shopname;

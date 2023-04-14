@@ -9,7 +9,7 @@ const dialogTableVisible = ref(false)
   <div class="shop" :shop="shop">
     <a href="#" class="shop_link">
       <img v-if="!shop.avatar" class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
-      <img v-else :src="shop.avatar">
+      <img v-else :src="'data:image/jpeg;base64,' + shop.avatar">
 
       <p class="shopName">{{shop.shopname}}</p>
       <p class="status" v-if="shop.is_admitted==0">申请类型：注册申请</p>
