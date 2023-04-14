@@ -3,7 +3,7 @@
 <template>
   
     <el-form :model="form" :rules="rules" ref="form" class="form">
-        <Avatar class="imgU" :type="2"></Avatar>
+        <Avatar :type="2"></Avatar>
         <el-row>
           <el-col :span="12">
             <el-form-item label="用户名" prop="username">
@@ -351,14 +351,7 @@
   margin:20px;
 }
 
-.imgU{
-  width:100px;
-  height: 100px;
-  margin:20px auto;
-  display: flex;
-  border: 3px dashed gray; /* 3像素宽的黑色虚线边框 */
-  background-color: rgba(128, 128, 128, 0.2); /* 透明灰色背景 */
-}
+
 
 .form .btn {
   line-height: 100px;
