@@ -99,6 +99,7 @@ public class GoodServiceImpl implements IGoodService {
                 piclist.add(base64Image);
             }
             goodReturn.setGoodsAvatar(piclist);
+            piclist.clear();
             goodReturnList.add(goodReturn);
         }
         return goodReturnList;
@@ -108,6 +109,7 @@ public class GoodServiceImpl implements IGoodService {
         List<Good> goodslist = goodMapper.SearchByRegisterStatus(shopname,registerStatus);
 
         List<GoodReturn> goodReturnList = new ArrayList<>();
+        List<String> piclist = new ArrayList<>();
         for(Good good : goodslist){
             GoodReturn goodReturn = new GoodReturn();
             goodReturn.setGoodsPrice(good.getGoodsPrice());
@@ -120,7 +122,7 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setRegisterStatus(good.getRegisterStatus());
             goodReturn.setModifyStatus(good.getModifyStatus());
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
-            List<String> piclist = new ArrayList<>();
+            piclist.clear();
             for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
                 byte[] imageData = pics.getPic();
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
@@ -154,6 +156,7 @@ public class GoodServiceImpl implements IGoodService {
                 piclist.add(base64Image);
             }
             goodReturn.setGoodsAvatar(piclist);
+            piclist.clear();
             goodReturnList.add(goodReturn);
         }
         return goodReturnList;
