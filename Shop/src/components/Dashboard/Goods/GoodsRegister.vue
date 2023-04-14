@@ -238,12 +238,31 @@ export default {
             callback();
         },
         handleChange(file, fileList) {
+            const format = file.name.split('.').pop().toLowerCase()
+            const uploadFormat = ['jpg', 'jpeg', 'png', 'bmp']
+            const isFormatValid = uploadFormat.indexOf(format) !== -1
+            if (!isFormatValid) {
+                this.$message.error(`上传图片格式不支持，支持的格式为 ${uploadFormat.join(', ')}`);
+                fileList.splice(-1, 1);
+                console.log(fileList);
+                return false;
+            }
+            if (fileList.length > 5) {
+                fileList.splice(5);
+                this.$message.error("最多只能上传5张图片");
+                return false;
+            }
             this.addForm.fileList = fileList;
             console.log(this.addForm.fileList.length);
         },
         setGoodsInfo: function (addForm) {
             this.$refs[addForm].validate((valid) => {
             if (valid) {
+                if(this.addForm.fileList.length==0) {
+                    console.log(this.addForm)
+                    this.$message.error("至少上传一张图片")
+                    return
+                }
                 // 先传输普通数据
                 var localStorage = window.localStorage;
                 this.$axios.post('/setGoodsInfo', {
@@ -261,6 +280,7 @@ export default {
                         this.$message.error("提交失败，请重试");
                     }
                 }).catch(err => {
+                    this.$message.error("提交失败，请重试");
                     console.log(err);
                 })
             } else {
@@ -273,6 +293,11 @@ export default {
             this.$refs[addForm].validate((valid) => {
             if (valid) {
                 // 先传输普通数据
+                if(this.addForm.fileList.length==0) {
+                    console.log(this.addForm)
+                    this.$message.error("至少上传一张图片")
+                    return
+                }
                 var localStorage = window.localStorage;
                 this.$axios.post('/goodsRegister', {
                     shopname: localStorage.getItem("shopname"),
@@ -310,7 +335,11 @@ export default {
             .then((res) => {
                 console.log(res.data);
                 this.$message.success("提交成功！");
-                this.$router.go(0);
+                setTimeout(() => {
+                    this.$forceUpdate();
+                    this.resetForm();
+                    this.addForm.fileList = []
+                }, 2000);
             })
             .catch((err) => {
                 console.log(err);
@@ -319,7 +348,7 @@ export default {
         },
         resetForm() {
             this.$refs.addForm.resetFields();
-        }
+        },
     }
 }
 
