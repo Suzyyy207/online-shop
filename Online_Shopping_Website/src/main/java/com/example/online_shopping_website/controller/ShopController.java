@@ -167,7 +167,22 @@ public class ShopController {
         JsonResult<User> result = new JsonResult<>(YES, "商店头像上传成功");
         return result;
     }
-    @PostMapping("/api/getShopAvatarByUsername")
+    @PostMapping("/api/getShopAvatarByShopname")
+    public JsonResult<String> getShopAvatarByShopname(@RequestBody Shop shop){
+        String shopname = shop.getShopname();
+        String image = shopService.GetAvatar(shopname);
+        JsonResult<String> result = new JsonResult<>();
+        if(image!= null){
+            result.setState(YES);
+            result.setMessage("商店头像返回成功");
+        }else{
+            result.setState(NO);
+            result.setMessage("商店没有头像");
+        }
+        result.setData(image);
+        return result;
+    }
+    @PostMapping("/api/getShopAvatar")
     public JsonResult<String> DownloadAvatar(@RequestBody Shop shop){
         String shopname = shop.getShopname();
         String image = shopService.GetAvatar(shopname);
@@ -188,7 +203,7 @@ public class ShopController {
         JsonResult result = shopService.getShopInfoByShopname(shopname);
         return result;
     }
-    @PostMapping("deleteShopAvatar")
+    @PostMapping("/api/deleteShopAvatar")
     public JsonResult<Integer> deleteShopAvatar(@RequestBody Shop shop){
         String shopname = shop.getShopname();
         JsonResult<Integer> Result = new JsonResult<>(YES);

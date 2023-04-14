@@ -186,7 +186,7 @@ public class UserController {
         result = userService.addToCart(username, goodsId, num);
         return result;
     }
-    @PostMapping("deleteUserAvatar")
+    @PostMapping("/api/deleteUserAvatar")
     public JsonResult<Integer> deleteUserAvatar(@RequestBody User user){
         String username = user.getUsername();
         JsonResult<Integer> Result = new JsonResult<>(YES);
