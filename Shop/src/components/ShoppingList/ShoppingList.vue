@@ -65,6 +65,7 @@ import InvalidGoodsInSL from '../ShoppingList/InvalidGoodsInSL.vue'
 </template>
 
 <script>
+import "../../constant"
 export default {
     data() {
         return {

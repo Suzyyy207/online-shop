@@ -10,7 +10,7 @@
         <p>商品类型：{{ goods.goodsname }}</p>
         <p>商品类别：{{ goods.goodsCategory }}</p>
         <p>商品简介：{{ goods.introduction }}</p>
-        <p>商品库存：{{ goods.goodsStocks }}</p>
+        <p>商品库存：{{ goods.goodsStock }}</p>
         <p>商品价格：{{ goods.goodsPrice }}</p>
             
         <!-- TODO: 累计销量-->
@@ -38,7 +38,7 @@ export default {
                 goodsname: "",
                 goodsCategory: [],
                 introduction: "",
-                goodsStocks: "",
+                goodsStock: "",
                 goodsPrice: 0,
             },
             favorited: false,
@@ -69,7 +69,7 @@ export default {
                 this.goods.goodsname = goods.goodsname;
                 this.goods.goodsCategory = goods.goodsCategory;
                 this.goods.introduction = goods.introduction;
-                this.goods.goodsStocks = goods.goodsStocks;
+                this.goods.goodsStock = goods.goodsStock;
                 this.goods.goodsPrice = parseFloat(goods.goodsPrice);
                 this.isFavorited();
             })

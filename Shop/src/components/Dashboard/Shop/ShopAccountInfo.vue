@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import "../../../constant"
 export default{
     data() {
         return {
@@ -24,6 +25,7 @@ export default{
             this.$axios.post("/getShopAccount", {
                 username: localStorage.getItem("username")
             }).then(res => {
+                console.log(res.data.data);
                 this.shopAccount = res.data.data;
             }).catch((err) => {
                 console.log(err);
@@ -33,7 +35,7 @@ export default{
         recharge: function() {
             var localStorage = window.localStorage;
             console.log(this.credit);
-            if (isNaN(Number(this.credit))|this.credit<0){
+            if (isNaN(Number(this.credit))|this.credit<=0){
                 this.$message.error("充值失败，请输入符合要求的正浮点数");
             } else {
                 const credit = String(this.credit);
@@ -49,8 +51,9 @@ export default{
                 })
                 .then(res => {
                     if(res.data.state==window.SUCCESS) {
+                        console.log(res.data.data);
                         this.$message.success("充值金额：" + this.credit + "（系统默认保留两位小数）！");
-                        this.shopAccount = res.data.data;
+                        this.getShopAccount();
                         this.credit = 0;
                     }
                     else {

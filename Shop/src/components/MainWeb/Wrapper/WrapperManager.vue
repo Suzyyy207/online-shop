@@ -67,7 +67,7 @@ export default {
                 goodsStock:20,
                 introduction:"intro",
                 goodsCategory: ['电脑数码', '家用电器'],
-                goodsAvatar: ""
+                goodsAvatar: []
             }
         }
     },
@@ -78,24 +78,23 @@ export default {
     },
     methods: {
         getRegisteredShop() {
-            this.approvingGoodsList = [this.goods]
             this.$axios.get('/getRegisteredShop')
             .then(res => {
                 this.registeredShopList = this.registeredShopList.concat(res.data.data);
             })
         },
         getRegisteringShop() {
-            this.approvingGoodsList = [this.goods]
             this.$axios.get('/getRegisteringShop')
             .then(res => {
                 this.registeringShopList = this.registeringShopList.concat(res.data.data);
             })
         },
         getApprovingGoods() {
-            this.approvingGoodsList = [this.goods]
+            this.approvingGoodsList = []
             this.$axios.get('/getApprovingGoods')
             .then(res => {
                 this.approvingGoodsList = this.approvingGoodsList.concat(res.data.data);
+                console.log(this.approvingGoodsList)
             })
         },
         getProfitAccount() {

@@ -306,8 +306,10 @@
                     newpassword: this.form.password
                 })
                 .then(res => {
+                  console.log(res.data.state)
+                  console.log(window.SUCCESS)
                     if(res.data.state == window.SUCCESS){
-                        this.$message.sucess(res.data.message);
+                        this.$message.success(res.data.message);
                         var localStorage = window.localStorage;
                         localStorage.setItem("username", this.form.username);
                         this.$router.go(0);

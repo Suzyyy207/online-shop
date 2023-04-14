@@ -23,7 +23,9 @@ import RegisteringGoods from '../Goods/RegisteringGoods.vue'
         </div>
     </div>
 </template>
+
 <script>
+import "../../../constant"
 export default {
     props: ['shopname'],
     data() {

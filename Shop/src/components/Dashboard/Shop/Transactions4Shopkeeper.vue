@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import "../../../constant"
 export default{
     data() {
         return {

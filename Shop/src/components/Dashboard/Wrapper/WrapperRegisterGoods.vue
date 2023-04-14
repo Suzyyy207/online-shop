@@ -57,6 +57,7 @@
 
 
 <script>
+import "../../../constant"
 export default {
     components: {
         GoodsShow
@@ -110,6 +111,7 @@ export default {
                 shopname: localStorage.getItem("shopname")
             }).then(res => {
                 this.registeringGoodsList = res.data.data;
+                console.log(this.registeringGoodsList)
             })
         },
         getRegisteredGoods() {
@@ -143,6 +145,7 @@ export default {
             this.showGoods.goodsCategory = arg.goods.goodsCategory
             this.showGoods.favorites = arg.goods.favorites
             this.showGoods.goodsAvatar = arg.goods.goodsAvatar
+            console.log(this.showGoods.goodsAvatar)
             console.log(this.showGoods)
             this.isShowGoodsDetail = true;
         },
