@@ -89,7 +89,6 @@ export default {
                     this.shop.avatar = shop.avatar;
                     this.shop.introduction = shop.introduction;
                     this.shop.goodstype = shop.goodstype;
-                    console.log(shop)
                     this.getValidGoods();
                 }
                 else {
