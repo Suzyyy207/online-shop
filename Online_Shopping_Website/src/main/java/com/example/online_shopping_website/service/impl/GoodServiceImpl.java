@@ -41,17 +41,37 @@ public class GoodServiceImpl implements IGoodService {
     }
     @Override
     public void setGoodsInformation(String introduction,String goodsname,float goodsPrice,int goodsStock,String goodsCategory,String shopname,int goodsId){
-        Good good = goodMapper.SearchByGoodname(goodsname);
-        Good goodTrue =goodMapper.SearchByGoodsId(goodsId);
-        if (good != null&&goodTrue.getGoodsId()!=good.getGoodsId()) {
-            throw new GoodnameDuplicateException("尝试注册的商品名[" + goodsname + "]已经被占用");
+        Good goodTrue = goodMapper.SearchByGoodsId(goodsId);
+        if(goodTrue.getStatus()==1) {
+            Good good = goodMapper.SearchByGoodname(goodsname);
+            if (good != null && goodTrue.getGoodsId() != good.getGoodsId()) {
+                throw new GoodnameDuplicateException("尝试注册的商品名[" + goodsname + "]已经被占用");
+            }
+            if (shopname == null) {
+                shopname = goodTrue.getShopname();
+            }
+            goodMapper.insertGoodByUser(introduction, goodsname, goodsPrice, goodsStock, goodsCategory, -goodsId, -goodsId, -goodsId, shopname);
+            goodMapper.UpdateStatus(goodsId, 2);
+            goodMapper.UpdateModifyStatus(goodsId, 1);
+        } else if (goodTrue.getStatus()==0) {
+            goodMapper.UpdateIntroduction(goodsId,introduction);
+            goodMapper.UpdateGoodsname(goodsId,goodsname);
+            goodMapper.UpdateGoodsPrice(goodsId,goodsPrice);
+            goodMapper.UpdateGoodsStock(goodsId,goodsStock);
+            goodMapper.UpdateGoodsCategory(goodsId,goodsCategory);
+        } else if(goodTrue.getStatus()==2){
+            Good good = goodMapper.SearchByGoodname(goodsname);
+            if (good != null && goodTrue.getGoodsId() != good.getGoodsId()) {
+                throw new GoodnameDuplicateException("尝试注册的商品名[" + goodsname + "]已经被占用");
+            }
+            if (shopname == null) {
+                shopname = goodTrue.getShopname();
+            }
+            goodMapper.setDelete(-goodsId);
+            goodMapper.insertGoodByUser(introduction, goodsname, goodsPrice, goodsStock, goodsCategory, -goodsId, -goodsId, -goodsId, shopname);
+            goodMapper.UpdateStatus(goodsId, 2);
+            goodMapper.UpdateModifyStatus(goodsId, 1);
         }
-        if(shopname ==null){
-            shopname = goodTrue.getShopname();
-        }
-        goodMapper.insertGoodByUser(introduction,goodsname,goodsPrice,goodsStock,goodsCategory, -goodsId,-goodsId,-goodsId,shopname);
-        goodMapper.UpdateStatus(goodsId,2);
-        goodMapper.UpdateModifyStatus(goodsId,1);
     }
     @Override
     public void picsUpload(int goodsId,byte[] pic){
@@ -151,6 +171,28 @@ public class GoodServiceImpl implements IGoodService {
         List<Good> goodList = new ArrayList<>();
         goodList.addAll(goodListA);
         goodList.addAll(goodListB);
+        List<GoodReturn> goodReturnList = new ArrayList<>();
+        for(Good good : goodList){
+            GoodReturn goodReturn = new GoodReturn();
+            goodReturn.setGoodsPrice(good.getGoodsPrice());
+            goodReturn.setGoodsStock(good.getGoodsStock());
+            goodReturn.setGoodsId(good.getGoodsId());
+            goodReturn.setGoodsname(good.getGoodsname());
+            goodReturn.setIntroduction(good.getIntroduction());
+            goodReturn.setShopname(good.getShopname());
+            goodReturn.setStatus(good.getStatus());
+            goodReturn.setRegisterStatus(good.getRegisterStatus());
+            goodReturn.setModifyStatus(good.getModifyStatus());
+            goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+            List<String> piclist = new ArrayList<>();
+            for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
+                byte[] imageData = pics.getPic();
+                String base64Image = Base64.getEncoder().encodeToString(imageData);
+                piclist.add(base64Image);
+            }
+            goodReturn.setGoodsAvatar(piclist);
+            goodReturnList.add(goodReturn);
+        }
         return goodList;
     }
     @Override
@@ -251,6 +293,7 @@ public class GoodServiceImpl implements IGoodService {
             }
             goodReturn.setGoodsAvatar(piclist);
         }else if(good.getStatus() == 2){
+            good = goodMapper.StatusSearch(-goodsId);
             goodReturn.setGoodsPrice(good.getGoodsPrice());
             goodReturn.setGoodsStock(good.getGoodsStock());
             goodReturn.setGoodsId(good.getGoodsId());
@@ -309,7 +352,7 @@ public class GoodServiceImpl implements IGoodService {
         goodReturn.setRegisterStatus(good.getRegisterStatus());
         goodReturn.setModifyStatus(good.getModifyStatus());
         goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
-        goodReturn.setFavoriteNum(good.getFavoriteNum());
+        goodReturn.setFavorites(good.getFavoriteNum());
         List<String> piclist = new ArrayList<>();
         List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
         System.out.println(picList);
