@@ -15,7 +15,7 @@ public interface IShopService {
     Shop GetShopInformationFromUser(String username);
     JsonResult shopUnregister(String shopname);
 
-    JsonResult cancelRegister(String shopname, int cancelType);
+    JsonResult cancelRegister(String shopname, int is_admitted);
 
     JsonResult getShopInfoByShopname(String shopname);
     void UpdateAvatar(String shopname,byte[] avatar);

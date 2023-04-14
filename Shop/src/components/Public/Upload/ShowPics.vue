@@ -2,9 +2,7 @@
 <template>
 
 <div class="image">
-    <div v-for="(avatar, index) in goodsAvatar" :key="index">
-        <img :src="'data:image/jpeg;base64,' + avatar">
-    </div>
+    <img :src="'data:image/jpeg;base64,' + goodsAvatar[currentPage-1]">
     <el-pagination
         class="pages"
         @current-change="handleCurrentChange"
@@ -12,7 +10,6 @@
         :page-size="pageSize"
         :total="totalAvatars"
     />
-
 </div>
 
 </template>
@@ -31,8 +28,6 @@ export default {
     },
     created() {
         this.totalAvatars = this.goodsAvatar.length;
-        console.log(this.goodsAvatar)
-        console.log(this.totalAvatars)
     },
     computed: {
         currentAvatars() {

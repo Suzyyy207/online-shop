@@ -80,9 +80,10 @@
                             @click="this.goodsOnShelve()" 
                             >重新上架
                         </el-button>
-                        <el-button class="btn" @click="cancelShowGoodsDetail">返回</el-button>
+                        
                     </div>
                 </div>
+                <el-button class="btn" @click="cancelShowGoodsDetail">返回</el-button>
 
                 
             </div>

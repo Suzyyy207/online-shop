@@ -4,7 +4,7 @@
         <h1 v-if="this.form.idnumDisabled">店铺信息修改</h1>
         <h1 v-else>店 铺 注 册</h1>
 
-        <Avatar :type="1" ></Avatar>
+        <Avatar :type="1" ref="avatar" ></Avatar>
         <el-form :model="form" :rules="rules" ref="form" class="form">
             <el-form-item prop="shopname">
                 <el-input 
@@ -300,11 +300,15 @@ const idnumValidator = (rule, value, callback) => {
             .then(res => {
               // 注册成功
               if(res.data.state == window.SUCCESS){
-                this.$message.success("注册成功，请耐心等待管理员审批");
 
                 // 对于商家，还需要在localStorage中额外储存商店名
                 var localStorage = window.localStorage;
                 localStorage.setItem("shopname",res.data.data.shopname);
+                
+                const avatarComponent = this.$refs.avatar;
+                avatarComponent.setShopAvatar();
+
+                this.$message.success("注册成功，请耐心等待管理员审批");
 
                 // 店铺注册成功后，导向ShopkeeperWeb主页面
                 setTimeout(() => {

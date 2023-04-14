@@ -1,4 +1,4 @@
-<!--用户/商铺头像组件-->
+<!--用户/商铺：注册/修改信息的头像组件-->
 <template>
   <div class="upload">
       <a class="element" @click="deleteAvatar"> 
@@ -21,11 +21,12 @@
 </template>
 
 <script>
-import "../../../constant"
+import "../../../constant";
+var avatar = new FormData();
 export default {
   props: {
     type: {
-      // 2:用户头像，1:商店头像
+      // 1:商店信息修改，2:用户信息修改
       type: Number,
       required: true
     }
@@ -54,7 +55,6 @@ export default {
         this.$message.error(`上传图片大小超出限制，大小不能超过 ${this.uploadSize / 1024 / 1024}MB`)
         return false
       }
-      var avatar = new FormData();
       avatar.append('image', file);
       if(this.type == window.USER) {
         avatar.append('username', localStorage.getItem("username"));
@@ -72,20 +72,38 @@ export default {
           }
         })
       } else {
-        avatar.append('shopname', localStorage.getItem("shopname"));
-        this.$axios.post('/setShopAvatar', avatar, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+        if(localStorage.getItem("shopname")) {
+          avatar.append('shopname', localStorage.getItem("shopname"));
+          this.$axios.post('/setShopAvatar', avatar, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }).then(res => {
+            if(res.data.state == window.SUCCESS) {
+              this.$message.success("店铺头像上传成功");
+              const reader = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onload = () => {
+                this.base64Data = reader.result;
+              };
+              reader.onerror = error => {
+                console.log('Error: ', error);
+              };
+            } else {
+                this.$message.error(res.data.message);
+              }
+          })
+          } else {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              this.base64Data = reader.result;
+            };
+            reader.onerror = error => {
+              console.log('Error: ', error);
+            };
           }
-        }).then(res => {
-          if(res.data.state == window.SUCCESS) {
-            this.$message.success("上传成功");
-            this.getAvatar();
-          }
-          else {
-            this.$message.error(res.data.message);
-          }
-        })
+         
       }
       return false;
     },
@@ -107,7 +125,7 @@ export default {
           }
         })
       } else {
-        this.$axios.post('/getShopAvatar', {
+        this.$axios.post('/getShopAvatarByShopname', {
           shopname: localStorage.getItem("shopname")
         })
         .then(res => {
@@ -137,17 +155,44 @@ export default {
           }
         })
       } else {
-        this.$axios.post('/deleteShopAvatar', {
-          shopname: localStorage.getItem("shopname")
-        })
-        .then(res => {
-          if(res.data.state==window.SUCCESS) {
-            this.$message.success("头像已删除");
-            this.base64Data = "";
+        if(localStorage.getItem("shopname")) {
+          this.$axios.post('/deleteShopAvatar', {
+            shopname: localStorage.getItem("shopname")
+          })
+          .then(res => {
+            if(res.data.state==window.SUCCESS) {
+              this.$message.success("头像已删除");
+              this.base64Data = "";
+            }
+          })
+        } else {
+          this.base64Data = ""
+        }
+      }
+    },
+    setShopAvatar() {
+      avatar.append('shopname', localStorage.getItem("shopname"));
+        this.$axios.post('/setShopAvatar', avatar, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(res => {
+          if(res.data.state == window.SUCCESS) {
+            this.$message.success("上传成功");
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              this.base64Data = reader.result;
+              console.log(this.base64Data)
+            };
+            reader.onerror = error => {
+              console.log('Error: ', error);
+            };
+          }
+          else {
+            this.$message.error(res.data.message);
           }
         })
-      }
-      
     }
   }
 };
@@ -172,7 +217,7 @@ export default {
 }
 .img{
   padding: 20px;
-  width:100%;
-  height:100%;
+  width:50%;
+  height:50%;
 }
 </style>

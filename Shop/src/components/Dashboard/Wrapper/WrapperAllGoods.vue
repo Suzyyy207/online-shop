@@ -105,7 +105,6 @@ export default {
     },
     methods: {
         getValidGoods() {
-            this.validGoodsList = [this.goods];
             var localStorage = window.localStorage;
             this.$axios.post("/getValidGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
@@ -114,7 +113,6 @@ export default {
             })
         },
         getInvalidGoods() {
-            this.invalidGoodsList = [this.goods];
             var localStorage = window.localStorage;
             this.$axios.post("/getInvalidGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")

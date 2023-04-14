@@ -1,7 +1,7 @@
 package com.example.online_shopping_website.mapper;
 
+import com.example.online_shopping_website.entity.Good;
 import com.example.online_shopping_website.entity.User;
-import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -123,6 +123,6 @@ public interface UserMapper {
     BigDecimal GetProfitAccount();
     BigDecimal GetIntermediaryAccount();
     void AvatarDelete(String username);
-
+    List<Integer> GetAllGoodsIdInCartByusername(String username);
 }
 

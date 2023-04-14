@@ -8,10 +8,28 @@ import { RouterLink, RouterView } from 'vue-router'
     <body>
         <Nav></Nav>
         <section class="back">
-            <ShopDetail/>
+            <ShopDetail :shopname="shopname"/>
         </section>
     </body>
 </template>
+
+<script>
+export default {
+    data(){
+        return {
+            shopname: ""
+        }
+    },
+    components: {
+        ShopDetail
+    },
+    created() {
+        console.log("SS")
+        this.shopname = this.$route.params.shopname;
+        console.log(this.shopname);
+    }
+}
+</script>
 
 <style scoped>
 

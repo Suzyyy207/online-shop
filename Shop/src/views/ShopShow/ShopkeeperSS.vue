@@ -24,6 +24,7 @@ export default {
         ShopDetail
     },
     created() {
+        console.log("SS")
         this.shopname = this.$route.params.shopname;
         console.log(this.shopname);
     }

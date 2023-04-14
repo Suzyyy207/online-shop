@@ -153,11 +153,12 @@ public class ShopController {
         return result;
     }
 
-    @RequestMapping("/api/cancelRgister")   //撤销商铺注册/删除申请
+    @RequestMapping("/api/cancelRegister")   //撤销商铺注册/删除申请
     public  JsonResult cancelRegister(@RequestBody Map<String,Object> map){
         String shopname = (String) map.get("shopname");
-        int cancelType = (int)map.get("cancelType");
-        JsonResult result = shopService.cancelRegister(shopname, cancelType);
+        int is_admitted = (int)map.get("is_admitted");
+        JsonResult result = shopService.cancelRegister(shopname, is_admitted);
+        System.out.println(result);
         return  result;
     }
     @PostMapping("/api/setShopAvatar")

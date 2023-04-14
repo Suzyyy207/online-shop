@@ -193,6 +193,13 @@ public class UserController {
         userService.deleteUserAvatar(username);
         return Result;
     }
+
+    @RequestMapping("/api/getValidCart")
+    JsonResult getValidCart(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        JsonResult result = userService.getValidCart(username);
+        return result;
+    }
 }
 
 
