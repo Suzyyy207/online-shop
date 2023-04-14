@@ -98,4 +98,7 @@
     <select id="isFavorite" resultType="java.lang.Boolean">
         SELECT EXISTS(SELECT * from favorite WHERE username = {username} AND goodsId = #{goodsId});
     </select>
+    <select id="StatusSearch" resultMap="GoodMap">
+        SELECT * FROM goods where status = #{status};
+    </select>
 </mapper>

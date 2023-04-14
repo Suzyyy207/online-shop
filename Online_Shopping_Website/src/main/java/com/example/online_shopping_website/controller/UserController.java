@@ -138,7 +138,7 @@ public class UserController {
         return result;
     }
 
-    @RequestMapping("/api/getShopAccount")
+    @RequestMapping("/api/getShopAccount") //根据用户名获取，而非商店名
     public JsonResult getShopAccount(@RequestBody Map<String,Object> map){
         String username = (String)map.get("username");
         JsonResult result = userService.getShopAccount(username);

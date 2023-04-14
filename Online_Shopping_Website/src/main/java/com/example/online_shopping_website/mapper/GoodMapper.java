@@ -21,6 +21,7 @@ public interface GoodMapper {
     Integer picInsert(int goodsId,byte[] pic);
     List<Good> SearchByStatus(String shopname, int status);
     List<Good> SearchByStatusStatusOnly(int status);
+    Good StatusSearch(int status);
     List<Good> SearchByRegisterStatusRegisterStatusOnly(int registerStatus);
     List<Good> SearchByModifyStatusModifyStatusOnly(int modifyStatus);
 
