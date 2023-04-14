@@ -80,6 +80,9 @@
     <delete id="setDelete">
         DELETE from goods WHERE status = #{goodsId}
     </delete>
+    <delete id="DeleteGoods">
+        DELETE from goods WHERE goodsId = #{goodsId}
+    </delete>
 
 
     <insert id="AddToFavorite">
@@ -121,4 +124,5 @@
         VALUE
             (#{username}, #{goodsId}, #{num})
     </insert>
+
 </mapper>
