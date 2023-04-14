@@ -18,5 +18,5 @@ public class Good {
     int goodsStock;
     String introduction;
     String shopname;
-    int favoriteNum;//收藏次数
+    int favorites;//收藏次数
 }

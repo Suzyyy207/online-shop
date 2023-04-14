@@ -6,7 +6,6 @@ import com.example.online_shopping_website.mapper.ShopMapper;
 import com.example.online_shopping_website.mapper.PicMapper;
 import com.example.online_shopping_website.service.IGoodService;
 import com.example.online_shopping_website.service.ex.GoodnameDuplicateException;
-import com.example.online_shopping_website.service.ex.ShopnameDuplicateException;
 import com.example.online_shopping_website.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -165,7 +164,7 @@ public class GoodServiceImpl implements IGoodService {
         return piclist;
     }
     @Override
-    public List<Good> getApprovingGoods(){
+    public List<GoodReturn> getApprovingGoods(){
         List<Good> goodListA = goodMapper.SearchByRegisterStatusRegisterStatusOnly(0);
         List<Good> goodListB = goodMapper.SearchByModifyStatusModifyStatusOnly(1);
         List<Good> goodList = new ArrayList<>();
@@ -193,7 +192,7 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setGoodsAvatar(piclist);
             goodReturnList.add(goodReturn);
         }
-        return goodList;
+        return goodReturnList;
     }
     @Override
     public int goodsOffShelve(int goodsId){
@@ -352,7 +351,7 @@ public class GoodServiceImpl implements IGoodService {
         goodReturn.setRegisterStatus(good.getRegisterStatus());
         goodReturn.setModifyStatus(good.getModifyStatus());
         goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
-        goodReturn.setFavorites(good.getFavoriteNum());
+        goodReturn.setFavorites(good.getFavorites());
         List<String> piclist = new ArrayList<>();
         List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
         System.out.println(picList);
@@ -363,5 +362,20 @@ public class GoodServiceImpl implements IGoodService {
         }
         goodReturn.setGoodsAvatar(piclist);
         return goodReturn;
+    }
+
+    @Override
+    public JsonResult setCartGoodsNum(String username, int goodsId, int num){
+        JsonResult result =new JsonResult<>(YES);
+        int goodsStock = goodMapper.GetGoodsStockByGoodsId(goodsId);
+        if(num > goodsStock)    //异常1：添加到购物车的数量大于库存数量
+            result.setState(NO);
+        else{
+            if(goodMapper.IsGoodsInCart(username,goodsId))  //异常2：用户名下的购物车已经有相应的商品了
+                goodMapper.updateCartGoodsNum(username, goodsId, num);  //购物车已有，更新数据库
+            else
+                goodMapper.insertCartGoodsNum(username, goodsId, num);  //购物车没有，插入数据库
+        }
+        return result;
     }
 }

@@ -163,7 +163,7 @@ public class ShopController {
     @PostMapping("/api/setShopAvatar")
     public JsonResult<User> setShopAvatar(@RequestParam("image") MultipartFile avatarFile, @RequestParam("shopname") String shopname) throws IOException {
         byte[] avatarData = avatarFile.getBytes();
-        userService.UpdateAvatar(shopname,avatarData);
+        shopService.UpdateAvatar(shopname,avatarData);
         JsonResult<User> result = new JsonResult<>(YES, "商店头像上传成功");
         return result;
     }

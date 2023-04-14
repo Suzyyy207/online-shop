@@ -15,7 +15,7 @@ public interface IGoodService {
     List<GoodReturn> searchByRegisterStatus(String shopname,int registerStatus);
     List<GoodReturn> searchByModifyStatus(String shopname,int modifyStatus);
     List<pic> picsSearchByGoodsId(int goodsId);
-    List<Good> getApprovingGoods();
+    List<GoodReturn> getApprovingGoods();
     int goodsOffShelve(int goodsId);
     int goodsOnShelve(int goodsId);
     int goodsApplicationApproved(int goodsId,int status);
@@ -25,5 +25,7 @@ public interface IGoodService {
     JsonResult addToFavorites(String username, int goodsId);
     JsonResult Unfavorite(String username, int goodsId);
     JsonResult isFavorite(String username, int goodsId);
+    JsonResult setCartGoodsNum(String username, int goodsId, int num);
     GoodReturn getGoodsInfoByGoodsId(int goodsId);
+
 }

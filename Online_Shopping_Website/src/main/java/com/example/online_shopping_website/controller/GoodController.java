@@ -165,9 +165,9 @@ public class GoodController {
         return result;
     }
     @RequestMapping("/api/getApprovingGoods")
-    public JsonResult<List<Good>> getApprovingGoods(){
-        JsonResult<List<Good>> result = new JsonResult<>();
-        List<Good> goodList = goodService.getApprovingGoods();
+    public JsonResult<List<GoodReturn>> getApprovingGoods(){
+        JsonResult<List<GoodReturn>> result = new JsonResult<>();
+        List<GoodReturn> goodList = goodService.getApprovingGoods();
         if(goodList==null){
             result.setState(NO);
             result.setMessage("没有待批复的商品");
@@ -293,6 +293,16 @@ public class GoodController {
             result.setMessage("返回成功");
             result.setData(goodReturn);
         }
+        return result;
+    }
+
+    @RequestMapping("/api/setCartGoodsNum")
+    public JsonResult setCartGoodsNum(@RequestBody Map<String,Object> map){
+        String username = (String)map.get("username");
+        int goodsId = (int)map.get("goodsId");
+        int num = (int)map.get("num");
+
+        JsonResult result = goodService.setCartGoodsNum(username, goodsId, num);
         return result;
     }
 }
