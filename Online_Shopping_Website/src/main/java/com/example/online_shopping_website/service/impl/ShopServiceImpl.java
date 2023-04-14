@@ -94,17 +94,42 @@ public class ShopServiceImpl implements IShopService {
     @Override
     public JsonResult shopUnregister(String shopname){
         JsonResult result = new JsonResult<>(YES, "提交成功，请等待管理员申请");
-        //TODO:检查商店是否有未完成的订单
-
+        //TODO:检查商店是否有未完成的订单 (Lab3不要求)
 
         shopMapper.UnregisterShopByShopname(shopname);
         return result;
     }
 
     @Override
-    public JsonResult cancelRegister(String shopname, int cancelType){
+    public JsonResult cancelRegister(String shopname, int is_admitted){
         JsonResult result = new JsonResult<>(YES,"撤销成功");
-        //TODO:撤销商品的业务层
+        int admitted_now = shopMapper.GetShopIsAdmitted(shopname);
+
+        switch (is_admitted){
+            case registrationUnderReview:                        //1.用户提交了注册申请 2.注册申请被管理员拒绝
+            case registrationRejected:                           //此时可以取消注册申请,清空该用户提交的商店注册信息
+                if(admitted_now == registrationUnderReview || admitted_now == registrationRejected) {
+                    shopMapper.ClearShopInfoByShopname(shopname);
+                }else {             //商店现在的is_admitted 不符合删除条件
+                    result.setState(NO);
+                    result.setMessage("撤销失败");
+                }
+                break;                                           //1.用户提交了删除申请 2.删除申请被管理员拒绝
+            case deletionUnderReview:                            //此时可以取消删除申请,商店is_admitted设为正常
+            case deletionRejected:
+                if(is_admitted == deletionUnderReview || is_admitted == deletionRejected) {
+                    shopMapper.CancelShopUnregistyerByShopname(shopname, is_admitted);
+                }else{              //商店现在的is_admitted 不符合删除条件
+                    result.setState(NO);
+                    result.setMessage("撤销失败");
+                }
+                break;
+            default:
+                result.setState(NO);
+                result.setMessage("撤销失败");
+                break;
+        }
+
         return result;
     }
 

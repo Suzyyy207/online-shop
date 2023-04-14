@@ -1,8 +1,7 @@
 package com.example.online_shopping_website.service.impl;
 
-import com.example.online_shopping_website.entity.Admin;
+import com.example.online_shopping_website.entity.Good;
 import com.example.online_shopping_website.entity.Transaction;
-import com.example.online_shopping_website.entity.constant.AccountType;
 import com.example.online_shopping_website.mapper.TransactionMapper;
 import com.example.online_shopping_website.mapper.UserMapper;
 import com.example.online_shopping_website.entity.User;
@@ -248,5 +247,15 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void deleteUserAvatar(String username){
         userMapper.AvatarDelete(username);
+    }
+
+    @Override
+    public JsonResult getValidCart(String username){
+        JsonResult result = new JsonResult<>(YES);
+        List<Good> goodsInCart;
+        userMapper.GetAllGoodsIdInCartByusername(username);
+
+
+        return result;
     }
 }
