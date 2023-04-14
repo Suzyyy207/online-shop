@@ -1,6 +1,5 @@
 package com.example.online_shopping_website.mapper;
 
-import com.example.online_shopping_website.entity.Good;
 import com.example.online_shopping_website.entity.User;
 
 import java.math.BigDecimal;
@@ -124,5 +123,7 @@ public interface UserMapper {
     BigDecimal GetIntermediaryAccount();
     void AvatarDelete(String username);
     List<Integer> GetAllGoodsIdInCartByusername(String username);
+    int GetUidByShopname(String shopname);
+    String DeleteShopAccountANDTransferBalanceToPrivateAccount(int uid);
 }
 

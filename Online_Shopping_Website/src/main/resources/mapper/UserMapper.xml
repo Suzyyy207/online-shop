@@ -151,6 +151,15 @@
     <select id="GetAllGoodsIdInCartByusername" resultType="int">
         SELECT goodsId FROM cart WHERE username = #{username}
     </select>
+
+    <select id="GetUidByShopname">
+        SELECT uid FROM shops WHERE shopname = #{shopname};
+    </select>
+
+    <update id="DeleteShopAccountANDTransferBalanceToPrivateAccount">
+        UPDATE users SET privateAccount = privateAccount + shopAccount WHERE uid =#{uid};
+        UPDATE users SET ShopAccount = 0 WHERE uid =#{uid};
+    </update>
 </mapper>
 
 
