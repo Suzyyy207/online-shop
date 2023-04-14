@@ -119,6 +119,7 @@ export default {
             this.$axios.post("/getInvalidGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
             }).then(res => {
+                console.log(res.data)
                 this.validGoodsList = res.data.data;
             })
         },
