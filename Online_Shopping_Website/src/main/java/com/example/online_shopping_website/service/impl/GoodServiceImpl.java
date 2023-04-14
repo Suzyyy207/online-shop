@@ -99,7 +99,6 @@ public class GoodServiceImpl implements IGoodService {
                 piclist.add(base64Image);
             }
             goodReturn.setGoodsAvatar(piclist);
-            piclist.clear();
             goodReturnList.add(goodReturn);
         }
         return goodReturnList;

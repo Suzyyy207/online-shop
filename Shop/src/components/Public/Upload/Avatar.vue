@@ -171,7 +171,7 @@ export default {
       }
     },
     setShopAvatar() {
-      avatar.append('shopname', localStorage.getItem("shopname"));
+        avatar.append('shopname', localStorage.getItem("shopname"));
         this.$axios.post('/setShopAvatar', avatar, {
           headers: {
             'Content-Type': 'multipart/form-data'
