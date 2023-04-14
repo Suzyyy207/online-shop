@@ -14,7 +14,9 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -137,5 +139,85 @@ public class ShopController {
         return Result;
     }
 
+    @RequestMapping("/api/getShopInfoByShopname")
+    public JsonResult getShopInfoByShopname(@RequestBody Map<String,Object> map){
+        String shopname = (String)map.get("shopname");
+        JsonResult result = shopService.getShopInfoByShopname(shopname);
+        return result;
+    }
 
+    @RequestMapping("/api/shopUnregister")
+    public JsonResult shopUnregister(@RequestBody Map<String,Object> map){
+        String shopname = (String) map.get("shopname");
+        JsonResult result = shopService.shopUnregister(shopname);
+        return result;
+    }
+
+    @RequestMapping("/api/cancelRgister")   //撤销商铺注册/删除申请
+    public  JsonResult cancelRegister(@RequestBody Map<String,Object> map){
+        String shopname = (String) map.get("shopname");
+        int cancelType = (int)map.get("cancelType");
+        JsonResult result = shopService.cancelRegister(shopname, cancelType);
+        return  result;
+    }
+    @PostMapping("/api/setShopAvatar")
+    public JsonResult<User> setShopAvatar(@RequestParam("image") MultipartFile avatarFile, @RequestParam("shopname") String shopname) throws IOException {
+        byte[] avatarData = avatarFile.getBytes();
+        shopService.UpdateAvatar(shopname,avatarData);
+        JsonResult<User> result = new JsonResult<>(YES, "商店头像上传成功");
+        return result;
+    }
+    @PostMapping("/api/getShopAvatarByShopname")
+    public JsonResult<String> getShopAvatarByShopname(@RequestBody Shop shop){
+        String shopname = shop.getShopname();
+        String image = shopService.GetAvatar(shopname);
+        JsonResult<String> result = new JsonResult<>();
+        if(image!= null){
+            result.setState(YES);
+            result.setMessage("商店头像返回成功");
+        }else{
+            result.setState(NO);
+            result.setMessage("商店没有头像");
+        }
+        result.setData(image);
+        return result;
+    }
+    @PostMapping("/api/getShopAvatar")
+    public JsonResult<String> DownloadAvatar(@RequestBody Shop shop){
+        String shopname = shop.getShopname();
+        String image = shopService.GetAvatar(shopname);
+        JsonResult<String> result = new JsonResult<>();
+        if(image!= null){
+            result.setState(YES);
+            result.setMessage("商店头像返回成功");
+        }else{
+            result.setState(NO);
+            result.setMessage("商店没有头像");
+        }
+        result.setData(image);
+        return result;
+    }
+    @PostMapping("/api/deleteShopAvatar")
+    public JsonResult<Integer> deleteShopAvatar(@RequestBody Shop shop){
+        String shopname = shop.getShopname();
+        JsonResult<Integer> Result = new JsonResult<>(YES);
+        shopService.deleteShopAvatar(shopname);
+        return Result;
+    }
+
+    @RequestMapping("/api/shopApplicationApproved")
+    public JsonResult shopApplicationApproved(@RequestBody Map<String,Object> map){
+        String shopname = (String)map.get("shopname");
+        int approveType = (int)map.get("is_admitted");
+        JsonResult result = shopService.shopApplicationApproved(shopname, approveType);
+        return result;
+    }
+
+    @RequestMapping("/api/shopApplicationRejected")
+    public JsonResult shopApplicationRejected(@RequestBody Map<String,Object> map){
+        String shopname = (String)map.get("shopname");
+        int rejectType = (int)map.get("is_admitted");
+        JsonResult result = shopService.shopApplicationRejected(shopname, rejectType);
+        return result;
+    }
 }

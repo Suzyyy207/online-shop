@@ -1,16 +1,23 @@
 package com.example.online_shopping_website.service.impl;
 
-import com.example.online_shopping_website.entity.Good;
-import com.example.online_shopping_website.entity.Shop;
+import com.example.online_shopping_website.entity.*;
 import com.example.online_shopping_website.mapper.GoodMapper;
 import com.example.online_shopping_website.mapper.ShopMapper;
+import com.example.online_shopping_website.mapper.PicMapper;
 import com.example.online_shopping_website.service.IGoodService;
 import com.example.online_shopping_website.service.ex.GoodnameDuplicateException;
-import com.example.online_shopping_website.service.ex.ShopnameDuplicateException;
+import com.example.online_shopping_website.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
+
+import static javax.security.auth.callback.ConfirmationCallback.NO;
+import static javax.security.auth.callback.ConfirmationCallback.YES;
+
 
 @Service
 public class GoodServiceImpl implements IGoodService {
@@ -18,6 +25,8 @@ public class GoodServiceImpl implements IGoodService {
     private GoodMapper goodMapper;
     @Autowired
     private ShopMapper shopMapper;
+    @Autowired
+    private PicMapper picMapper;
     @Override
     public Good goodsRegister(String introduction,String goodsname,float goodsPrice,int goodsStock,String goodsCategory,String shopname){
         Good good = goodMapper.SearchByGoodname(goodsname);
@@ -31,25 +40,36 @@ public class GoodServiceImpl implements IGoodService {
     }
     @Override
     public void setGoodsInformation(String introduction,String goodsname,float goodsPrice,int goodsStock,String goodsCategory,String shopname,int goodsId){
-        if(goodsname!=null) {
+        Good goodTrue = goodMapper.SearchByGoodsId(goodsId);
+        if(goodTrue.getStatus()==1) {
             Good good = goodMapper.SearchByGoodname(goodsname);
-            if (good != null){
+            if (good != null && goodTrue.getGoodsId() != good.getGoodsId()) {
                 throw new GoodnameDuplicateException("尝试注册的商品名[" + goodsname + "]已经被占用");
-            }else {
-                goodMapper.UpdateGoodsname(goodsId,goodsname);
             }
-        }
-        if(introduction!=null){
-            goodMapper.UpdateIntroduction(goodsId,goodsname);
-        }
-        if(goodsPrice!=0){
+            if (shopname == null) {
+                shopname = goodTrue.getShopname();
+            }
+            goodMapper.insertGoodByUser(introduction, goodsname, goodsPrice, goodsStock, goodsCategory, -goodsId, -goodsId, -goodsId, shopname);
+            goodMapper.UpdateStatus(goodsId, 2);
+            goodMapper.UpdateModifyStatus(goodsId, 1);
+        } else if (goodTrue.getStatus()==0) {
+            goodMapper.UpdateIntroduction(goodsId,introduction);
+            goodMapper.UpdateGoodsname(goodsId,goodsname);
             goodMapper.UpdateGoodsPrice(goodsId,goodsPrice);
-        }
-        if(goodsCategory!=null){
-            goodMapper.UpdateGoodsCategory(goodsId,goodsCategory);
-        }
-        if(goodsStock!=0){
             goodMapper.UpdateGoodsStock(goodsId,goodsStock);
+            goodMapper.UpdateGoodsCategory(goodsId,goodsCategory);
+        } else if(goodTrue.getStatus()==2){
+            Good good = goodMapper.SearchByGoodname(goodsname);
+            if (good != null && goodTrue.getGoodsId() != good.getGoodsId()) {
+                throw new GoodnameDuplicateException("尝试注册的商品名[" + goodsname + "]已经被占用");
+            }
+            if (shopname == null) {
+                shopname = goodTrue.getShopname();
+            }
+            goodMapper.setDelete(-goodsId);
+            goodMapper.insertGoodByUser(introduction, goodsname, goodsPrice, goodsStock, goodsCategory, -goodsId, -goodsId, -goodsId, shopname);
+            goodMapper.UpdateStatus(goodsId, 2);
+            goodMapper.UpdateModifyStatus(goodsId, 1);
         }
     }
     @Override
@@ -57,18 +77,308 @@ public class GoodServiceImpl implements IGoodService {
         goodMapper.picInsert(goodsId,pic);
     }
     @Override
-    public List<Good> searchByStatus(String shopname, int status){
+    public List<GoodReturn> searchByStatus(String shopname, int status){
         List<Good> goodslist = goodMapper.SearchByStatus(shopname,status);
-        return goodslist;
+        List<GoodReturn> goodReturnList = new ArrayList<>();
+        for(Good good : goodslist){
+            GoodReturn goodReturn = new GoodReturn();
+            goodReturn.setGoodsPrice(good.getGoodsPrice());
+            goodReturn.setGoodsStock(good.getGoodsStock());
+            goodReturn.setGoodsId(good.getGoodsId());
+            goodReturn.setGoodsname(good.getGoodsname());
+            goodReturn.setIntroduction(good.getIntroduction());
+            goodReturn.setShopname(good.getShopname());
+            goodReturn.setStatus(good.getStatus());
+            goodReturn.setRegisterStatus(good.getRegisterStatus());
+            goodReturn.setModifyStatus(good.getModifyStatus());
+            goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+            List<String> piclist = new ArrayList<>();
+            for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
+                byte[] imageData = pics.getPic();
+                String base64Image = Base64.getEncoder().encodeToString(imageData);
+                piclist.add(base64Image);
+            }
+            goodReturn.setGoodsAvatar(piclist);
+            piclist.clear();
+            goodReturnList.add(goodReturn);
+        }
+        return goodReturnList;
     }
     @Override
-    public List<Good> searchByRegisterStatus(String shopname, int registerStatus){
-        List<Good> goodslist = goodMapper.SearchByStatus(shopname,registerStatus);
-        return goodslist;
+    public List<GoodReturn> searchByRegisterStatus(String shopname, int registerStatus){
+        List<Good> goodslist = goodMapper.SearchByRegisterStatus(shopname,registerStatus);
+
+        List<GoodReturn> goodReturnList = new ArrayList<>();
+        List<String> piclist = new ArrayList<>();
+        for(Good good : goodslist){
+            GoodReturn goodReturn = new GoodReturn();
+            goodReturn.setGoodsPrice(good.getGoodsPrice());
+            goodReturn.setGoodsStock(good.getGoodsStock());
+            goodReturn.setGoodsId(good.getGoodsId());
+            goodReturn.setGoodsname(good.getGoodsname());
+            goodReturn.setIntroduction(good.getIntroduction());
+            goodReturn.setShopname(good.getShopname());
+            goodReturn.setStatus(good.getStatus());
+            goodReturn.setRegisterStatus(good.getRegisterStatus());
+            goodReturn.setModifyStatus(good.getModifyStatus());
+            goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+            piclist.clear();
+            for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
+                byte[] imageData = pics.getPic();
+                String base64Image = Base64.getEncoder().encodeToString(imageData);
+                piclist.add(base64Image);
+            }
+            goodReturn.setGoodsAvatar(piclist);
+            goodReturnList.add(goodReturn);
+        }
+        return goodReturnList;
     }
     @Override
-    public List<Good> searchByModifyStatus(String shopname, int modifyStatus){
-        List<Good> goodslist = goodMapper.SearchByStatus(shopname,modifyStatus);
-        return goodslist;
+    public List<GoodReturn> searchByModifyStatus(String shopname, int modifyStatus){
+        List<Good> goodslist = goodMapper.SearchByModifyStatus(shopname,modifyStatus);
+        List<GoodReturn> goodReturnList = new ArrayList<>();
+        for(Good good : goodslist){
+            GoodReturn goodReturn = new GoodReturn();
+            goodReturn.setGoodsPrice(good.getGoodsPrice());
+            goodReturn.setGoodsStock(good.getGoodsStock());
+            goodReturn.setGoodsId(good.getGoodsId());
+            goodReturn.setGoodsname(good.getGoodsname());
+            goodReturn.setIntroduction(good.getIntroduction());
+            goodReturn.setShopname(good.getShopname());
+            goodReturn.setStatus(good.getStatus());
+            goodReturn.setRegisterStatus(good.getRegisterStatus());
+            goodReturn.setModifyStatus(good.getModifyStatus());
+            goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+            List<String> piclist = new ArrayList<>();
+            for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
+                byte[] imageData = pics.getPic();
+                String base64Image = Base64.getEncoder().encodeToString(imageData);
+                piclist.add(base64Image);
+            }
+            goodReturn.setGoodsAvatar(piclist);
+            piclist.clear();
+            goodReturnList.add(goodReturn);
+        }
+        return goodReturnList;
+    }
+    @Override
+    public List<pic> picsSearchByGoodsId(int goodsId){
+        List<pic> piclist = picMapper.searchPicByGoodsId(goodsId);
+        return piclist;
+    }
+    @Override
+    public List<GoodReturn> getApprovingGoods(){
+        List<Good> goodListA = goodMapper.SearchByRegisterStatusRegisterStatusOnly(0);
+        List<Good> goodListB = goodMapper.SearchByModifyStatusModifyStatusOnly(1);
+        List<Good> goodList = new ArrayList<>();
+        goodList.addAll(goodListA);
+        goodList.addAll(goodListB);
+        List<GoodReturn> goodReturnList = new ArrayList<>();
+        for(Good good : goodList){
+            GoodReturn goodReturn = new GoodReturn();
+            goodReturn.setGoodsPrice(good.getGoodsPrice());
+            goodReturn.setGoodsStock(good.getGoodsStock());
+            goodReturn.setGoodsId(good.getGoodsId());
+            goodReturn.setGoodsname(good.getGoodsname());
+            goodReturn.setIntroduction(good.getIntroduction());
+            goodReturn.setShopname(good.getShopname());
+            goodReturn.setStatus(good.getStatus());
+            goodReturn.setRegisterStatus(good.getRegisterStatus());
+            goodReturn.setModifyStatus(good.getModifyStatus());
+            goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+            List<String> piclist = new ArrayList<>();
+            for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
+                byte[] imageData = pics.getPic();
+                String base64Image = Base64.getEncoder().encodeToString(imageData);
+                piclist.add(base64Image);
+            }
+            goodReturn.setGoodsAvatar(piclist);
+            goodReturnList.add(goodReturn);
+        }
+        return goodReturnList;
+    }
+    @Override
+    public int goodsOffShelve(int goodsId){
+        Good good = goodMapper.SearchByGoodsId(goodsId);
+        if(good.getStatus()==1) {
+            goodMapper.UpdateStatus(goodsId,3);
+            return 0;
+        }
+        else return 1;
+    }
+    @Override
+    public int goodsOnShelve(int goodsId){
+        Good good = goodMapper.SearchByGoodsId(goodsId);
+        if(good.getStatus()==3) {
+            goodMapper.UpdateStatus(goodsId,1);
+            return 0;
+        }
+        else return 1;
+    }
+    @Override
+    public int goodsApplicationApproved(int goodsId,int status){
+        if(status == 0 ){
+            goodMapper.UpdateStatus(goodsId,1);
+            goodMapper.UpdateRegisterStatus(goodsId,1);
+            return 0;
+        }
+        if(status == 2 ){
+            List<Good> goodList =goodMapper.SearchByStatusStatusOnly(-goodsId);
+            Good good = goodList.get(0);
+            goodMapper.setDelete(-goodsId);
+            goodMapper.UpdateIntroduction(goodsId,good.getIntroduction());
+            goodMapper.UpdateGoodsStock(goodsId,good.getGoodsStock());
+            goodMapper.UpdateGoodsname(goodsId,good.getGoodsname());
+            goodMapper.UpdateGoodsCategory(goodsId,good.getGoodsCategory());
+            goodMapper.UpdateGoodsPrice(goodsId,good.getGoodsPrice());
+            goodMapper.UpdateStatus(goodsId,1);
+            goodMapper.UpdateRegisterStatus(goodsId,3);
+            return 0;
+        }else {
+            return 1;
+        }
+    }
+    @Override
+    public int goodsApplicationRejected(int goodsId,int status){
+        if(status == 0 ){
+            goodMapper.UpdateRegisterStatus(goodsId,2);
+            return 0;
+        }
+        if(status == 2 ){
+            goodMapper.UpdateModifyStatus(goodsId,2);
+            /*
+             * TODO*/
+
+            return 0;
+        }else {
+            return 1;
+        }
+    }
+    @Override
+    public int cancelApplication(int goodsId){
+        Good good = goodMapper.SearchByGoodsId(goodsId);
+        if(good.getStatus() == 0 ){
+            goodMapper.UpdateStatus(goodsId,4);
+
+            return 0;
+        }
+        if(good.getStatus() == 2 ){
+            goodMapper.UpdateStatus(goodsId,1);
+            goodMapper.UpdateModifyStatus(goodsId,0);
+            return 0;
+        }else {
+            return 1;
+        }
+    }
+    @Override
+    public GoodReturn getEditingGoodsInfo(int goodsId){
+        Good good = goodMapper.SearchByGoodsId(goodsId);
+        GoodReturn goodReturn = new GoodReturn();
+        if(good.getStatus() == 0){
+            goodReturn.setGoodsPrice(good.getGoodsPrice());
+            goodReturn.setGoodsStock(good.getGoodsStock());
+            goodReturn.setGoodsId(good.getGoodsId());
+            goodReturn.setGoodsname(good.getGoodsname());
+            goodReturn.setIntroduction(good.getIntroduction());
+            goodReturn.setShopname(good.getShopname());
+            goodReturn.setStatus(good.getStatus());
+            goodReturn.setRegisterStatus(good.getRegisterStatus());
+            goodReturn.setModifyStatus(good.getModifyStatus());
+            goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+            List<String> piclist = new ArrayList<>();
+            List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
+            System.out.println(picList);
+            for(pic pics : picList){
+                byte[] imageData = pics.getPic();
+                String base64Image = Base64.getEncoder().encodeToString(imageData);
+                piclist.add(base64Image);
+            }
+            goodReturn.setGoodsAvatar(piclist);
+        }else if(good.getStatus() == 2){
+            good = goodMapper.StatusSearch(-goodsId);
+            goodReturn.setGoodsPrice(good.getGoodsPrice());
+            goodReturn.setGoodsStock(good.getGoodsStock());
+            goodReturn.setGoodsId(good.getGoodsId());
+            goodReturn.setGoodsname(good.getGoodsname());
+            goodReturn.setIntroduction(good.getIntroduction());
+            goodReturn.setShopname(good.getShopname());
+            goodReturn.setStatus(good.getStatus());
+            goodReturn.setRegisterStatus(good.getRegisterStatus());
+            goodReturn.setModifyStatus(good.getModifyStatus());
+            goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+            List<String> piclist = new ArrayList<>();
+            for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
+                byte[] imageData = pics.getPic();
+                String base64Image = Base64.getEncoder().encodeToString(imageData);
+                piclist.add(base64Image);
+            }
+            goodReturn.setGoodsAvatar(piclist);
+        }
+        return goodReturn;
+    }
+
+    //在数据表favorite插入一次收藏记录。相应的在goods表对favorite num字段加一
+    @Override
+    public JsonResult addToFavorites(String username, int goodsId){
+        JsonResult result = new JsonResult<>(YES);
+        goodMapper.AddToFavorite(username, goodsId);
+        return result;
+    }
+    //在数据表favorite删除相应的收藏记录。相应的在goods表对favorite num字段减一
+    @Override
+    public JsonResult Unfavorite(String username, int goodsId){
+        JsonResult result = new JsonResult<>(YES);
+        goodMapper.Unfavorite(username, goodsId);
+        return result;
+    }
+
+    @Override
+    public JsonResult isFavorite(String username, int goodsId){
+        JsonResult result = new JsonResult<>(YES);
+        Boolean isExist = goodMapper.isFavorite(username, goodsId);
+        if(!isExist)
+            result.setState(NO);
+        return result;
+    }
+    @Override
+    public GoodReturn getGoodsInfoByGoodsId(int goodsId){
+        Good good = goodMapper.SearchByGoodsId(goodsId);
+        GoodReturn goodReturn = new GoodReturn();
+        goodReturn.setGoodsPrice(good.getGoodsPrice());
+        goodReturn.setGoodsStock(good.getGoodsStock());
+        goodReturn.setGoodsId(good.getGoodsId());
+        goodReturn.setGoodsname(good.getGoodsname());
+        goodReturn.setIntroduction(good.getIntroduction());
+        goodReturn.setShopname(good.getShopname());
+        goodReturn.setStatus(good.getStatus());
+        goodReturn.setRegisterStatus(good.getRegisterStatus());
+        goodReturn.setModifyStatus(good.getModifyStatus());
+        goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+        goodReturn.setFavorites(good.getFavorites());
+        List<String> piclist = new ArrayList<>();
+        List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
+        System.out.println(picList);
+        for(pic pics : picList){
+            byte[] imageData = pics.getPic();
+            String base64Image = Base64.getEncoder().encodeToString(imageData);
+            piclist.add(base64Image);
+        }
+        goodReturn.setGoodsAvatar(piclist);
+        return goodReturn;
+    }
+
+    @Override
+    public JsonResult setCartGoodsNum(String username, int goodsId, int num){
+        JsonResult result =new JsonResult<>(YES);
+        int goodsStock = goodMapper.GetGoodsStockByGoodsId(goodsId);
+        if(num > goodsStock)    //异常1：添加到购物车的数量大于库存数量
+            result.setState(NO);
+        else{
+            if(goodMapper.IsGoodsInCart(username,goodsId))  //异常2：用户名下的购物车已经有相应的商品了
+                goodMapper.updateCartGoodsNum(username, goodsId, num);  //购物车已有，更新数据库
+            else
+                goodMapper.insertCartGoodsNum(username, goodsId, num);  //购物车没有，插入数据库
+        }
+        return result;
     }
 }

@@ -70,4 +70,13 @@ public interface ShopMapper {
     void TransferCapitalToIntemediaryAccount(BigDecimal capital);
 
     void TransferCapitalFromIntemediaryToProfitAccount(BigDecimal capital);
+
+    void UnregisterShopByShopname(String shopname);
+    void AvatarUpdate(String shopname,byte[] avatar);
+    void AvatarDelete(String shopname);
+    int GetShopIsAdmitted(String shopname);
+    void SetShopNormal(String shopname);
+    void SetShopDeleted(String shopname);
+    void SetShopRegistrationRejected(String shopname);
+    void SetShopdeletionRejected(String shopname);
 }
