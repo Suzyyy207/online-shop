@@ -363,4 +363,19 @@ public class GoodServiceImpl implements IGoodService {
         goodReturn.setGoodsAvatar(piclist);
         return goodReturn;
     }
+
+    @Override
+    public JsonResult setCartGoodsNum(String username, int goodsId, int num){
+        JsonResult result =new JsonResult<>(YES);
+        int goodsStock = goodMapper.GetGoodsStockByGoodsId(goodsId);
+        if(num > goodsStock)    //异常1：添加到购物车的数量大于库存数量
+            result.setState(NO);
+        else{
+            if(goodMapper.IsGoodsInCart(username,goodsId))  //异常2：用户名下的购物车已经有相应的商品了
+                goodMapper.updateCartGoodsNum(username, goodsId, num);  //购物车已有，更新数据库
+            else
+                goodMapper.insertCartGoodsNum(username, goodsId, num);  //购物车没有，插入数据库
+        }
+        return result;
+    }
 }

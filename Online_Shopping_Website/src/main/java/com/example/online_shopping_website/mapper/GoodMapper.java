@@ -32,4 +32,8 @@ public interface GoodMapper {
     void AddToFavorite(String username, int goodsId);
     void Unfavorite(String username, int goodsId);
     Boolean isFavorite(String username, int goodsId);
+    int GetGoodsStockByGoodsId(int goodsId);
+    Boolean IsGoodsInCart(String username, int goodsId);
+    void updateCartGoodsNum(String username, int goodsId, int num);
+    void insertCartGoodsNum(String username, int goodsId, int num);
 }
