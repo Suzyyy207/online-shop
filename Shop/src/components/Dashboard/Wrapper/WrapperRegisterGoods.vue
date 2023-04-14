@@ -104,7 +104,6 @@ export default {
     methods: {
         getRegisteringGoods() {
             console.log("getinfo")
-            this.registeringGoodsList = [this.goods];
             console.log(this.registeringGoodsList);
             var localStorage = window.localStorage;
             this.$axios.post("/getRegisteringGoodsByShopname", {
@@ -115,7 +114,6 @@ export default {
             })
         },
         getRegisteredGoods() {
-            this.registeredGoodsList = [this.goods];
             var localStorage = window.localStorage;
             this.$axios.post("/getRegisteredGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
@@ -124,7 +122,6 @@ export default {
             })
         },
         getRegistrationDeniedGoods() {
-            this.registrationDeniedGoodsList = [this.goods];
             var localStorage = window.localStorage;
             this.$axios.post("/getRegistrationDeniedGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
