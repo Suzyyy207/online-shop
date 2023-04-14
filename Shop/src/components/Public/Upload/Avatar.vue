@@ -1,21 +1,22 @@
 <!--用户/商铺头像组件-->
 <template>
-  <a @click="deleteAvatar"> 
-    <el-icon><Delete /></el-icon> 
-  </a>
+  <div class="upload">
+      <a class="element" @click="deleteAvatar"> 
+        <el-icon><Delete /></el-icon> 
+      </a>
 
-  <div>
-    <el-upload
-      class="avatar-uploader"
-      action="''"
-      :show-file-list="false"
-      :on-success="handleAvatarSuccess"
-      :before-upload="beforeAvatarUpload"
-    >
-      <img v-if="this.base64Data" :src="this.base64Data">
-      <el-icon v-else><Plus /></el-icon>
-    </el-upload>
+      <div class="element">
+        <el-upload
+          action="''"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+        >
+          <img class="img" v-if="this.base64Data" :src="this.base64Data">
+          <el-icon class="imgU" v-else><Plus /></el-icon>
+        </el-upload>
 
+      </div>
   </div>
 </template>
 
@@ -153,9 +154,25 @@ export default {
 </script>
 
 <style>
-.avatar-uploader{
-  display: flex;
-  margin: 0 auto;
+.upload{
+  display: grid;
+  grid-template-columns: 5% 90% 5%;
+  margin:20px;
 }
-
+.element{
+  margin:  auto;
+}
+.imgU{
+  width:100px;
+  height: 100px;
+  margin: auto;
+  display: flex;
+  border: 3px dashed gray; /* 3像素宽的黑色虚线边框 */
+  background-color: rgba(128, 128, 128, 0.2); /* 透明灰色背景 */
+}
+.img{
+  padding: 20px;
+  width:100%;
+  height:100%;
+}
 </style>

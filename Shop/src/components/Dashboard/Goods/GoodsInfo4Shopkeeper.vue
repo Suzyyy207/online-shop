@@ -25,7 +25,8 @@
                     </el-button>
                     <el-button class="btn" @click="cancelShowGoodsDetail">返回管理页</el-button>
                 </div>
-                
+                <p v-if="(goods.registerStatus==2 || goods.modifyStatus == 2)">申请被拒绝，请修改信息后重新提交</p>
+
                <GoodsRegister class="reg" :goods='goods'/>
                
             </div>

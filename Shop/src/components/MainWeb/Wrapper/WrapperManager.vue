@@ -67,7 +67,7 @@ export default {
                 goodsStock:20,
                 introduction:"intro",
                 goodsCategory: ['电脑数码', '家用电器'],
-                goodsAvatar: ""
+                goodsAvatar: []
             }
         }
     },
@@ -90,10 +90,11 @@ export default {
             })
         },
         getApprovingGoods() {
-            this.approvingGoodsList = [this.goods]
+            this.approvingGoodsList = []
             this.$axios.get('/getApprovingGoods')
             .then(res => {
                 this.approvingGoodsList = this.approvingGoodsList.concat(res.data.data);
+                console.log(this.approvingGoodsList)
             })
         },
         getProfitAccount() {

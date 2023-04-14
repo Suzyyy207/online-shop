@@ -1,6 +1,6 @@
 <!--商城中间账户余额显示+充值-->
 <template>
-    <p class="charge">中间账户余额:{{ this.intermediaryAccount }}</p>
+    <p class="charge">中间账户余额: {{ this.intermediaryAccount }}</p>
     <div class="chargeBtn">
         <el-input class="input" v-model='credit'></el-input>
         <el-button class="btn" @click="recharge">充值</el-button>
@@ -48,6 +48,7 @@ export default{
                         this.$message.success("充值金额：" + this.credit + "（系统默认保留两位小数）！");
                         this.intermediaryAccount = res.data.data;
                         this.credit = 0;
+                        console.log(res.data.data);
                     }
                     else {
                         console.log("failure");

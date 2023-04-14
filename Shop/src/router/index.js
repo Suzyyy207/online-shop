@@ -74,11 +74,7 @@ const router = createRouter({
       name: 'Shop4User',
       component: () => import('../views/ShopShow/UserSS.vue')
     },
-    {
-      path: '/Shop4Shopkeeper/:shopname',
-      name: 'Shop4Shopkeeper',
-      component: () => import('../views/ShopShow/ShopkeeperSS.vue')
-    },
+    
     //Good因为后端没写好 所以没有加参数！！之后需要补充
     {
       path: '/GoodsDetail/:goodsId',

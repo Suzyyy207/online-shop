@@ -2,18 +2,19 @@
 <template>
     <div class="wrapGD">
         <div class="image">
-            <img src="@/assets/logo.png">
-            <el-pagination class="pages" background layout="prev, pager, next" :total="50" size="small"/>
+            <!--img src="@/assets/logo.png"-->
+            <!--el-pagination class="pages" background layout="prev, pager, next" :total="50" size="small"/>
             <div v-for="avatar in goods.goodsAvatar">
                 <img :src="'data:image/jpeg;base64,' + avatar">
-            </div>
+            </div-->
+            <ShowPics :goodsAvatar="goods.goodsAvatar" />
         </div>
         
         <div class="infoGD">
             <p>商品类型：{{ goods.goodsname }}</p>
             <p>商品类别：{{ goods.goodsCategory }}</p>
             <p>商品简介：{{ goods.introduction }}</p>
-            <p>商品库存：{{ goods.goodsStocks }}</p>
+            <p>商品库存：{{ goods.goodsStock }}</p>
             <p>商品价格：{{ goods.goodsPrice }}</p>
         </div>        
         
@@ -22,12 +23,16 @@
  
 <script>
 import "../../../constant";
+import ShowPics from "../../Public/Upload/ShowPics.vue"
 export default {
     props: {
         goods: {
             type: Object,
             required: true
         }
+    },
+    components:{
+        ShowPics
     }
 }
 </script>

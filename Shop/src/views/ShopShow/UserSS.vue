@@ -1,5 +1,5 @@
 <script setup>
-import Nav from '../../components/Public/Nav/UserNav.vue'
+import Nav from '../../components/Public/Nav/Nav.vue'
 import ShopDetail from '../../components/ShopGoodsPage/ShopDetail.vue'
 import { RouterLink, RouterView } from 'vue-router'
 </script>

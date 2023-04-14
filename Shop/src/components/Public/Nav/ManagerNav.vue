@@ -3,9 +3,7 @@
         <p>Welcome!</p>
         <nav>
             <!--RouterLink to="#">首页</RouterLink-->
-            <RouterLink to="#">购物车</RouterLink>
-            <RouterLink to="#">收藏夹</RouterLink>
-            <RouterLink to="/ManagerWeb">店铺管理</RouterLink>
+            <RouterLink to="/ManagerWeb">管理</RouterLink>
             <RouterLink to="/">退出登录</RouterLink>
         </nav>
     </header>
