@@ -155,27 +155,39 @@ public class UserServiceImpl implements IUserService {
     public JsonResult recharge(String username, BigDecimal credit, int accountType){
         JsonResult result = new JsonResult<>(YES);
         int userType = userMapper.GetUserTypeByUsername(username);
+        BigDecimal balance = new BigDecimal(0);
         //根据userType和accountType来判断，直接在mapper层加上。
         switch (userType){
             case admin:
-                if(accountType == profitAccount)
+                if(accountType == profitAccount) {
                     userMapper.RechargeProfitAccountByUsername(username, credit);
-                else if (accountType == intermediaryAccount)
+                    balance = userMapper.GetProfitAccountByUsername(username);
+                }
+                else if (accountType == intermediaryAccount) {
                     userMapper.RechargeIntermediaryAccountByUsername(username, credit);
+                    balance = userMapper.GetIntermediaryAccountByUsername(username);
+                }
                 break;
             case merchant:
-                if(accountType == privateAccount)
+                if(accountType == privateAccount) {
                     userMapper.RechargePrivateAccountByUsername(username, credit);
-                else if (accountType == shopAccount)
+                    balance = userMapper.GetPrivateAccountByUsername(username);
+                }
+                else if (accountType == shopAccount) {
                     userMapper.RechargeShopAccountByUsername(username, credit);
+                    balance = userMapper.GetShopAccountByUsername(username);
+                }
                 break;
-            case buyer:
-                userMapper.RechargePrivateAccountByUsername(username,credit);
+            case buyer: {
+                userMapper.RechargePrivateAccountByUsername(username, credit);
+                balance = userMapper.GetPrivateAccountByUsername(username);
+            }
                 break;
             default:
                 result.setState(NO);
                 System.out.println("账户类型异常");
         }
+        result.setData(balance);
         return result;
     }
 
