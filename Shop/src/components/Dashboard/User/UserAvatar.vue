@@ -12,7 +12,7 @@
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload"
     >
-      <img v-if="this.base64Data" :src="this.base64Data">
+      <img v-if="this.base64Data" :src="'data:image/jpeg;base64,' + this.base64Data">
       <el-icon v-else><Plus /></el-icon>
     </el-upload>
 
@@ -73,7 +73,7 @@ export default {
         if(res.data.state==window.SUCCESS) {
           // 已有头像
           console.log("success");
-          this.base64Data = "data:image/jpeg;base64," + res.data.data;
+          this.base64Data =  res.data.data;
         }
         else {
           console.log("failure");

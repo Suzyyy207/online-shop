@@ -28,7 +28,7 @@ import IntermediaryAccount from '../../../components/Dashboard/Manager/Intermedi
                 <h1>全部申请</h1>
                 <div class="goods">
                     <div class="good" v-for="goods in approvingGoodsList" :key="goods.goodsId">
-                        <GoodsShow4Manager :goods="goods"/>
+                        <GoodsShow4Manager :goods="goods" v-on:reload="getApprovingGoods"/>
                     </div>
                 </div>
             </el-tab-pane>

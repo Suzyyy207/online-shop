@@ -99,7 +99,6 @@ export default {
     },
     methods: {
         getEditingGoods() {
-            this.editingGoodsList = [this.goods];
             var localStorage = window.localStorage;
             this.$axios.post("/getEditingGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
@@ -108,7 +107,6 @@ export default {
             })
         },
         getEditedGoods() {
-            this.editedGoodsList = [this.goods];
             var localStorage = window.localStorage;
             this.$axios.post("/getEditedGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
@@ -117,7 +115,6 @@ export default {
             })
         },
         getEditDeniedGoods() {
-            this.editDeniedGoodsList = [this.goods];
             var localStorage = window.localStorage;
             this.$axios.post("/getEditDeniedGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")

@@ -165,12 +165,14 @@ export default {
     },
     methods:{
         getGoodsInfo() {
-            if(this.goods!="") {
+            console.log("getGoodsInfo")
+            console.log(Object.keys(this.goods).length)
+            if(Object.keys(this.goods).length != 0) {
                 this.isModified = true;
-                console.log("商品信息修改");
                 this.$axios.post('/getEditingGoodsInfo',{
                     goodsId: this.goods.goodsId
                 }).then(res => {
+                    console.log(res.data)
                     if(res.data.state == window.SUCCESS) {
                         // 显示的是提交但未审批的信息
                         const goods = res.data.data;
@@ -182,6 +184,7 @@ export default {
                         this.addForm.introduction = goods.introduction;
                         // TODO：fileList类型转换
                         this.addForm.fileList = goods.goodsAvatar;
+                        console.log(this.addForm.fileList)
                     }
                     else {
                         // 显示当前商品的信息

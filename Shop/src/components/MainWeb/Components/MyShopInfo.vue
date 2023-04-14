@@ -2,7 +2,7 @@
 <template>
   <div class="wrap">
     <div :shop="shop" class="shop">
-        <img v-if="shop.avatar" :src="'data:image/jpeg;base64,' + shop.avatar">
+        <img v-if="shop.avatar" :src="'data:image/jpeg;base64,' + shop.avatar" class="logo">
         <img v-else class="logo" src="@/assets/shop.png"/>
 
         <div class="info1">
@@ -184,8 +184,8 @@ export default {
 .shop .logo{
     grid-row: 1/3;
     grid-column: 1/4;
-    width: 90%;
-    height: 90%;
+    width: 70%;
+    height: 70%;
     background-color: #303133;
 }
 

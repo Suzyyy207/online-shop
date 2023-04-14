@@ -97,17 +97,14 @@ export default {
             var localStorage = window.localStorage;
             this.$axios.post("/getShopAvatarByShopname", {
                 shopname: localStorage.getItem("shopname")
-            })
-                .then(res => {
+            }).then(res => {
                 if (res.data.state == window.SUCCESS) {
-                    console.log("有头像");
-                    this.$message.success("收到反馈（根据是否显示图片判断文件传输是否成功）");
-                    this.shop.avatar = "data:image/jpeg;base64," + res.data.data;
+                    this.shop.avatar = res.data.data;
                 }
-                else {
-                    console.log("没有头像");
-                }
-            });
+            }).catch((err) => {
+                console.log(err);
+                this.$message.error("图片获取失败！");
+              });
         },
         // 如果用户需要修改注册信息重新提交注册，也需要导入ShopRegister页面   
         toModify() {
