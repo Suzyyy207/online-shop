@@ -78,7 +78,7 @@ export default {
         if(res.data.state == window.SUCCESS){
           this.$message.success("已同意店铺申请！");
           setTimeout(() => {
-            this.$router.push({name:'ManagerWebBlank'});
+            this.$router.go(0);
           }, 1000);
         }
         else {

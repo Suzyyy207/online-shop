@@ -23,6 +23,7 @@ export default{
         getIntermediaryAccount() {
             this.$axios.get('/getIntermediaryAccount')
             .then(res => {
+                console.log(res.data.data)
                 this.intermediaryAccount = res.data.data;
             })
         },

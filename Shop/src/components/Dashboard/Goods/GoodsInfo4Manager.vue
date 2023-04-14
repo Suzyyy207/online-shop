@@ -38,6 +38,9 @@ export default {
             }).then(res => {
                     if(res.data.state == window.SUCCESS){
                        this.$message.success(res.data.message);
+                        setTimeout(() => {
+                            this.$router.go(0);
+                        }, 1000);
                     }
                     else {
                         this.$message.error("操作失败，请重试");

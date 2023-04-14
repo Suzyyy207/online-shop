@@ -311,8 +311,7 @@ export default {
                         this.setGoodsAvatar(res.data.data);
                     }
                     else {
-                        console.log(res.data.message)
-                        this.$message.error("提交失败，请重试");
+                        this.$message.error(res.data.message);
                     }
                 }).catch(err => {
                     console.log(err);
@@ -336,9 +335,7 @@ export default {
                 console.log(res.data);
                 this.$message.success("提交成功！");
                 setTimeout(() => {
-                    this.$forceUpdate();
-                    this.resetForm();
-                    this.addForm.fileList = []
+                    this.$router.go(0)
                 }, 2000);
             })
             .catch((err) => {
