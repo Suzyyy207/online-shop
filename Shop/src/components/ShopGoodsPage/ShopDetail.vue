@@ -10,7 +10,7 @@ import GoodsShow from './GoodsShow.vue'
                 <img v-else :src="'data:image/jpeg;base64,'+shop.avatar">
             </div>
             <div class="info">
-                <p> 店铺名: {{ this.shop.shopname }} </p>
+                <p> 店铺名: {{ shopname }} </p>
                 <p> 类别：{{ this.shop.goodstype }}</p>
                 <p> 店铺简介: {{ this.shop.introduction }} </p> 
                 <!--评价预留-->
@@ -67,8 +67,9 @@ export default {
     },
     methods: {
         getValidGoods() {
+            console.log(this.shopname)
             this.$axios.post("/getValidGoodsByShopname", {
-                shopname: this.shop.shopname
+                shopname: this.shopname
             }).then(res => {
                 console.log("getValidGoods")
                 console.log(res.data)
@@ -77,7 +78,6 @@ export default {
         },
         getShopInfo() {
             console.log("getShopInfo")
-            this.shop.goodslist = [this.goods, this.goods]
             this.$axios.post("/getShopInfoByShopname", {
                 shopname: this.shopname
             })
@@ -89,6 +89,7 @@ export default {
                     this.shop.avatar = shop.avatar;
                     this.shop.introduction = shop.introduction;
                     this.shop.goodstype = shop.goodstype;
+                    console.log(shop)
                     this.getValidGoods();
                 }
                 else {
