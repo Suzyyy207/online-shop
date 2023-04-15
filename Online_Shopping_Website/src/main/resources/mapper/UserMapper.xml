@@ -130,7 +130,7 @@
         UPDATE users SET avatar = null WHERE username = #{username}
     </update>
 
-    <select id="GetUidByShopname">
+    <select id="GetUidByShopname" resultType="int">
         SELECT uid FROM shops WHERE shopname = #{shopname};
     </select>
 
@@ -138,6 +138,19 @@
         UPDATE users SET privateAccount = privateAccount + shopAccount WHERE uid =#{uid};
         UPDATE users SET ShopAccount = 0 WHERE uid =#{uid};
     </update>
+    
+    <select id="GetShopAccountByUid" resultType="java.math.BigDecimal">
+        SELECT shopAccount FROM users WHERE uid = #{uid};
+    </select>
+
+    <update id="DeleteShopAccountByUid">
+        UPDATE users SET ShopAccount = 0 WHERE uid = #{uid};
+    </update>
+    
+    <update id="TransferShopAccountBalanceToPrivateAccount">
+        UPDATE users SET privateAccount = privateAccount + #{ShopAccountBalance} WHERE uid = #{uid}
+    </update>
+
 </mapper>
 
 

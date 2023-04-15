@@ -78,7 +78,7 @@ public class ShopServiceImpl implements IShopService {
     @Override
     public List<Shop> GetAllNotAdmittedShop(){
         List<Shop> ShopList_a = shopMapper.ShowAllNotAdmittedShop();
-        List<Shop> ShopList_b = shopMapper.GetAllDeletedShop();
+        List<Shop> ShopList_b = shopMapper.GetAllDeletingShop();
         List<Shop> shoplist = new ArrayList<>();
         shoplist.addAll(ShopList_a);
         shoplist.addAll(ShopList_b);
@@ -173,11 +173,12 @@ public class ShopServiceImpl implements IShopService {
         switch (stateOfAdmit){
             case registrationUnderReview:
                 if(approveType == adminApproveRegistration) {
-                    shopMapper.SetShopNormal(shopname);
                     //管理员同意申请时，把注册资金从中间账户转账到商城利润账号
                     BigDecimal capital = shopMapper.GetCapitalByShopname(shopname);
                     shopMapper.TransferCapitalFromIntemediary(capital);
                     shopMapper.TransferCapitalToProfitAccount(capital);
+
+                    shopMapper.SetShopNormal(shopname);
                 }
                 else{
                     result.setState(NO);
@@ -186,9 +187,12 @@ public class ShopServiceImpl implements IShopService {
                 break;
             case deletionUnderReview:
                 if(approveType == adminApproveDeletion) {
-                    shopMapper.SetShopDeleted(shopname);
                     int uid = userMapper.GetUidByShopname(shopname);        //删除成功，商店账户自动注销，资金转移至商户个人账户
-                    userMapper.DeleteShopAccountANDTransferBalanceToPrivateAccount(uid);
+                    BigDecimal ShopAccountBalance = userMapper.GetShopAccountByUid(uid);
+                    userMapper.DeleteShopAccountByUid(uid);
+                    userMapper.TransferShopAccountBalanceToPrivateAccount(uid, ShopAccountBalance);
+                    //userMapper.DeleteShopAccountANDTransferBalanceToPrivateAccount(uid);
+                    shopMapper.SetShopDeleted(shopname);
                 }
                 else{
                     result.setState(NO);
