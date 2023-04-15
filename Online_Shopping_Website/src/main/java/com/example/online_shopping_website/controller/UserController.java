@@ -138,6 +138,14 @@ public class UserController {
         return result;
     }
 
+    @PostMapping("/api/deleteUserAvatar")
+    public JsonResult<Integer> deleteUserAvatar(@RequestBody User user){
+        String username = user.getUsername();
+        JsonResult<Integer> Result = new JsonResult<>(YES);
+        userService.deleteUserAvatar(username);
+        return Result;
+    }
+
     @RequestMapping("/api/getShopAccount") //根据用户名获取，而非商店名
     public JsonResult getShopAccount(@RequestBody Map<String,Object> map){
         String username = (String)map.get("username");
@@ -171,28 +179,11 @@ public class UserController {
     public JsonResult getUserTransactions(@RequestBody Map<String,Object> map){
         String username = (String)map.get("username");
         JsonResult result = new JsonResult<>();
-
         result = userService.getUserTransactions(username);
         return result;
     }
 
-    @RequestMapping("/api/addToCart")
-    public JsonResult addToCart(@RequestBody Map<String,Object> map){
-        String username = (String)map.get("username");
-        int goodsId = (int)map.get("goodsId");
-        int num = (int)map.get("num");
 
-        JsonResult result = new JsonResult<>(YES);
-        result = userService.addToCart(username, goodsId, num);
-        return result;
-    }
-    @PostMapping("/api/deleteUserAvatar")
-    public JsonResult<Integer> deleteUserAvatar(@RequestBody User user){
-        String username = user.getUsername();
-        JsonResult<Integer> Result = new JsonResult<>(YES);
-        userService.deleteUserAvatar(username);
-        return Result;
-    }
 }
 
 

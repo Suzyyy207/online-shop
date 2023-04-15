@@ -1,7 +1,6 @@
 package com.example.online_shopping_website.mapper;
 
 import com.example.online_shopping_website.entity.User;
-import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -113,16 +112,12 @@ public interface UserMapper {
 
     int RechargeIntermediaryAccountByUsername(String username, BigDecimal credit);
 
-    Integer getGoodsNumberInCart(String username, int goodsId);
-
-    void InsertNewGoodsIntoCart(String username, int goodsId, int num);
-
-    void UpdateGoodsNumInCart(String username, int goodsId,  int num);
-
-    void DeleteZeroGoodsInCart(String username);
     BigDecimal GetProfitAccount();
     BigDecimal GetIntermediaryAccount();
     void AvatarDelete(String username);
+
+    int GetUidByShopname(String shopname);
+    String DeleteShopAccountANDTransferBalanceToPrivateAccount(int uid);
 
 }
 
