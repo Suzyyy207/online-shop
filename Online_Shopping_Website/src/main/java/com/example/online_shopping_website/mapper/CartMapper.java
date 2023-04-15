@@ -22,4 +22,8 @@ public interface CartMapper {
     void UpdateGoodsNumInCart(String username, int goodsId,  int num);
 
     void DeleteZeroGoodsInCart(String username);
+
+    void DeleteGoodsInCart(String username, int goodsId);
+
+    List<String> getAllShopnameInCart(String username);
 }

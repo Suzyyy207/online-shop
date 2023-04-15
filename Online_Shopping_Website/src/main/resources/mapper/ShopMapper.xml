@@ -62,7 +62,7 @@
     </insert>
     
     <update id="TransferCapitalToIntemediaryAccount">
-        update users set intermediaryAccount = #{capital} WHERE usertype = 0
+        update users set intermediaryAccount = intermediaryAccount + #{capital} WHERE usertype = 0;
     </update>
 
     <update id="TransferCapitalFromIntemediaryToProfitAccount">
@@ -108,7 +108,11 @@
         DELETE FROM shops WHERE shopname = #{shopname};
     </delete>
 
-    <select id="GetShopAdmittedByShopname">
+    <select id="GetShopAdmittedByShopname" resultType="int">
         SELECT is_admitted FROM shops WHERE shopname = #{shopname};
+    </select>
+
+    <select id="GetAllDeletedShop" resultMap="ShopMap">
+        SELECT * FROM shops WHERE is_admitted = 5;
     </select>
 </mapper>

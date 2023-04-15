@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -75,8 +76,12 @@ public class ShopServiceImpl implements IShopService {
     }
     @Override
     public List<Shop> GetAllNotAdmittedShop(){
-        List<Shop> ShopList = shopMapper.ShowAllNotAdmittedShop();
-        return ShopList;
+        List<Shop> ShopList_a = shopMapper.ShowAllNotAdmittedShop();
+        List<Shop> ShopList_b = shopMapper.GetAllDeletedShop();
+        List<Shop> shoplist = new ArrayList<>();
+        shoplist.addAll(ShopList_a);
+        shoplist.addAll(ShopList_b);
+        return shoplist;
     }
     @Override
     public Shop GetShopInformationFromUser(String username){
