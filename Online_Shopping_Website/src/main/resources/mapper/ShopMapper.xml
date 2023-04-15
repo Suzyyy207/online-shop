@@ -115,4 +115,8 @@
     <select id="GetAllDeletedShop" resultMap="ShopMap">
         SELECT * FROM shops WHERE is_admitted = 5;
     </select>
+
+    <select id="GetCapitalByShopname" resultType="java.math.BigDecimal">
+        SELECT capital FROM shops WHERE shopname = #{shopname};
+    </select>
 </mapper>
