@@ -8,7 +8,9 @@ import java.util.List;
 public class GoodSortByShop {
     private String shopname;
 
-    private List<GoodReturn> goodReturnList;
+    private List<GoodReturn> goodReturnList;        //同一商品下的商品
+
+    private List<Integer> GoodNums;                 //与上一字段对应的商品数量
 
     public String getShopname() {
         return shopname;
@@ -26,11 +28,25 @@ public class GoodSortByShop {
         this.goodReturnList = goodReturnList;
     }
 
+    public List<Integer> getGoodNums() {
+        return GoodNums;
+    }
+
+    public void setGoodNums(List<Integer> goodNums) {
+        GoodNums = goodNums;
+    }
+
     public GoodSortByShop() {
     }
 
     public GoodSortByShop(String shopname, List<GoodReturn> goodReturnList) {
         this.shopname = shopname;
         this.goodReturnList = goodReturnList;
+    }
+
+    public GoodSortByShop(String shopname, List<GoodReturn> goodReturnList, List<Integer> goodNums) {
+        this.shopname = shopname;
+        this.goodReturnList = goodReturnList;
+        GoodNums = goodNums;
     }
 }
