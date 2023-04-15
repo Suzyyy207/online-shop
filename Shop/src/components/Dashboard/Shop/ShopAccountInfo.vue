@@ -1,8 +1,8 @@
 <!--商店余额显示+充值-->
 <template>
-    <p>商店账户余额:{{ this.shopAccount }}</p>
+    <p class="text">商店账户余额:{{ this.shopAccount }}</p>
     <div class="charge">
-        <el-input v-model='credit'></el-input>
+        <el-input v-model='credit' class="chargeInput"></el-input>
         <el-button @click="recharge">充值</el-button>
     </div>
 </template>
@@ -67,10 +67,12 @@ export default{
 </script>
 
 <style scoped>
-
-.cont{
-    width: 90%;
-    margin:10px auto 50px;
+.text{
+    margin:10px;
 }
+.chargeInput{
+    width:40%;
+    margin:10px
+}  
 
 </style>
