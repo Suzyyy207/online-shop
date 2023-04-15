@@ -119,9 +119,13 @@ export default {
       this.$axios.post('/shopUnregister',{
         shopname: localStorage.getItem("shopname")
       }).then(res=>{
+        console.log("shopUregister")
         console.log(res.data)
         if(res.data.state==window.SUCCESS){
           this.$message.success(res.data.message);
+          setTimeout(() => {
+            this.$router.go(0);
+          }, 1000);
         } else {
           this.$message.error(res.data.message);
         }
