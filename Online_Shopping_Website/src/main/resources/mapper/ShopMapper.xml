@@ -95,4 +95,16 @@
     <update id="SetShopdeletionRejected">
         UPDATE shops SET is_admitted = 4 WHERE shopname = #{shopname};
     </update>
+
+    <update id="UnregisterShopByShopname">
+        UPDATE shops SET is_admitted = 3 WHERE shopname = #{shopname};
+    </update>
+
+    <update id="CancelShopUnregistyerByShopname">
+        UPDATE shops SET is_admitted = 1 WHERE shopname = #{shopname}
+    </update>
+    
+    <delete id="ClearShopInfoByShopname">
+        DELETE FROM shops WHERE shopname = #{shopname};
+    </delete>
 </mapper>

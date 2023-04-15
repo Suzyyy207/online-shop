@@ -1,7 +1,7 @@
 package com.example.online_shopping_website.service.impl;
 
+import com.example.online_shopping_website.entity.Good;
 import com.example.online_shopping_website.entity.Transaction;
-import com.example.online_shopping_website.entity.constant.AccountType;
 import com.example.online_shopping_website.mapper.TransactionMapper;
 import com.example.online_shopping_website.mapper.UserMapper;
 import com.example.online_shopping_website.entity.User;
@@ -154,40 +154,39 @@ public class UserServiceImpl implements IUserService {
     public JsonResult recharge(String username, BigDecimal credit, int accountType){
         JsonResult result = new JsonResult<>(YES);
         int userType = userMapper.GetUserTypeByUsername(username);
-        //根据userType和accountType来判断，取出原来的账户余额，在业务层相加，然后放回
+        BigDecimal balance = new BigDecimal(0);
+        //根据userType和accountType来判断，直接在mapper层加上。
         switch (userType){
             case admin:
-                if(accountType == profitAccount){
-                    BigDecimal originalProfitAccount = userMapper.GetProfitAccountByUsername(username);
-                    BigDecimal newProfitAccount = originalProfitAccount.add(credit);
-                    userMapper.RechargeProfitAccountByUsername(username,newProfitAccount);
-                } else if (accountType == intermediaryAccount) {
-                    BigDecimal originalIntermediaryAccount = userMapper.GetIntermediaryAccountByUsername(username);
-                    BigDecimal newIntermediaryAccount = originalIntermediaryAccount.add(credit);
-                    userMapper.RechargeIntermediaryAccountByUsername(username,newIntermediaryAccount);
+                if(accountType == profitAccount) {
+                    userMapper.RechargeProfitAccountByUsername(username, credit);
+                    balance = userMapper.GetProfitAccountByUsername(username);
+                }
+                else if (accountType == intermediaryAccount) {
+                    userMapper.RechargeIntermediaryAccountByUsername(username, credit);
+                    balance = userMapper.GetIntermediaryAccountByUsername(username);
                 }
                 break;
             case merchant:
-                if(accountType == privateAccount){
-                    BigDecimal originalPrivateAccount = userMapper.GetPrivateAccountByUsername(username);
-                    BigDecimal newPriavteAccount = originalPrivateAccount.add(credit);
-                    userMapper.RechargePrivateAccountByUsername(username,newPriavteAccount);
-                } else if (accountType == shopAccount) {
-                    BigDecimal originalShopAccount = userMapper.GetShopAccountByUsername(username);
-                    BigDecimal newShopAccount = originalShopAccount.add(credit);
-                    userMapper.RechargeShopAccountByUsername(username,newShopAccount);
+                if(accountType == privateAccount) {
+                    userMapper.RechargePrivateAccountByUsername(username, credit);
+                    balance = userMapper.GetPrivateAccountByUsername(username);
+                }
+                else if (accountType == shopAccount) {
+                    userMapper.RechargeShopAccountByUsername(username, credit);
+                    balance = userMapper.GetShopAccountByUsername(username);
                 }
                 break;
-            case buyer:
-                BigDecimal originalPrivateAccount = userMapper.GetPrivateAccountByUsername(username);
-                BigDecimal newPriavteAccount = originalPrivateAccount.add(credit);
-                userMapper.RechargePrivateAccountByUsername(username,newPriavteAccount);
+            case buyer: {
+                userMapper.RechargePrivateAccountByUsername(username, credit);
+                balance = userMapper.GetPrivateAccountByUsername(username);
+            }
                 break;
             default:
                 result.setState(NO);
                 System.out.println("账户类型异常");
         }
-
+        result.setData(balance);
         return result;
     }
 
@@ -200,29 +199,34 @@ public class UserServiceImpl implements IUserService {
         return result;
     }
 
+
+
     @Override
-    public JsonResult addToCart(String username, int goodsId, int addNum){
-        JsonResult result = new JsonResult<>(YES);
+    public JsonResult getProfitAccount(){
+        BigDecimal profitAccount = userMapper.GetProfitAccount();
+        JsonResult result = new JsonResult<>(YES,profitAccount);
+        return  result;
+    }
 
-        int originalNum;
-        Integer oNum = userMapper.getGoodsNumberInCart(username, goodsId);
-        if(oNum == null)
-            originalNum = 0;
-        else
-            originalNum = oNum;
-        //取出购物车中该商品的数量。判断
-        if(originalNum == 0 && addNum > 0){   //购物车中没有相应商品，插入
-            int newNum = addNum;
-            userMapper.InsertNewGoodsIntoCart(username, goodsId, newNum);
-        }else if ( addNum > 0 || (addNum < 0 && (originalNum + addNum) >= 0)){   //增加购物车中商品数量，或者减少的数量小于等于购物车中已有的数量
-            int newNum = originalNum + addNum;
-            userMapper.UpdateGoodsNumInCart(username, goodsId, newNum);
-        }else if( (originalNum + addNum) < 0 || addNum == 0){  //商品减少的数量大于购物车中原有的数量
-            result.setState(NO);
-        }
-        //移除购物车中数量为0的商品
-        userMapper.DeleteZeroGoodsInCart(username);
-
+    @Override
+    public JsonResult getIntermediaryAccount(){
+        BigDecimal intermediaryAccount = userMapper.GetIntermediaryAccount();
+        JsonResult result = new JsonResult<>(YES,intermediaryAccount);
         return result;
     }
+
+    @Override
+    public JsonResult getShopAccount(String username){
+        BigDecimal shopAccount = userMapper.GetShopAccountByUsername(username);
+        JsonResult result = new JsonResult<>(YES, shopAccount);
+        return result;
+    }
+    @Override
+    public void deleteUserAvatar(String username){
+        userMapper.AvatarDelete(username);
+    }
+
+
+
+
 }
