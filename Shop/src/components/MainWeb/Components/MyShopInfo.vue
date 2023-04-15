@@ -42,7 +42,7 @@
           <!-- 撤销注册申请：注册申请中 -->
           <el-form-item v-if="shop.is_admitted==0||shop.is_admitted==2" class="re_btn">
               <el-button type="submit" @click="dialogTableVisible = true">撤销注册申请</el-button>
-              <el-dialog v-model="dialogTableVisible" title="撤销注册申请确认">
+              <el-dialog v-model="dialogTableVisible" title="撤销注册申请确认" class="deleteConfirm">
                 <p>你确定要撤销注册店铺申请吗？</p>
                 <div class="deleteConfirmBtn">
                   <el-button class="delete" type="primary" @click="cancelRegister">确认</el-button>
@@ -72,7 +72,7 @@
             <!-- 撤销删除申请btn：删除申请审核中/拒绝删除申请 -->
             <el-form-item v-if="shop.is_admitted==3||shop.is_admitted==4" class="re_btn">
               <el-button type="submit" @click="dialogTableVisible = true">撤销删除申请</el-button>
-              <el-dialog v-model="dialogTableVisible" title="撤销删除申请确认">
+              <el-dialog v-model="dialogTableVisible" title="撤销删除申请确认" class="deleteConfirm">
                 <p>你确定要撤销删除店铺申请吗？</p>
                 <div class="deleteConfirmBtn">
                   <el-button class="delete" type="primary" @click="cancelRegister">确认</el-button>

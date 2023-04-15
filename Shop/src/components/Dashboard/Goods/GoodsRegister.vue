@@ -7,24 +7,14 @@
         <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="100px" label-position="top">
             <!-- TODO: icon添加 -->
             <el-row>
-                <el-col :span="12" >
+                <el-col :span="24" >
                     <el-form-item class="elItem" label="商品名称" prop="goodsname"> 
                         <el-input 
                             v-model="addForm.goodsname"
                         ></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <!--ykx添加的级联选择器，没有添加数据-->
-                    <el-form-item label="商品种类">
-                            <el-cascader
-                            v-model="value"
-                            :options="options"
-                            :props="props"
-                            @change="handleChange"
-                            />
-                    </el-form-item>
-                </el-col>
+            
             </el-row>
 
             <el-row>
