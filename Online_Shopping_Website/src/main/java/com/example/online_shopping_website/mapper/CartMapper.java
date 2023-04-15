@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+
 public interface CartMapper {
     Boolean IsGoodsInCart(String username, int goodsId);
 

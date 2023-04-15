@@ -1,6 +1,7 @@
 package com.example.online_shopping_website.service.impl;
 
 import com.example.online_shopping_website.entity.*;
+import com.example.online_shopping_website.mapper.CartMapper;
 import com.example.online_shopping_website.mapper.GoodMapper;
 import com.example.online_shopping_website.mapper.ShopMapper;
 import com.example.online_shopping_website.mapper.PicMapper;
@@ -27,6 +28,9 @@ public class GoodServiceImpl implements IGoodService {
     private ShopMapper shopMapper;
     @Autowired
     private PicMapper picMapper;
+
+    @Autowired
+    private CartMapper cartMapper;
     @Override
     public Good goodsRegister(String introduction,String goodsname,float goodsPrice,int goodsStock,String goodsCategory,String shopname){
         Good good = goodMapper.SearchByGoodname(goodsname);
@@ -399,10 +403,10 @@ public class GoodServiceImpl implements IGoodService {
         if(num > goodsStock)    //异常1：添加到购物车的数量大于库存数量
             result.setState(NO);
         else{
-            if(goodMapper.IsGoodsInCart(username,goodsId))  //异常2：用户名下的购物车已经有相应的商品了
-                goodMapper.updateCartGoodsNum(username, goodsId, num);  //购物车已有，更新数据库
+            if(cartMapper.IsGoodsInCart(username,goodsId))  //异常2：用户名下的购物车已经有相应的商品了
+                cartMapper.updateCartGoodsNum(username, goodsId, num);  //购物车已有，更新数据库
             else
-                goodMapper.insertCartGoodsNum(username, goodsId, num);  //购物车没有，插入数据库
+                cartMapper.insertCartGoodsNum(username, goodsId, num);  //购物车没有，插入数据库
         }
         return result;
     }
