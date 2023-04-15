@@ -157,7 +157,12 @@ public class CartServiceImpl implements ICartService {
 
         return result;
     }
-
+    @Override
+    public JsonResult deleteGoodsFromCart(String username, int goodsId){
+        cartMapper.DeleteGoodsInCart(username, goodsId);
+        JsonResult result = new JsonResult<>(YES);
+        return result;
+    }
 
 
 }

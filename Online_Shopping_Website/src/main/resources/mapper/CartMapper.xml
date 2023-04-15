@@ -47,4 +47,7 @@
             (#{username}, #{goodsId}, #{num})
     </insert>
 
+    <delete id="DeleteGoodsInCart">
+        DELETE FROM cart WHERE username = #{username} AND goodsId = #{goodsId};
+    </delete>
 </mapper>
