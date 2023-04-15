@@ -308,4 +308,5 @@ public class GoodController {
 
         return result;
     }
+
 }
