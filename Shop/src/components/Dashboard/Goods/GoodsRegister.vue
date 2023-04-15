@@ -272,11 +272,13 @@ export default {
                     goodsPrice: this.addForm.goodsPrice,
                     goodsStock: this.addForm.goodsStock
                 }).then(res => {
+                    console.log("setGoodsInfo")
+                    console.log(res.data)
                     if(res.data.state == window.SUCCESS){
-                        this.setGoodsAvatar(this.goods.goodsId);
+                        this.modifyGoodsAvatar(this.goods.goodsId);
                     }
                     else {
-                        this.$message.error("提交失败，请重试");
+                        this.$message.error(res.data.message);
                     }
                 }).catch(err => {
                     this.$message.error("提交失败，请重试");
@@ -341,6 +343,26 @@ export default {
                 }, 2000);
             })
             .catch((err) => {
+                console.log(err);
+                this.$message.error("提交失败，请重试");
+            });
+        },
+        modifyGoodsAvatar: function(goodsId) {
+            let formData = new FormData();
+            formData.append("goodsId", goodsId);
+            for (let i = 0; i < this.addForm.fileList.length; i++) {
+                formData.append("file", this.addForm.fileList[i].raw);
+            }
+            console.log(formData)
+            this.$axios.post("/modifyGoodsPicture", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            }) .then((res) => {
+                console.log(res.data);
+                this.$message.success("提交成功！");
+                setTimeout(() => {
+                    this.$router.go(0)
+                }, 1000);
+            }) .catch((err) => {
                 console.log(err);
                 this.$message.error("提交失败，请重试");
             });

@@ -23,6 +23,7 @@ const dialogTableVisible = ref(false)
       <el-dialog class="information" v-model="dialogTableVisible" title="商品信息">
         <p class="infoTop">所属店铺：{{ goods.shopname }}</p>
         <GoodsDetail :goods="this.goods"></GoodsDetail>
+
         <template #footer>
           <span class="dialog-footer">
             <el-button 
@@ -52,6 +53,18 @@ export default {
             type: Object,
             required: true
         }
+    },
+    data() {
+      return {
+        editingGoods: {
+          goodsname: "",
+          goodsPrice :"",
+          goodsStock : "",
+          goodsCategory : "",
+          introduction : "",
+          goodsAvatar:[]
+        }
+      }
     },
     components: { 
       GoodsDetail
