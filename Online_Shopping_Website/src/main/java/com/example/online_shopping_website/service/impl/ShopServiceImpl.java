@@ -174,8 +174,11 @@ public class ShopServiceImpl implements IShopService {
                 }
                 break;
             case deletionUnderReview:
-                if(approveType == adminApproveDeletion)
+                if(approveType == adminApproveDeletion) {
                     shopMapper.SetShopDeleted(shopname);
+                    int uid = userMapper.GetUidByShopname(shopname);        //删除成功，商店账户自动注销，资金转移至商户个人账户
+                    userMapper.DeleteShopAccountANDTransferBalanceToPrivateAccount(uid);
+                }
                 else{
                     result.setState(NO);
                     result.setMessage("批复失败，请重试");

@@ -13,4 +13,7 @@
     <select id="searchPicByGoodsId" resultMap="GoodMap">
         SELECT * FROM goodspics where goodsId = #{goodsId}
     </select>
+    <delete id="picDelete">
+        DELETE from goodspics WHERE goodsId = #{goodsId}
+    </delete>
 </mapper>

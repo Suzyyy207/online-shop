@@ -39,13 +39,11 @@ public interface IUserService {
 
     JsonResult getUserTransactions(String username);
 
-    JsonResult addToCart(String username, int goodsId, int num);
-
     JsonResult getShopAccount(String username);
 
     JsonResult getProfitAccount();
 
     JsonResult getIntermediaryAccount();
     void deleteUserAvatar(String username);
-    JsonResult getValidCart(String username);
+
 }

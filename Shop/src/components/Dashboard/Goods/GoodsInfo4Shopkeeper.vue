@@ -72,7 +72,7 @@
             <div v-if="this.activeIndex==4">
                 <GoodsDetail :goods="this.goods"/>
 
-                <div v-if="showType==1">
+                <div>
                     <div class="btns">
                         <el-button
                             class="btn" 
@@ -80,10 +80,10 @@
                             @click="this.goodsOnShelve()" 
                             >重新上架
                         </el-button>
-                        
+                        <el-button class="btn" @click="cancelShowGoodsDetail">返回</el-button>
                     </div>
                 </div>
-                <el-button class="btn" @click="cancelShowGoodsDetail">返回</el-button>
+                
 
                 
             </div>
@@ -117,6 +117,7 @@ export default {
     },
     created(){
         this.getGoodsInfo();
+        console.log(this.goods.goodsAvatar)
     },
     methods:{
         getGoodsInfo() {
@@ -144,7 +145,7 @@ export default {
                 case 1:
                     this.activeIndex = 3;
                     break;
-                case 4: 
+                case 3: 
                     this.activeIndex = 4;
                     break;
             }
@@ -160,7 +161,9 @@ export default {
             .then((res) => {
                 console.log(res.data);
                 this.$message.success("下架成功！页面将自动刷新...");
-                this.$router.go(0);
+                setTimeout(() => {
+                    this.$router.go(0);
+                }, 1000);
             })
             .catch((err) => {
                 console.log(err);
@@ -174,7 +177,10 @@ export default {
             .then((res) => {
                 console.log(res.data);
                 this.$message.success("上架成功！页面将自动刷新...");
-                this.$router.go(0);
+                setTimeout(() => {
+                    this.$router.go(0);
+                }, 1000);
+                
             })
             .catch((err) => {
                 console.log(err);
@@ -193,7 +199,9 @@ export default {
             }).then(res => {
                     if(res.data.state == window.SUCCESS){
                        this.$message.success(res.data.message);
-                       this.$router.go(0);
+                       setTimeout(() => {
+                            this.$router.go(0);
+                        }, 1000);
                     }
                     else {
                         this.$message.error("提交失败，请重试");

@@ -42,7 +42,7 @@
           <!-- 撤销注册申请：注册申请中 -->
           <el-form-item v-if="shop.is_admitted==0||shop.is_admitted==2" class="re_btn">
               <el-button type="submit" @click="dialogTableVisible = true">撤销注册申请</el-button>
-              <el-dialog v-model="dialogTableVisible" title="撤销注册申请确认">
+              <el-dialog v-model="dialogTableVisible" title="撤销注册申请确认" class="deleteConfirm">
                 <p>你确定要撤销注册店铺申请吗？</p>
                 <div class="deleteConfirmBtn">
                   <el-button class="delete" type="primary" @click="cancelRegister">确认</el-button>
@@ -72,7 +72,7 @@
             <!-- 撤销删除申请btn：删除申请审核中/拒绝删除申请 -->
             <el-form-item v-if="shop.is_admitted==3||shop.is_admitted==4" class="re_btn">
               <el-button type="submit" @click="dialogTableVisible = true">撤销删除申请</el-button>
-              <el-dialog v-model="dialogTableVisible" title="撤销删除申请确认">
+              <el-dialog v-model="dialogTableVisible" title="撤销删除申请确认" class="deleteConfirm">
                 <p>你确定要撤销删除店铺申请吗？</p>
                 <div class="deleteConfirmBtn">
                   <el-button class="delete" type="primary" @click="cancelRegister">确认</el-button>
@@ -119,8 +119,13 @@ export default {
       this.$axios.post('/shopUnregister',{
         shopname: localStorage.getItem("shopname")
       }).then(res=>{
+        console.log("shopUregister")
+        console.log(res.data)
         if(res.data.state==window.SUCCESS){
           this.$message.success(res.data.message);
+          setTimeout(() => {
+            this.$router.go(0);
+          }, 1000);
         } else {
           this.$message.error(res.data.message);
         }
@@ -130,7 +135,7 @@ export default {
     cancelRegister() {
       this.$axios.post('/cancelRegister',{
         shopname: localStorage.getItem("shopname"),
-        is_admitted: this.shop.is_admitted
+        cancelType: this.shop.is_admitted
       }).then(res=>{
         if(res.data.state==window.SUCCESS){
           this.$message.success(res.data.message);
@@ -138,7 +143,7 @@ export default {
           this.$message.error(res.data.message);
         }
       })
-      this.$router.go(0);
+      //this.$router.go(0);
     }
   }
 }

@@ -118,24 +118,6 @@
         UPDATE users SET intermediaryAccount = intermediaryAccount + #{credit} WHERE username = #{username}
     </update>
 
-    <select id="getGoodsNumberInCart" resultType="java.lang.Integer">
-        SELECT IFNULL(num,0) FROM cart WHERE username = #{username} AND goodsId = #{goodsId}
-    </select>
-
-    <insert id="InsertNewGoodsIntoCart">
-        INSERT INTO cart
-            (username, goodsId, num)
-        VALUES
-            (#{username}, #{goodsId}, #{num})
-    </insert>
-
-    <update id="UpdateGoodsNumInCart">
-        UPDATE cart SET num = #{num} WHERE username = #{username} AND goodsId = #{goodsId}
-    </update>
-
-    <delete id="DeleteZeroGoodsInCart">
-        DELETE FROM cart WHERE username = #{username} AND num = 0
-    </delete>
 
     <select id="GetProfitAccount" resultType="java.math.BigDecimal">
         SELECT profitAccount FROM users WHERE usertype = 0;
@@ -148,9 +130,14 @@
         UPDATE users SET avatar = null WHERE username = #{username}
     </update>
 
-    <select id="GetAllGoodsIdInCartByusername" resultType="int">
-        SELECT goodsId FROM cart WHERE username = #{username}
+    <select id="GetUidByShopname">
+        SELECT uid FROM shops WHERE shopname = #{shopname};
     </select>
+
+    <update id="DeleteShopAccountANDTransferBalanceToPrivateAccount">
+        UPDATE users SET privateAccount = privateAccount + shopAccount WHERE uid =#{uid};
+        UPDATE users SET ShopAccount = 0 WHERE uid =#{uid};
+    </update>
 </mapper>
 
 

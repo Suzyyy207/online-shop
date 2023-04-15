@@ -5,7 +5,7 @@
         
 
         <div class="shopName">
-            <h1 class="title">店铺名</h1>
+            <h1 class="title">{{ goods.shopname }}</h1>
         </div>
 
         <div class="infoBuy">
@@ -30,7 +30,7 @@
                     <p>收藏量：{{ goods.favorites }}</p>
 
                     <!-- TODO: 累计销量-->
-                    <p>购买量：300</p>
+                    <p>购买量：0</p>
                 </div>
                 
                 <div class="buy">
@@ -84,7 +84,8 @@ export default {
                 introduction: "intro",
                 goodsStock: 23,
                 goodsPrice: 23,
-                favorites: 0
+                favorites: 0,
+                shopname: ""
             },
             favorited: false,
             num: 1,
@@ -118,6 +119,7 @@ export default {
                 this.goods.favorites = goods.favorites;
                 this.goods.goodsPrice = parseFloat(goods.goodsPrice);
                 this.totalPrice = this.goods.goodsPrice;
+                this.goods.shopname = goods.shopname;
                 this.isFavorited();
             })
         },
@@ -131,22 +133,24 @@ export default {
             }
         },
         isFavorited() {
-            this.$axios.post('/isFavorited',{
-                goodsId: this.goods.goodsId,
+            this.$axios.post('/isFavorite',{
+                goodsId: parseInt(this.goodsId),
                 username: localStorage.getItem("username")
             }).then(res => {
+                console.log("isfa")
+                console.log(res.data)
                 if(res.data.state == window.SUCCESS) {
                     this.favorited = true;
                 }
             })
         },
         addToCart() {
-            console.log(this.num)
             this.$axios.post('/addToCart',{
-                goodsId: this.goods.goodsId,
+                goodsId: parseInt(this.goodsId),
                 username: localStorage.getItem("username"),
                 num: this.num
             }).then(res => {
+                console.log(res.data)
                 if(res.data.state == window.SUCCESS) {
                     this.$message.success("已成功添加至购物车！");
                 } else {
@@ -155,7 +159,7 @@ export default {
         },
         addToFavorites() {
             this.$axios.post('/addToFavorites',{
-                goodsId: this.goods.goodsId,
+                goodsId: parseInt(this.goodsId),
                 username: localStorage.getItem("username")
             }).then(res => {
                 if(res.data.state == window.SUCCESS) {
@@ -167,7 +171,7 @@ export default {
         },
         Unfavorite() {
             this.$axios.post('/Unfavorite',{
-                goodsId: this.goods.goodsId,
+                goodsId: parseInt(this.goodsId),
                 username: localStorage.getItem("username")
             }).then(res => {
                 if(res.data.state == window.SUCCESS) {
