@@ -111,12 +111,13 @@ public class CartServiceImpl implements ICartService {
                 }
                 goodReturn.setGoodsAvatar(piclist);
 
-                System.out.println("before");
+                int NumOfGoodsInCart = cartMapper.getGoodsNumberInCart(username, id);
 
                 //如果goodReturn的商品名，与ListgoodSortByShop中某一项的商店名一样，就加入该商店，否则就新建一个goodSortByShop对象
                 for(int i = 0; i < ListgoodSortByShop.size(); i++){
                     if( ListgoodSortByShop.get(i).getShopname().equals(goodReturn.getShopname()) ) {
                         ListgoodSortByShop.get(i).getGoodReturnList().add(goodReturn);
+                        ListgoodSortByShop.get(i).getGoodNums().add(NumOfGoodsInCart);
                         ShopOfGoodAlreadyInlist = Boolean.TRUE;
                         break;
                     }
@@ -125,9 +126,10 @@ public class CartServiceImpl implements ICartService {
                     String NewShopname = goodReturn.getShopname();
                     List<GoodReturn> ListGoodReturn = new ArrayList<>();
                     ListGoodReturn.add(goodReturn);
+                    List<Integer> goodsNumInCart = new ArrayList<>();
+                    goodsNumInCart.add(NumOfGoodsInCart);
 
-                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, ListGoodReturn);
-
+                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, ListGoodReturn, goodsNumInCart);
                     ListgoodSortByShop.add(goodSortByShop);
                     ShopOfGoodAlreadyInlist = Boolean.FALSE;
                 }
@@ -135,7 +137,7 @@ public class CartServiceImpl implements ICartService {
                 ;
             }
         }
-        System.out.println("after");
+
         result.setData(ListgoodSortByShop);
         return result;
     }
@@ -179,12 +181,15 @@ public class CartServiceImpl implements ICartService {
                     piclist.add(base64Image);
                 }
                 goodReturn.setGoodsAvatar(piclist);
+                //获取购物车中商品数量
+                int NumOfGoodsInCart = cartMapper.getGoodsNumberInCart(username, id);
 
-                System.out.println("before");
+
                 //如果goodReturn的商店名，与ListgoodSortByShop中某一项的商店名，就加入该商店，否则就新建一个goodSortByShop对象
                 for(int i = 0; i < ListgoodSortByShop.size(); i++){
                     if( ListgoodSortByShop.get(i).getShopname().equals(goodReturn.getShopname()) ) {
                         ListgoodSortByShop.get(i).getGoodReturnList().add(goodReturn);
+                        ListgoodSortByShop.get(i).getGoodNums().add(NumOfGoodsInCart);
                         ShopOfGoodAlreadyInlist = true;
                         break;
                     }
@@ -193,8 +198,10 @@ public class CartServiceImpl implements ICartService {
                     String NewShopname = goodReturn.getShopname();
                     List<GoodReturn> ListGoodReturn = new ArrayList<>();
                     ListGoodReturn.add(goodReturn);
+                    List<Integer> goodsNumInCart = new ArrayList<>();
+                    goodsNumInCart.add(NumOfGoodsInCart);
 
-                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, ListGoodReturn);
+                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, ListGoodReturn,goodsNumInCart);
                     ListgoodSortByShop.add(goodSortByShop);
                     ShopOfGoodAlreadyInlist = false;
                 }
@@ -202,7 +209,6 @@ public class CartServiceImpl implements ICartService {
                 //invalidGoodsInCart.add(goodReturn);
             }
         }
-        System.out.println("after");
         result.setData(ListgoodSortByShop);
         return result;
     }
