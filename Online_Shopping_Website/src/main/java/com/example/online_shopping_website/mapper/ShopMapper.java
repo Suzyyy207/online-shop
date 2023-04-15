@@ -82,5 +82,5 @@ public interface ShopMapper {
     void CancelShopUnregistyerByShopname(String shopname, int is_admitted);
     void ClearShopInfoByShopname(String shopname);
 
-    int GetShopStatusByShopname(String shopname);
+    int GetShopAdmittedByShopname(String shopname);
 }

@@ -84,7 +84,6 @@
         DELETE from goods WHERE goodsId = #{goodsId}
     </delete>
 
-
     <insert id="AddToFavorite">
         INSERT INTO favorite
             (username, goodsId)
@@ -106,23 +105,11 @@
         SELECT * FROM goods where status = #{status};
     </select>
 
-    <select id="GetGoodsStockByGoodsId" resultType="int">
-        SELECT ifnull(goodsStock, 0) FROM goods WHERE goodsId = #{goodsId}
+    <select id="GetShopnamByGoodsId" resultType="java.lang.String">
+        SELECT shopname FROM goods WHERE goodsId = #{goodsId}
     </select>
 
-    <select id="IsGoodsInCart" resultType="java.lang.Boolean">
-        select exists(select * from cart WHERE username = #{username} AND goodsId = #{goodsId})
+    <select id="getGoodsByGoodsId" resultMap="GoodMap">
+        SELECT * from goods WHERE goodsId = #{goodsId};
     </select>
-
-    <update id="updateCartGoodsNum">
-        UPDATE cart SET num = #{num} WHERE username = #{username} AND goodsId = #{goodsId}
-    </update>
-
-    <insert id="insertCartGoodsNum">
-        INSERT INTO cart
-            (username, goodsId, num)
-        VALUE
-            (#{username}, #{goodsId}, #{num})
-    </insert>
-
 </mapper>

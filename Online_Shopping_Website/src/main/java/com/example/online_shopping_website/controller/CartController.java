@@ -17,6 +17,7 @@ public class CartController {
     @Autowired
     private ICartService cartService;
 
+    //在购物车页面，设置商品数量
     @RequestMapping("/api/setCartGoodsNum")
     public JsonResult setCartGoodsNum(@RequestBody Map<String,Object> map){
         String username = (String)map.get("username");
@@ -26,7 +27,7 @@ public class CartController {
         return result;
     }
 
-    //废用
+    //在商品页面，把商品添加到购物车
     @RequestMapping("/api/addToCart")
     public JsonResult addToCart(@RequestBody Map<String,Object> map){
         String username = (String)map.get("username");
