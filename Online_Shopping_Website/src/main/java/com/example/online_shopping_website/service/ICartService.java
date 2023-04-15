@@ -10,4 +10,6 @@ public interface ICartService {
     JsonResult getInvalidCart(String username);
 
     JsonResult addToCart(String username, int goodsId, int num);
+
+    JsonResult deleteGoodsFromCart(String username, int goodsId);
 }

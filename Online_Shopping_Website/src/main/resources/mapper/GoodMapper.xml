@@ -115,6 +115,10 @@
         SELECT shopname FROM goods WHERE goodsId = #{goodsId}
     </select>
 
+    <select id="GetGoodStatusByGoodsId" resultType="int">
+        SELECT status FROM goods WHERE goodsId = #{goodsId}
+    </select>
+
     <select id="getGoodsByGoodsId" resultMap="GoodMap">
         SELECT * from goods WHERE goodsId = #{goodsId};
     </select>

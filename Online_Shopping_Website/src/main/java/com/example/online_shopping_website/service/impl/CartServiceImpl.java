@@ -112,7 +112,7 @@ public class CartServiceImpl implements ICartService {
                 ;
             }
         }
-
+        result.setData(validGoodsInCart);
         return result;
     }
 
@@ -154,10 +154,15 @@ public class CartServiceImpl implements ICartService {
                 invalidGoodsInCart.add(goodReturn);
             }
         }
-
+        result.setData(invalidGoodsInCart);
         return result;
     }
-
+    @Override
+    public JsonResult deleteGoodsFromCart(String username, int goodsId){
+        cartMapper.DeleteGoodsInCart(username, goodsId);
+        JsonResult result = new JsonResult<>(YES);
+        return result;
+    }
 
 
 }
