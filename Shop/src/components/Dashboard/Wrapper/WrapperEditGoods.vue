@@ -114,7 +114,6 @@ export default {
                 this.editedGoodsList = res.data.data;
             })
         },
-      editDeniedGoodsList
         getEditDeniedGoods() {
             var localStorage = window.localStorage;
             this.$axios.post("/getEditDeniedGoodsByShopname", {
