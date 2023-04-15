@@ -121,7 +121,7 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setModifyStatus(good.getModifyStatus());
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
             for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
-                System.out.println(good.getGoodsId());
+                //System.out.println(good.getGoodsId());
 
                 byte[] imageData = pics.getPic();
                 String base64Image = Base64.getEncoder().encodeToString(imageData);

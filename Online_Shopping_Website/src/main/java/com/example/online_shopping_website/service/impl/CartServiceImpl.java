@@ -1,13 +1,20 @@
 package com.example.online_shopping_website.service.impl;
 
+import com.example.online_shopping_website.entity.Good;
+import com.example.online_shopping_website.entity.GoodReturn;
+import com.example.online_shopping_website.entity.pic;
 import com.example.online_shopping_website.mapper.CartMapper;
 import com.example.online_shopping_website.mapper.GoodMapper;
+import com.example.online_shopping_website.mapper.PicMapper;
 import com.example.online_shopping_website.mapper.ShopMapper;
 import com.example.online_shopping_website.service.ICartService;
 import com.example.online_shopping_website.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import static javax.security.auth.callback.ConfirmationCallback.NO;
@@ -25,39 +32,20 @@ public class CartServiceImpl implements ICartService {
     @Autowired
     private ShopMapper shopMapper;
 
+    @Autowired
+    private PicMapper picMapper;
     @Override
     public JsonResult setCartGoodsNum(String username, int goodsId, int num){
         JsonResult result =new JsonResult<>(YES);
         int goodsStock = goodMapper.GetGoodsStockByGoodsId(goodsId);
-        if(num > goodsStock)    //异常1：添加到购物车的数量大于库存数量
+        if(num > goodsStock)    //情况1：添加到购物车的数量大于库存数量
             result.setState(NO);
         else{
-            if(cartMapper.IsGoodsInCart(username,goodsId))  //异常2：用户名下的购物车已经有相应的商品了
+            if(cartMapper.IsGoodsInCart(username,goodsId))  //情况2：用户名下的购物车已经有相应的商品了
                 cartMapper.updateCartGoodsNum(username, goodsId, num);  //购物车已有，更新数据库
             else
-                cartMapper.insertCartGoodsNum(username, goodsId, num);  //购物车没有，插入数据库
+                cartMapper.insertCartGoodsNum(username, goodsId, num);  //情况3：购物车没有，插入数据库
         }
-        return result;
-    }
-
-    @Override
-    public JsonResult getValidCart(String username){
-        JsonResult result = new JsonResult<>(YES);
-
-        List<Integer> allGoodsId = cartMapper.GetAllGoodsIdInCartByUsername(username);
-        for(Integer id : allGoodsId){
-            String shopname = goodMapper.GetShopnamByGoodsId(id);
-            int shopStaus = shopMapper.GetShopStatusByShopname(shopname);
-        }
-
-        return result;
-    }
-
-    @Override
-    public JsonResult getInvalidCart(String username){
-        JsonResult result = new JsonResult<>(YES);
-
-
         return result;
     }
 
@@ -75,15 +63,101 @@ public class CartServiceImpl implements ICartService {
         if(originalNum == 0 && addNum > 0){   //购物车中没有相应商品，插入
             int newNum = addNum;
             cartMapper.InsertNewGoodsIntoCart(username, goodsId, newNum);
-        }else if ( addNum > 0 || (addNum < 0 && (originalNum + addNum) >= 0)){   //增加购物车中商品数量，或者减少的数量小于等于购物车中已有的数量
+        }else if (originalNum > 0 && addNum > 0 ){   //增加购物车中商品数量
             int newNum = originalNum + addNum;
             cartMapper.UpdateGoodsNumInCart(username, goodsId, newNum);
-        }else if( (originalNum + addNum) < 0 || addNum == 0){  //商品减少的数量大于购物车中原有的数量
+        }else{  //异常
             result.setState(NO);
         }
         //移除购物车中数量为0的商品
         cartMapper.DeleteZeroGoodsInCart(username);
         return result;
     }
+
+    @Override
+    public JsonResult getValidCart(String username){
+        JsonResult result = new JsonResult<>(YES);
+
+        List<GoodReturn> validGoodsInCart = new ArrayList<>();
+        List<Integer> allGoodsId = cartMapper.GetAllGoodsIdInCartByUsername(username);
+        for(Integer id : allGoodsId){
+            String shopname = goodMapper.GetShopnamByGoodsId(id);
+            int shopAdmitted = shopMapper.GetShopAdmittedByShopname(shopname);
+            int goodStatus = goodMapper.GetGoodStatusByGoodsId(id);
+            if(shopAdmitted == 1 && goodStatus == 1){   //商店状态和商品状态都正常
+                Good good = goodMapper.getGoodsByGoodsId(id);
+
+                List<String> piclist = new ArrayList<>();
+                GoodReturn goodReturn = new GoodReturn();
+                goodReturn.setGoodsPrice(good.getGoodsPrice());
+                goodReturn.setGoodsStock(good.getGoodsStock());
+                goodReturn.setGoodsId(good.getGoodsId());
+                goodReturn.setGoodsname(good.getGoodsname());
+                goodReturn.setIntroduction(good.getIntroduction());
+                goodReturn.setShopname(good.getShopname());
+                goodReturn.setStatus(good.getStatus());
+                goodReturn.setRegisterStatus(good.getRegisterStatus());
+                goodReturn.setModifyStatus(good.getModifyStatus());
+                goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+                for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
+                    //System.out.println(good.getGoodsId());
+                    byte[] imageData = pics.getPic();
+                    String base64Image = Base64.getEncoder().encodeToString(imageData);
+                    //System.out.println(base64Image.substring(0,100));
+                    piclist.add(base64Image);
+                }
+                goodReturn.setGoodsAvatar(piclist);
+                validGoodsInCart.add(goodReturn);
+            }else{
+                ;
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public JsonResult getInvalidCart(String username){
+        JsonResult result = new JsonResult<>(YES);
+
+        List<GoodReturn> invalidGoodsInCart = new ArrayList<>();
+        List<Integer> allGoodsId = cartMapper.GetAllGoodsIdInCartByUsername(username);
+        for(Integer id : allGoodsId){
+            String shopname = goodMapper.GetShopnamByGoodsId(id);
+            int shopAdmitted = shopMapper.GetShopAdmittedByShopname(shopname);
+            int goodStatus = goodMapper.GetGoodStatusByGoodsId(id);
+            if(shopAdmitted == 1 && goodStatus == 1){   //商店状态和商品状态都正常
+
+            }else{
+                Good good = goodMapper.getGoodsByGoodsId(id);
+
+                List<String> piclist = new ArrayList<>();
+                GoodReturn goodReturn = new GoodReturn();
+                goodReturn.setGoodsPrice(good.getGoodsPrice());
+                goodReturn.setGoodsStock(good.getGoodsStock());
+                goodReturn.setGoodsId(good.getGoodsId());
+                goodReturn.setGoodsname(good.getGoodsname());
+                goodReturn.setIntroduction(good.getIntroduction());
+                goodReturn.setShopname(good.getShopname());
+                goodReturn.setStatus(good.getStatus());
+                goodReturn.setRegisterStatus(good.getRegisterStatus());
+                goodReturn.setModifyStatus(good.getModifyStatus());
+                goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+                for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
+                    //System.out.println(good.getGoodsId());
+                    byte[] imageData = pics.getPic();
+                    String base64Image = Base64.getEncoder().encodeToString(imageData);
+                    //System.out.println(base64Image.substring(0,100));
+                    piclist.add(base64Image);
+                }
+                goodReturn.setGoodsAvatar(piclist);
+                invalidGoodsInCart.add(goodReturn);
+            }
+        }
+
+        return result;
+    }
+
+
 
 }

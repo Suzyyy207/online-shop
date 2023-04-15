@@ -37,5 +37,7 @@ public interface GoodMapper {
 
     String GetShopnamByGoodsId(int goodsId);
 
+    int GetGoodStatusByGoodsId(int goodsId);
 
+    Good getGoodsByGoodsId(int goodsId);
 }

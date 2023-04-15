@@ -105,5 +105,11 @@
         SELECT * FROM goods where status = #{status};
     </select>
 
+    <select id="GetShopnamByGoodsId" resultType="java.lang.String">
+        SELECT shopname FROM goods WHERE goodsId = #{goodsId}
+    </select>
 
+    <select id="getGoodsByGoodsId" resultMap="GoodMap">
+        SELECT * from goods WHERE goodsId = #{goodsId};
+    </select>
 </mapper>
