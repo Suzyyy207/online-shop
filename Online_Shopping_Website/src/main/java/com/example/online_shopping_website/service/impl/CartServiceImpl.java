@@ -112,7 +112,7 @@ public class CartServiceImpl implements ICartService {
                 ;
             }
         }
-
+        result.setData(validGoodsInCart);
         return result;
     }
 
@@ -154,7 +154,7 @@ public class CartServiceImpl implements ICartService {
                 invalidGoodsInCart.add(goodReturn);
             }
         }
-
+        result.setData(invalidGoodsInCart);
         return result;
     }
     @Override

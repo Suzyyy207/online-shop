@@ -108,7 +108,7 @@
         DELETE FROM shops WHERE shopname = #{shopname};
     </delete>
 
-    <select id="GetShopAdmittedByShopname">
+    <select id="GetShopAdmittedByShopname" resultType="int">
         SELECT is_admitted FROM shops WHERE shopname = #{shopname};
     </select>
 </mapper>
