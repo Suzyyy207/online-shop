@@ -27,5 +27,5 @@ public interface IGoodService {
     JsonResult isFavorite(String username, int goodsId);
     JsonResult setCartGoodsNum(String username, int goodsId, int num);
     GoodReturn getGoodsInfoByGoodsId(int goodsId);
-
+    void goodsPicsCheck(int goodsId);
 }

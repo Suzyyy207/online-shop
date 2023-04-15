@@ -36,4 +36,5 @@ public interface GoodMapper {
     Boolean IsGoodsInCart(String username, int goodsId);
     void updateCartGoodsNum(String username, int goodsId, int num);
     void insertCartGoodsNum(String username, int goodsId, int num);
+    void DeleteGoods(int goodsId);
 }

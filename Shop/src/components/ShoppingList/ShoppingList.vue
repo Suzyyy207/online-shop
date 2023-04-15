@@ -140,6 +140,7 @@ export default {
                 username: localStorage.getItem("username")
             }).then(res => {
                 this.validCart = res.data.data;
+                console.log(res.data)
             })
 
             this.validCart = this.validCart.map(shop => {
