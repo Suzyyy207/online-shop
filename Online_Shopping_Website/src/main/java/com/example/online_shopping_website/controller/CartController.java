@@ -51,4 +51,12 @@ public class CartController {
         JsonResult result = cartService.getInvalidCart(username);
         return result;
     }
+
+    @RequestMapping("/api/deleteGoodsFromCart")
+    public JsonResult deleteGoodsFromCart(@RequestBody Map<String,Object> map){
+        String username =(String)map.get("username");
+        int goodsId = (int)map.get("goodsId");
+        JsonResult result = cartService.deleteGoodsFromCart(username, goodsId);
+        return result;
+    }
 }

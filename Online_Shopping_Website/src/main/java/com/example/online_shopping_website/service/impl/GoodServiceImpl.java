@@ -190,13 +190,15 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setGoodsname(good.getGoodsname());
             goodReturn.setIntroduction(good.getIntroduction());
             goodReturn.setShopname(good.getShopname());
-            goodReturn.setStatus(good.getStatus());
+            if(good.getStatus()<0){
+                goodReturn.setStatus(2);
+            }else goodReturn.setStatus(good.getStatus());
             goodReturn.setRegisterStatus(good.getRegisterStatus());
             goodReturn.setModifyStatus(good.getModifyStatus());
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
             List<String> piclist = new ArrayList<>();
             if(good.getStatus()<0){
-                for (pic pics : picMapper.searchPicByGoodsId(-good.getGoodsId())) {
+                for (pic pics : picMapper.searchPicByGoodsId(good.getModifyStatus())) {
                     byte[] imageData = pics.getPic();
                     String base64Image = Base64.getEncoder().encodeToString(imageData);
                     piclist.add(base64Image);
