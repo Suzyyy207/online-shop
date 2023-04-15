@@ -22,6 +22,7 @@ public interface GoodMapper {
     List<Good> SearchByStatus(String shopname, int status);
     List<Good> SearchByStatusStatusOnly(int status);
     Good StatusSearch(int status);
+    Good RegisterStatusSearch(int registerStatus);
     List<Good> SearchByRegisterStatusRegisterStatusOnly(int registerStatus);
     List<Good> SearchByModifyStatusModifyStatusOnly(int modifyStatus);
 

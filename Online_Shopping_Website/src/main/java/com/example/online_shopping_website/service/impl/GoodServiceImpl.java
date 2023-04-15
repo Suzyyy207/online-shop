@@ -241,10 +241,12 @@ public class GoodServiceImpl implements IGoodService {
             goodMapper.UpdateRegisterStatus(goodsId,1);
             return 0;
         }
+        System.out.println(goodsId);
         if(status == 2 ){
-            List<Good> goodList =goodMapper.SearchByStatusStatusOnly(-goodsId);
-            Good good = goodList.get(0);
-            goodMapper.setDelete(-goodsId);
+            List<Good> goodList =goodMapper.SearchByRegisterStatusRegisterStatusOnly(-goodsId);
+            Good good = goodMapper.SearchByGoodsId(goodsId);
+            goodMapper.DeleteGoods(goodsId);
+            goodsId = -good.getRegisterStatus();
             goodMapper.UpdateIntroduction(goodsId,good.getIntroduction());
             goodMapper.UpdateGoodsStock(goodsId,good.getGoodsStock());
             goodMapper.UpdateGoodsname(goodsId,good.getGoodsname());
@@ -252,7 +254,7 @@ public class GoodServiceImpl implements IGoodService {
             goodMapper.UpdateGoodsPrice(goodsId,good.getGoodsPrice());
             goodMapper.UpdateStatus(goodsId,1);
             goodMapper.UpdateRegisterStatus(goodsId,3);
-            List<pic> picList = picMapper.searchPicByGoodsId(-goodsId);
+            List<pic> picList = picMapper.searchPicByGoodsId(good.getRegisterStatus());
             picMapper.picDelete(goodsId);
             for (pic pics :picList){
                 picsUpload(goodsId,pics.getPic());
