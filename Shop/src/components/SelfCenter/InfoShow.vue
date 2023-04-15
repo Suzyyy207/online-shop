@@ -98,7 +98,7 @@ export default {
             .then(res => {
                 if(res.data.state==window.SUCCESS) {
                     this.$message.success("充值金额：" + this.credit + "（系统默认保留两位小数）！");
-                    this.$router.go(0);
+                    this.form.account = res.data.data;
                 }
                 else {
                     console.log("failure");
