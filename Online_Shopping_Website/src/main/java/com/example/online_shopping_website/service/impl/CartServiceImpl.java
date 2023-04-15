@@ -82,8 +82,9 @@ public class CartServiceImpl implements ICartService {
         List<GoodSortByShop> ListgoodSortByShop = new ArrayList<>();    //包装类，包装shopname和List<GoodReturn>
 
         List<Integer> allGoodsId = cartMapper.GetAllGoodsIdInCartByUsername(username);
-        Boolean ShopOfGoodAlreadyInlist = false;        //判断商店所属的商品是否在ListgoodSortByShop中
         for(Integer id : allGoodsId){
+            Boolean ShopOfGoodAlreadyInlist = Boolean.FALSE;        //判断商店所属的商品是否在ListgoodSortByShop中
+
             String shopname = goodMapper.GetShopnamByGoodsId(id);
             int shopAdmitted = shopMapper.GetShopAdmittedByShopname(shopname);
             int goodStatus = goodMapper.GetGoodStatusByGoodsId(id);
@@ -110,9 +111,77 @@ public class CartServiceImpl implements ICartService {
                 }
                 goodReturn.setGoodsAvatar(piclist);
 
-                System.out.println(goodReturn.getShopname());
+                System.out.println("before");
 
                 //如果goodReturn的商品名，与ListgoodSortByShop中某一项的商店名一样，就加入该商店，否则就新建一个goodSortByShop对象
+                for(int i = 0; i < ListgoodSortByShop.size(); i++){
+                    if( ListgoodSortByShop.get(i).getShopname().equals(goodReturn.getShopname()) ) {
+                        ListgoodSortByShop.get(i).getGoodReturnList().add(goodReturn);
+                        ShopOfGoodAlreadyInlist = Boolean.TRUE;
+                        break;
+                    }
+                }
+                if(!ShopOfGoodAlreadyInlist){   //商店名没出现过，新加商店名
+                    String NewShopname = goodReturn.getShopname();
+                    List<GoodReturn> ListGoodReturn = new ArrayList<>();
+                    ListGoodReturn.add(goodReturn);
+
+                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, ListGoodReturn);
+
+                    ListgoodSortByShop.add(goodSortByShop);
+                    ShopOfGoodAlreadyInlist = Boolean.FALSE;
+                }
+            }else{
+                ;
+            }
+        }
+        System.out.println("after");
+        result.setData(ListgoodSortByShop);
+        return result;
+    }
+
+    @Override
+    public JsonResult getInvalidCart(String username){
+        JsonResult result = new JsonResult<>(YES);
+
+        List<GoodSortByShop> ListgoodSortByShop = new ArrayList<>();    //包装类，包装shopname和List<GoodReturn>
+
+        //List<GoodReturn> invalidGoodsInCart = new ArrayList<>();
+        List<Integer> allGoodsId = cartMapper.GetAllGoodsIdInCartByUsername(username);
+        for(Integer id : allGoodsId){
+            Boolean ShopOfGoodAlreadyInlist = false;
+
+            String shopname = goodMapper.GetShopnamByGoodsId(id);
+            int shopAdmitted = shopMapper.GetShopAdmittedByShopname(shopname);
+            int goodStatus = goodMapper.GetGoodStatusByGoodsId(id);
+            if(shopAdmitted == 1 && goodStatus == 1){   //商店状态和商品状态都正常
+
+            }else{
+                Good good = goodMapper.getGoodsByGoodsId(id);
+
+                List<String> piclist = new ArrayList<>();
+                GoodReturn goodReturn = new GoodReturn();
+                goodReturn.setGoodsPrice(good.getGoodsPrice());
+                goodReturn.setGoodsStock(good.getGoodsStock());
+                goodReturn.setGoodsId(good.getGoodsId());
+                goodReturn.setGoodsname(good.getGoodsname());
+                goodReturn.setIntroduction(good.getIntroduction());
+                goodReturn.setShopname(good.getShopname());
+                goodReturn.setStatus(good.getStatus());
+                goodReturn.setRegisterStatus(good.getRegisterStatus());
+                goodReturn.setModifyStatus(good.getModifyStatus());
+                goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+                for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
+                    //System.out.println(good.getGoodsId());
+                    byte[] imageData = pics.getPic();
+                    String base64Image = Base64.getEncoder().encodeToString(imageData);
+                    //System.out.println(base64Image.substring(0,100));
+                    piclist.add(base64Image);
+                }
+                goodReturn.setGoodsAvatar(piclist);
+
+                System.out.println("before");
+                //如果goodReturn的商店名，与ListgoodSortByShop中某一项的商店名，就加入该商店，否则就新建一个goodSortByShop对象
                 for(int i = 0; i < ListgoodSortByShop.size(); i++){
                     if( ListgoodSortByShop.get(i).getShopname().equals(goodReturn.getShopname()) ) {
                         ListgoodSortByShop.get(i).getGoodReturnList().add(goodReturn);
@@ -126,84 +195,14 @@ public class CartServiceImpl implements ICartService {
                     ListGoodReturn.add(goodReturn);
 
                     GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, ListGoodReturn);
-
                     ListgoodSortByShop.add(goodSortByShop);
-                    ShopOfGoodAlreadyInlist = false;
-                }
-            }else{
-                ;
-            }
-        }
-
-        result.setData(ListgoodSortByShop);
-        return result;
-    }
-
-    @Override
-    public JsonResult getInvalidCart(String username){
-        JsonResult result = new JsonResult<>(YES);
-
-        List<GoodSortByShop> ListgoodSortByShop = new ArrayList<>();    //包装类，包装shopname和List<GoodReturn>
-
-        //List<GoodReturn> invalidGoodsInCart = new ArrayList<>();
-        List<Integer> allGoodsId = cartMapper.GetAllGoodsIdInCartByUsername(username);
-        Boolean ShopOfGoodAlreadyInlist = false;
-        for(Integer id : allGoodsId){
-            String shopname = goodMapper.GetShopnamByGoodsId(id);
-            int shopAdmitted = shopMapper.GetShopAdmittedByShopname(shopname);
-            int goodStatus = goodMapper.GetGoodStatusByGoodsId(id);
-            if(shopAdmitted == 1 && goodStatus == 1){   //商店状态和商品状态都正常
-
-            }else{
-                Good good = goodMapper.getGoodsByGoodsId(id);
-
-                List<String> piclist = new ArrayList<>();
-                GoodReturn goodReturn = new GoodReturn();
-                goodReturn.setGoodsPrice(good.getGoodsPrice());
-                goodReturn.setGoodsStock(good.getGoodsStock());
-                goodReturn.setGoodsId(good.getGoodsId());
-                goodReturn.setGoodsname(good.getGoodsname());
-                goodReturn.setIntroduction(good.getIntroduction());
-                goodReturn.setShopname(good.getShopname());
-                goodReturn.setStatus(good.getStatus());
-                goodReturn.setRegisterStatus(good.getRegisterStatus());
-                goodReturn.setModifyStatus(good.getModifyStatus());
-                goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
-                for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
-                    //System.out.println(good.getGoodsId());
-                    byte[] imageData = pics.getPic();
-                    String base64Image = Base64.getEncoder().encodeToString(imageData);
-                    //System.out.println(base64Image.substring(0,100));
-                    piclist.add(base64Image);
-                }
-                goodReturn.setGoodsAvatar(piclist);
-
-                //如果goodReturn的商店名，与ListgoodSortByShop中某一项的商店名，就加入该商店，否则就新建一个goodSortByShop对象
-                for(int i = 0; i < ListgoodSortByShop.size(); i++){
-                    if( ListgoodSortByShop.get(i).getShopname().equals(goodReturn.getShopname()) ) {
-                        ListgoodSortByShop.get(i).getGoodReturnList().add(goodReturn);
-
-                        System.out.println(goodReturn.getShopname());
-
-                        ShopOfGoodAlreadyInlist = true;
-                    }
-                }
-                if(!ShopOfGoodAlreadyInlist){   //商店名没出现过，新加商店名
-                    String NewShopname = goodReturn.getShopname();
-                    List<GoodReturn> ListGoodReturn = new ArrayList<>();
-                    ListGoodReturn.add(goodReturn);
-
-                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, ListGoodReturn);
-                    ListgoodSortByShop.add(goodSortByShop);
-
-                    System.out.println(goodSortByShop.getShopname());
-
                     ShopOfGoodAlreadyInlist = false;
                 }
 
                 //invalidGoodsInCart.add(goodReturn);
             }
         }
+        System.out.println("after");
         result.setData(ListgoodSortByShop);
         return result;
     }
