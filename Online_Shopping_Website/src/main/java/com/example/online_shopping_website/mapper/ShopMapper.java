@@ -87,4 +87,8 @@ public interface ShopMapper {
     List<Shop> GetAllDeletedShop();
 
     BigDecimal GetCapitalByShopname(String shopname);
+
+    void TransferCapitalFromIntemediary(BigDecimal capital);
+
+    void TransferCapitalToProfitAccount(BigDecimal capital);
 }

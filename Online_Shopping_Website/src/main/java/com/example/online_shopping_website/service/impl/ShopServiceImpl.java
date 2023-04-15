@@ -176,7 +176,8 @@ public class ShopServiceImpl implements IShopService {
                     shopMapper.SetShopNormal(shopname);
                     //管理员同意申请时，把注册资金从中间账户转账到商城利润账号
                     BigDecimal capital = shopMapper.GetCapitalByShopname(shopname);
-                    shopMapper.TransferCapitalFromIntemediaryToProfitAccount(capital);
+                    shopMapper.TransferCapitalFromIntemediary(capital);
+                    shopMapper.TransferCapitalToProfitAccount(capital);
                 }
                 else{
                     result.setState(NO);
