@@ -69,6 +69,7 @@
         UPDATE users SET intermediaryAccount = intermediaryAccount - #{capital} WHERE usertype = 0;
         UPDATE users SET profitAccount = profitAccount + #{capital} WHERE usertype = 0;
     </update>
+
     <update id="AvatarUpdate">
         UPDATE shops SET avatar = #{avatar} WHERE shopname = #{shopname}
     </update>
@@ -115,4 +116,16 @@
     <select id="GetAllDeletedShop" resultMap="ShopMap">
         SELECT * FROM shops WHERE is_admitted = 5;
     </select>
+
+    <select id="GetCapitalByShopname" resultType="java.math.BigDecimal">
+        SELECT capital FROM shops WHERE shopname = #{shopname};
+    </select>
+
+    <update id="TransferCapitalFromIntemediary">
+        UPDATE users SET intermediaryAccount = intermediaryAccount - #{capital} WHERE usertype = 0;
+    </update>
+
+    <update id="TransferCapitalToProfitAccount">
+        UPDATE users SET profitAccount = profitAccount + #{capital} WHERE usertype = 0;
+    </update>
 </mapper>

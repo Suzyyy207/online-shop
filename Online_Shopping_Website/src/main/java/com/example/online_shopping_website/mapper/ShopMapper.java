@@ -81,7 +81,14 @@ public interface ShopMapper {
     void SetShopdeletionRejected(String shopname);
     void CancelShopUnregistyerByShopname(String shopname, int is_admitted);
     void ClearShopInfoByShopname(String shopname);
+
     int GetShopAdmittedByShopname(String shopname);
 
     List<Shop> GetAllDeletedShop();
+
+    BigDecimal GetCapitalByShopname(String shopname);
+
+    void TransferCapitalFromIntemediary(BigDecimal capital);
+
+    void TransferCapitalToProfitAccount(BigDecimal capital);
 }
