@@ -62,7 +62,7 @@
     </insert>
     
     <update id="TransferCapitalToIntemediaryAccount">
-        update users set intermediaryAccount = #{capital} WHERE usertype = 0
+        update users set intermediaryAccount = intermediaryAccount + #{capital} WHERE usertype = 0;
     </update>
 
     <update id="TransferCapitalFromIntemediaryToProfitAccount">
