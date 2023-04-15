@@ -51,7 +51,7 @@
         DELETE FROM cart WHERE username = #{username} AND goodsId = #{goodsId};
     </delete>
 
-    <select id="getAllShopnameInCart" resultType="java.lang.String">
-        SELECT shopname FROM cart WHERE  = #{}
-    </select>
+<!--    <select id="getAllShopnameInCart" resultType="java.lang.String">-->
+<!--        SELECT shopname FROM cart WHERE  = #{}-->
+<!--    </select>-->
 </mapper>

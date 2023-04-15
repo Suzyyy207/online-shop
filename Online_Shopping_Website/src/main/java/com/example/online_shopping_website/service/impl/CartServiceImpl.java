@@ -110,22 +110,31 @@ public class CartServiceImpl implements ICartService {
                 }
                 goodReturn.setGoodsAvatar(piclist);
 
-                //如果goodReturn的商品名一样，与ListgoodSortByShop中某一项的商店名，就加入该商店，否则就新建一个goodSortByShop对象
+                System.out.println(goodReturn.getShopname());
+
+                //如果goodReturn的商品名，与ListgoodSortByShop中某一项的商店名一样，就加入该商店，否则就新建一个goodSortByShop对象
                 for(int i = 0; i < ListgoodSortByShop.size(); i++){
-                    if( ListgoodSortByShop.get(i).getShopname().equals(goodReturn.getShopname()) )
+                    if( ListgoodSortByShop.get(i).getShopname().equals(goodReturn.getShopname()) ) {
                         ListgoodSortByShop.get(i).getGoodReturnList().add(goodReturn);
                         ShopOfGoodAlreadyInlist = true;
+                        break;
+                    }
                 }
                 if(!ShopOfGoodAlreadyInlist){   //商店名没出现过，新加商店名
                     String NewShopname = goodReturn.getShopname();
-                    List<GoodReturn> NewListGoodSortByShopd = new ArrayList<>();
-                    NewListGoodSortByShopd.add(goodReturn);
-                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, NewListGoodSortByShopd);
+                    List<GoodReturn> ListGoodReturn = new ArrayList<>();
+                    ListGoodReturn.add(goodReturn);
+
+                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, ListGoodReturn);
+
+                    ListgoodSortByShop.add(goodSortByShop);
+                    ShopOfGoodAlreadyInlist = false;
                 }
             }else{
                 ;
             }
         }
+
         result.setData(ListgoodSortByShop);
         return result;
     }
@@ -169,17 +178,27 @@ public class CartServiceImpl implements ICartService {
                 }
                 goodReturn.setGoodsAvatar(piclist);
 
-                //如果goodReturn的商品名一样，与ListgoodSortByShop中某一项的商店名，就加入该商店，否则就新建一个goodSortByShop对象
+                //如果goodReturn的商店名，与ListgoodSortByShop中某一项的商店名，就加入该商店，否则就新建一个goodSortByShop对象
                 for(int i = 0; i < ListgoodSortByShop.size(); i++){
-                    if( ListgoodSortByShop.get(i).getShopname().equals(goodReturn.getShopname()) )
+                    if( ListgoodSortByShop.get(i).getShopname().equals(goodReturn.getShopname()) ) {
                         ListgoodSortByShop.get(i).getGoodReturnList().add(goodReturn);
-                    ShopOfGoodAlreadyInlist = true;
+
+                        System.out.println(goodReturn.getShopname());
+
+                        ShopOfGoodAlreadyInlist = true;
+                    }
                 }
                 if(!ShopOfGoodAlreadyInlist){   //商店名没出现过，新加商店名
                     String NewShopname = goodReturn.getShopname();
-                    List<GoodReturn> NewListGoodSortByShopd = new ArrayList<>();
-                    NewListGoodSortByShopd.add(goodReturn);
-                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, NewListGoodSortByShopd);
+                    List<GoodReturn> ListGoodReturn = new ArrayList<>();
+                    ListGoodReturn.add(goodReturn);
+
+                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, ListGoodReturn);
+                    ListgoodSortByShop.add(goodSortByShop);
+
+                    System.out.println(goodSortByShop.getShopname());
+
+                    ShopOfGoodAlreadyInlist = false;
                 }
 
                 //invalidGoodsInCart.add(goodReturn);
