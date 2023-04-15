@@ -104,6 +104,8 @@ export default {
                 shopname: localStorage.getItem("shopname")
             }).then(res => {
                 this.editingGoodsList = res.data.data;
+                console.log("editingGoodsList")
+                console.log(this.editingGoodsList)
             })
         },
         getEditedGoods() {
