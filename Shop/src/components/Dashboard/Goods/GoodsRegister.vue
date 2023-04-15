@@ -182,7 +182,6 @@ export default {
                         this.addForm.goodsStock = goods.goodsStock;
                         this.addForm.goodsCategory = goods.goodsCategory;
                         this.addForm.introduction = goods.introduction;
-                        // TODO：fileList类型转换
                         this.addForm.fileList = goods.goodsAvatar;
                         console.log(this.addForm.fileList)
                     }

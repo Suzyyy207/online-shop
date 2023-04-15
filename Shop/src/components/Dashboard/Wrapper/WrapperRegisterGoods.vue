@@ -126,7 +126,9 @@ export default {
             this.$axios.post("/getRegistrationDeniedGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
             }).then(res => {
-                this.registerationDeniedGoodsList = res.data.data;
+                console.log("registrationDeniedGoodsList")
+                console.log(res.data.data)
+                this.registrationDeniedGoodsList =res.data.data;
                 console.log(this.registrationDeniedGoodsList)
             })
         },

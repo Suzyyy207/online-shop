@@ -44,7 +44,7 @@ export default {
     methods: {
         addToCart() {
             this.$axios.post('/addToCart',{
-                goodsId: this.goods.goodsId,
+                goodsId: parseInt(this.goods.goodsId),
                 username: localStorage.getItem("username"),
                 num: this.num
             }).then(res => {

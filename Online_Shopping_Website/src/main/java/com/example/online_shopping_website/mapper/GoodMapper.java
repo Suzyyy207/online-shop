@@ -1,13 +1,15 @@
 package com.example.online_shopping_website.mapper;
 
 import com.example.online_shopping_website.entity.Good;
+import com.example.online_shopping_website.entity.pic;
 
 import java.util.List;
 
 public interface GoodMapper {
     Integer insertGoodByUser(String introduction,String goodsname,float goodsPrice,int goodsStock,String goodsCategory,int status,int registerStatus,int modifyStatus,String shopname);
-
+    int setGood(Good good);
     Good SearchByGoodname(String goodsname);
+    List<Good> SearchListByGoodname(String goodsname);
     void UpdateGoodsStock(int goodsId,int goodsStock);
     void UpdateGoodsPrice(int goodsId,float goodsPrice);
     void UpdateGoodsname(int goodsId,String goodsname);
@@ -18,6 +20,21 @@ public interface GoodMapper {
     void UpdateModifyStatus(int goodsId,int modifyStatus);
     Integer picInsert(int goodsId,byte[] pic);
     List<Good> SearchByStatus(String shopname, int status);
+    List<Good> SearchByStatusStatusOnly(int status);
+    Good StatusSearch(int status);
+    List<Good> SearchByRegisterStatusRegisterStatusOnly(int registerStatus);
+    List<Good> SearchByModifyStatusModifyStatusOnly(int modifyStatus);
+
     List<Good> SearchByRegisterStatus(String shopname,int registerStatus);
     List<Good> SearchByModifyStatus(String shopname,int modifyStatus);
+    Good SearchByGoodsId(int goodsId);
+    void setDelete(int goodsId);
+    void AddToFavorite(String username, int goodsId);
+    void Unfavorite(String username, int goodsId);
+    Boolean isFavorite(String username, int goodsId);
+    int GetGoodsStockByGoodsId(int goodsId);
+    Boolean IsGoodsInCart(String username, int goodsId);
+    void updateCartGoodsNum(String username, int goodsId, int num);
+    void insertCartGoodsNum(String username, int goodsId, int num);
+    void DeleteGoods(int goodsId);
 }

@@ -119,6 +119,7 @@ export default {
       this.$axios.post('/shopUnregister',{
         shopname: localStorage.getItem("shopname")
       }).then(res=>{
+        console.log(res.data)
         if(res.data.state==window.SUCCESS){
           this.$message.success(res.data.message);
         } else {
@@ -130,7 +131,7 @@ export default {
     cancelRegister() {
       this.$axios.post('/cancelRegister',{
         shopname: localStorage.getItem("shopname"),
-        is_admitted: this.shop.is_admitted
+        cancelType: this.shop.is_admitted
       }).then(res=>{
         if(res.data.state==window.SUCCESS){
           this.$message.success(res.data.message);
@@ -138,7 +139,7 @@ export default {
           this.$message.error(res.data.message);
         }
       })
-      this.$router.go(0);
+      //this.$router.go(0);
     }
   }
 }
