@@ -51,7 +51,7 @@ import InvalidGoodsInSL from '../ShoppingList/InvalidGoodsInSL.vue'
                     </div>
                         
                     <div class="goods">
-                        <div class="goodShow" v-for="goods in shop.goodsList" :key="goods.goodsId">
+                        <div class="goodShow" v-for="goods in shop.goodReturnList" :key="goods.goodsId">
                             <el-checkbox class="check" v-model="goods.isChecked" />
                             <GoodsInSL class="good" :goods="goods" @reloadPage="handleReloadPage"/>
                         </div>
@@ -73,7 +73,7 @@ import InvalidGoodsInSL from '../ShoppingList/InvalidGoodsInSL.vue'
 
                     
                     <div class="invalidGoods">
-                        <div class="invalidShow" v-for="goods in shop.goodsList" :key="goods.goodsId">
+                        <div class="invalidShow" v-for="goods in shop.goodReturnList" :key="goods.goodsId">
                             <div v-if="isDelete==0"></div><!--排版占位div，不要删除！！-->
                             <el-checkbox class="check" v-model="goods.isChecked" v-else/>
                             <InvalidGoodsInSL class="invalidGood" :goods="goods" @reloadPage="handleReloadPage"/>
@@ -120,11 +120,11 @@ export default {
             },
             shop:{
                 shopname: "shopname1",
-                goodsList: []
+                goodReturnList: []
             },
             shop2:{
                 shopname: "shopname2",
-                goodsList: []
+                goodReturnList: []
             }
         }
     },
@@ -136,7 +136,7 @@ export default {
         totalPrice() {
             let total = 0;
             for (let shop of this.validCart) {
-                for (let goods of shop.goodsList) {
+                for (let goods of shop.goodReturnList) {
                     if (goods.isChecked) {
                         total += Number(goods.goodsPrice) * Number(goods.num);
                     }
@@ -147,7 +147,7 @@ export default {
         selectedCount() {
             let total = 0;
             for (let shop of this.validCart) {
-                for (let goods of shop.goodsList) {
+                for (let goods of shop.goodReturnList) {
                     if (goods.isChecked) {
                         total += Number(goods.num);
                     }
@@ -158,7 +158,12 @@ export default {
         totalCount() {
             let total = 0;
             for (let shop of this.validCart) {
-                for (let goods of shop.goodsList) {
+                for (let goods of shop.goodReturnList) {
+                    total += 1;
+                }
+            }
+            for (let shop of this.invalidCart) {
+                for (let goods of shop.goodReturnList) {
                     total += 1;
                 }
             }
@@ -167,7 +172,7 @@ export default {
     },
     methods: {
         getValidCart() {
-            //this.shop.goodsList = [this.goods]
+            //this.shop.goodReturnList = [this.goods]
             //this.validCart = [this.shop];
             var localStorage = window.localStorage;
             this.$axios.post("/getValidCart", {
@@ -175,10 +180,14 @@ export default {
             }).then(res => {
                 this.validCart = res.data.data;
                 console.log("validCart")
+                console.log(res.data)
                 console.log(this.validCart)
                 this.validCart = this.validCart.map(shop => {
                     shop.isChecked = false;
-                    shop.goodsList = shop.goodsList.map(goods => {
+                    var num = 0;
+                    shop.goodReturnList = shop.goodReturnList.map(goods => {
+                        goods.num = shop.goodNums[num];
+                        num += 1;
                         goods.isChecked = false;
                         return goods;
                     });
@@ -190,7 +199,7 @@ export default {
             
         },
         getInvalidCart() {
-            //this.shop2.goodsList = [this.goods2]
+            //this.shop2.goodReturnList = [this.goods2]
             //this.invalidCart = [this.shop2];
             var localStorage = window.localStorage;
             this.$axios.post("/getInvalidCart", {
@@ -199,9 +208,11 @@ export default {
                 this.invalidCart = res.data.data;
                 this.invalidCart = this.invalidCart.map(shop => {
                     shop.isChecked = false;
-                    shop.goodsList = shop.goodsList.map(goods => {
+                    var num = 0;
+                    shop.goodReturnList = shop.goodReturnList.map(goods => {
                         goods.isChecked = false;
-                        this.totalCount += 1;
+                        goods.num = shop.goodNums[num];
+                        num += 1;
                         return goods;
                     });
                     return shop;
@@ -210,7 +221,7 @@ export default {
             })
         },
         changeShopStatus(shop) {
-            shop.goodsList.forEach((goods) => {
+            shop.goodReturnList.forEach((goods) => {
                 goods.isChecked = shop.isChecked;
             });
         },
@@ -235,14 +246,14 @@ export default {
         toDelete() {
             var goodsToDelete = []
             for (let shop of this.validCart) {
-                for (let goods of shop.goodsList) {
+                for (let goods of shop.goodReturnList) {
                     if (goods.isChecked) {
                         goodsToDelete.push(goods.goodsId)
                     }
                 }
             }
             for (let shop of this.invalidCart) {
-                for (let goods of shop.goodsList) {
+                for (let goods of shop.goodReturnList) {
                     if (goods.isChecked) {
                         goodsToDelete.push(goods.goodsId)
                     }
