@@ -111,4 +111,8 @@
     <select id="GetShopAdmittedByShopname" resultType="int">
         SELECT is_admitted FROM shops WHERE shopname = #{shopname};
     </select>
+
+    <select id="GetAllDeletedShop" resultMap="ShopMap">
+        SELECT * FROM shops WHERE is_admitted = 5;
+    </select>
 </mapper>
