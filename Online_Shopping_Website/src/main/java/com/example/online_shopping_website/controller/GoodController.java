@@ -308,4 +308,14 @@ public class GoodController {
 
         return result;
     }
+    @RequestMapping("/api/modifyGoodsPicture")
+    public JsonResult<Integer> modifyGoodsPicture(@RequestParam("goodsId") int goodsId, @RequestParam("file") List<MultipartFile> file) throws IOException{
+        JsonResult<Integer> result = new JsonResult<>(YES);
+        for (MultipartFile f : file) {
+            byte[] pic = f.getBytes();
+            goodService.picsUpload(-goodsId,pic);
+        }
+
+        return result;
+    }
 }
