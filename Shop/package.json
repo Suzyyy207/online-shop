@@ -17,6 +17,7 @@
     "compressorjs": "^1.2.1",
     "element-plus": "^2.2.33",
     "element-ui": "^2.15.13",
+    "file-type": "^18.2.1",
     "qs": "^6.11.0",
     "svg-captcha": "^1.4.0",
     "vue": "^3.2.47",

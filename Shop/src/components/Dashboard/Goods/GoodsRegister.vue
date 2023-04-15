@@ -157,37 +157,44 @@ export default {
         getGoodsInfo() {
             console.log("getGoodsInfo")
             console.log(Object.keys(this.goods).length)
+            // 商品修改中
             if(Object.keys(this.goods).length != 0) {
                 this.isModified = true;
-                this.$axios.post('/getEditingGoodsInfo',{
-                    goodsId: this.goods.goodsId
-                }).then(res => {
-                    console.log(res.data)
-                    if(res.data.state == window.SUCCESS) {
-                        // 显示的是提交但未审批的信息
-                        const goods = res.data.data;
-                        this.isModified = 1;
-                        this.addForm.goodsname = goods.goodsname;
-                        this.addForm.goodsPrice = goods.goodsPrice;
-                        this.addForm.goodsStock = goods.goodsStock;
-                        this.addForm.goodsCategory = goods.goodsCategory;
-                        this.addForm.introduction = goods.introduction;
-                        this.addForm.fileList = goods.goodsAvatar;
-                        console.log(this.addForm.fileList)
-                    }
-                    else {
-                        // 显示当前商品的信息
-                        this.isModified = 1;
-                        this.addForm.goodsname = this.goods.goodsname;
-                        this.addForm.goodsPrice = this.goods.goodsPrice;
-                        this.addForm.goodsStock = this.goods.goodsStock;
-                        this.addForm.goodsCategory = this.goods.goodsCategory;
-                        this.addForm.introduction = this.goods.introduction;
-                        // TODO：fileList类型转换
-                        this.addForm.fileList = this.goods.goodsAvatar;
-                    }
-                    
-                })
+                // 情况1:注册中/修改中的商品再次修改信息
+                if(this.goods.status == 0||this.goods.status == 2) {
+                    this.$axios.post('/getEditingGoodsInfo',{
+                        goodsId: this.goods.goodsId
+                    }).then(res => {
+                        console.log("getGoodsInfo")
+                        console.log(res.data)
+                        if(res.data.state == window.SUCCESS) {
+                            // 显示的是提交但未审批的信息
+                            const goods = res.data.data;
+                            this.addForm.goodsname = goods.goodsname;
+                            this.addForm.goodsPrice = goods.goodsPrice;
+                            this.addForm.goodsStock = goods.goodsStock;
+                            this.addForm.goodsCategory = goods.goodsCategory;
+                            this.addForm.introduction = goods.introduction;
+                            // this.addForm.fileList = goods.goodsAvatar;
+                            /*const defaultFileList = [];
+                            goods.goodsAvatar.forEach((data, index) => {
+                                const file = this.convertBase64ToFile(data, `file${index}.png`);
+                                defaultFileList.push({ name: file.name, url: URL.createObjectURL(file) });
+                                this.addForm.fileList.push(file);
+                            });
+                            this.defaultFileList = defaultFileList;
+                            console.log("avatar")
+                            console.log(goods.goodsAvatar)*/
+                        }
+                    })
+                } else {
+                    this.addForm.goodsname = this.goods.goodsname;
+                    this.addForm.goodsPrice = this.goods.goodsPrice;
+                    this.addForm.goodsStock = this.goods.goodsStock;
+                    this.addForm.goodsCategory = this.goods.goodsCategory;
+                    this.addForm.introduction = this.goods.introduction;
+                    //this.addForm.fileList = this.goods.goodsAvatar;
+                }
                 console.log(this.goods);
             }
         },
@@ -265,11 +272,13 @@ export default {
                     goodsPrice: this.addForm.goodsPrice,
                     goodsStock: this.addForm.goodsStock
                 }).then(res => {
+                    console.log("setGoodsInfo")
+                    console.log(res.data)
                     if(res.data.state == window.SUCCESS){
-                        this.setGoodsAvatar(res.data.data);
+                        this.modifyGoodsAvatar(this.goods.goodsId);
                     }
                     else {
-                        this.$message.error("提交失败，请重试");
+                        this.$message.error(res.data.message);
                     }
                 }).catch(err => {
                     this.$message.error("提交失败，请重试");
@@ -315,11 +324,14 @@ export default {
           });
         },
         setGoodsAvatar: function(goodsId) {
+            console.log("setGoodsPics")
+            console.log(this.addForm.fileList.length)
             let formData = new FormData();
             formData.append("goodsId", goodsId);
             for (let i = 0; i < this.addForm.fileList.length; i++) {
                 formData.append("file", this.addForm.fileList[i].raw);
             }
+            console.log(formData)
             this.$axios.post("/setGoodsPicture", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             })
@@ -335,9 +347,40 @@ export default {
                 this.$message.error("提交失败，请重试");
             });
         },
+        modifyGoodsAvatar: function(goodsId) {
+            let formData = new FormData();
+            formData.append("goodsId", goodsId);
+            for (let i = 0; i < this.addForm.fileList.length; i++) {
+                formData.append("file", this.addForm.fileList[i].raw);
+            }
+            console.log(formData)
+            this.$axios.post("/modifyGoodsPicture", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            }) .then((res) => {
+                console.log(res.data);
+                this.$message.success("提交成功！");
+                setTimeout(() => {
+                    this.$router.go(0)
+                }, 1000);
+            }) .catch((err) => {
+                console.log(err);
+                this.$message.error("提交失败，请重试");
+            });
+        },
         resetForm() {
             this.$refs.addForm.resetFields();
         },
+        convertBase64ToFile(base64Data, fileName) {
+            const arr = base64Data.split(',');
+            const fileType = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], fileName, { type: fileType });
+        }
     }
 }
 

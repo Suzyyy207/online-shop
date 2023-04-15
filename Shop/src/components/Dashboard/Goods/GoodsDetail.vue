@@ -9,7 +9,6 @@
             </div-->
             <ShowPics :goodsAvatar="goods.goodsAvatar" class="image"/>
         
-        
         <div class="infoGD">
             <p>商品名称：{{ goods.goodsname }}</p>
             <p>商品类别：{{ goods.goodsCategory }}</p>
@@ -17,7 +16,7 @@
             <p>商品库存：{{ goods.goodsStock }}</p>
             <p>商品价格：{{ goods.goodsPrice }}</p>
         </div>        
-        
+
     </div>
 </template>
  
