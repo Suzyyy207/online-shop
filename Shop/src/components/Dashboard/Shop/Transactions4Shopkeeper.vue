@@ -1,4 +1,4 @@
-<!-- 商铺流水详情 -->>
+<!-- 商铺流水详情 -->
 
 <template>
     TODO：transaction
