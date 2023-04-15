@@ -6,12 +6,14 @@ import com.example.online_shopping_website.mapper.ShopMapper;
 import com.example.online_shopping_website.service.ICartService;
 import com.example.online_shopping_website.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static javax.security.auth.callback.ConfirmationCallback.NO;
 import static javax.security.auth.callback.ConfirmationCallback.YES;
 
+@Service
 public class CartServiceImpl implements ICartService {
 
     @Autowired

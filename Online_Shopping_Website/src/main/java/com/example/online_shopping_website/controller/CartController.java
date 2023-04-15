@@ -2,14 +2,16 @@ package com.example.online_shopping_website.controller;
 
 import com.example.online_shopping_website.service.ICartService;
 import com.example.online_shopping_website.util.JsonResult;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-import static javax.security.auth.callback.ConfirmationCallback.YES;
+import static javax.security.auth.callback.ConfirmationCallback.*;
 
+@RestController
 public class CartController {
 
     @Autowired
@@ -31,8 +33,7 @@ public class CartController {
         int goodsId = (int)map.get("goodsId");
         int num = (int)map.get("num");
 
-        JsonResult result = new JsonResult<>(YES);
-        result = cartService.addToCart(username, goodsId, num);
+        JsonResult result = cartService.addToCart(username, goodsId, num);
         return result;
     }
 
