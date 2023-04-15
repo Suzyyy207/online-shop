@@ -41,4 +41,5 @@ public interface GoodMapper {
     int GetGoodStatusByGoodsId(int goodsId);
 
     Good getGoodsByGoodsId(int goodsId);
+    Good setSearch(int modifyStatus,String shopname);
 }

@@ -122,4 +122,7 @@
     <select id="getGoodsByGoodsId" resultMap="GoodMap">
         SELECT * from goods WHERE goodsId = #{goodsId};
     </select>
+    <select id="setSearch" resultMap="GoodMap">
+        SELECT * FROM goods WHERE modifyStatus = #{modifyStatus} and shopname = #{shopname};
+    </select>
 </mapper>
