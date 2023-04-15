@@ -298,13 +298,14 @@ public class GoodController {
         return result;
     }
 
-    @RequestMapping("/api/setCartGoodsNum")
-    public JsonResult setCartGoodsNum(@RequestBody Map<String,Object> map){
-        String username = (String)map.get("username");
-        int goodsId = (int)map.get("goodsId");
-        int num = (int)map.get("num");
+    @RequestMapping("/api/modifyGoodsPicture")
+    public JsonResult<Integer> modifyGoodsPicture(@RequestParam("goodsId") int goodsId, @RequestParam("file") List<MultipartFile> file) throws IOException{
+        JsonResult<Integer> result = new JsonResult<>(YES);
+        for (MultipartFile f : file) {
+            byte[] pic = f.getBytes();
+            goodService.picsUpload(-goodsId,pic);
+        }
 
-        JsonResult result = goodService.setCartGoodsNum(username, goodsId, num);
         return result;
     }
     @RequestMapping("/api/modifyGoodsPicture")
