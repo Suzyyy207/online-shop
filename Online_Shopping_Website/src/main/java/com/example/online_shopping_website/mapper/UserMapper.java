@@ -112,18 +112,12 @@ public interface UserMapper {
 
     int RechargeIntermediaryAccountByUsername(String username, BigDecimal credit);
 
-    Integer getGoodsNumberInCart(String username, int goodsId);
-
-    void InsertNewGoodsIntoCart(String username, int goodsId, int num);
-
-    void UpdateGoodsNumInCart(String username, int goodsId,  int num);
-
-    void DeleteZeroGoodsInCart(String username);
     BigDecimal GetProfitAccount();
     BigDecimal GetIntermediaryAccount();
     void AvatarDelete(String username);
-    List<Integer> GetAllGoodsIdInCartByusername(String username);
+
     int GetUidByShopname(String shopname);
     String DeleteShopAccountANDTransferBalanceToPrivateAccount(int uid);
+
 }
 

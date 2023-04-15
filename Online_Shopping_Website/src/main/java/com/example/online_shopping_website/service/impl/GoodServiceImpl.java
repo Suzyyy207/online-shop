@@ -277,7 +277,7 @@ public class GoodServiceImpl implements IGoodService {
         Good good = goodMapper.SearchByGoodsId(goodsId);
         GoodReturn goodReturn = new GoodReturn();
         System.out.println(1);
-        if(good.getStatus() == 1||good.getStatus() == 0){
+        if(good.getStatus() == 1||good.getStatus() == 0){   //为什么不用构造函数呢？
             goodReturn.setGoodsPrice(good.getGoodsPrice());
             goodReturn.setGoodsStock(good.getGoodsStock());
             goodReturn.setGoodsId(good.getGoodsId());
@@ -290,7 +290,7 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
             List<String> piclist = new ArrayList<>();
             List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
-            System.out.println(picList);
+            //System.out.println(picList);
             for(pic pics : picList){
                 byte[] imageData = pics.getPic();
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
@@ -371,20 +371,6 @@ public class GoodServiceImpl implements IGoodService {
         return goodReturn;
     }
 
-    @Override
-    public JsonResult setCartGoodsNum(String username, int goodsId, int num){
-        JsonResult result =new JsonResult<>(YES);
-        int goodsStock = goodMapper.GetGoodsStockByGoodsId(goodsId);
-        if(num > goodsStock)    //异常1：添加到购物车的数量大于库存数量
-            result.setState(NO);
-        else{
-            if(goodMapper.IsGoodsInCart(username,goodsId))  //异常2：用户名下的购物车已经有相应的商品了
-                goodMapper.updateCartGoodsNum(username, goodsId, num);  //购物车已有，更新数据库
-            else
-                goodMapper.insertCartGoodsNum(username, goodsId, num);  //购物车没有，插入数据库
-        }
-        return result;
-    }
     @Override
     public void goodsPicsCheck(int goodsId){
         List<pic> picList = picMapper.searchPicByGoodsId(goodsId);

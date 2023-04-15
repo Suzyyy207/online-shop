@@ -258,7 +258,6 @@ public class GoodController {
         return result;
     }
 
-
     @RequestMapping("/api/addToFavorites")
     public JsonResult addToFavorites(@RequestBody Map<String,Object> map){
         String username = (String)map.get("username");
@@ -298,13 +297,4 @@ public class GoodController {
         return result;
     }
 
-    @RequestMapping("/api/setCartGoodsNum")
-    public JsonResult setCartGoodsNum(@RequestBody Map<String,Object> map){
-        String username = (String)map.get("username");
-        int goodsId = (int)map.get("goodsId");
-        int num = (int)map.get("num");
-
-        JsonResult result = goodService.setCartGoodsNum(username, goodsId, num);
-        return result;
-    }
 }
