@@ -125,4 +125,8 @@
     <select id="setSearch" resultMap="GoodMap">
         SELECT * FROM goods WHERE modifyStatus = #{modifyStatus} and shopname = #{shopname};
     </select>
+
+    <select id="GetGoodsStockByGoodsId" resultType="int">
+        SELECT IFNULL(goodsStock, 0) FROM goods WHERE goodsId = #{goodsId}
+    </select>
 </mapper>
