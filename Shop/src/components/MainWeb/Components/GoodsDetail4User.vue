@@ -30,6 +30,7 @@
  
 <script>
 import "../../../constant";
+import { interceptor,userorshopInterceptor } from "../../../interceptor";
 export default {
     data() {
         return {
@@ -56,6 +57,8 @@ export default {
     },
   },
     created() {
+        interceptor(this);
+        userorshopInterceptor(this);
         this.getGoodsInfoByGoodsId();
     },
     methods:{

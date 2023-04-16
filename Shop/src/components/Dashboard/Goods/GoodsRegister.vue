@@ -106,6 +106,7 @@
  
 <script>
 import "../../../constant";
+import { interceptor, shopkeeperInterceptor } from "../../../interceptor"
 export default {
     props: {
         goods: {
@@ -153,6 +154,8 @@ export default {
         }
     },
     created(){
+        interceptor(this);
+        shopkeeperInterceptor(this);
         this.getGoodsInfo();
     },
     methods:{

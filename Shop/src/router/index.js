@@ -46,7 +46,7 @@ const router = createRouter({
     // 上述页面已添加拦截器
 
 
-    //新添加的个人中心页面，未添加拦截器
+    // 新增拦截器，需要测试
     {
       path: '/userSelfCenter',
       name: 'userSelfCenter',
@@ -57,8 +57,6 @@ const router = createRouter({
       name: 'shopkeeperCenter',
       component: () => import('../views/SelfCenter/ShopkeeperSC.vue')
     },
-
-    //新添加的购物车界面，未加拦截器
     {
       path: '/userSL',
       name: 'userShoppingList',
@@ -74,26 +72,11 @@ const router = createRouter({
       name: 'Shop4User',
       component: () => import('../views/ShopShow/UserSS.vue')
     },
-    
-    //Good因为后端没写好 所以没有加参数！！之后需要补充
     {
       path: '/GoodsDetail/:goodsId',
       name: 'GoodsDetail',
       component: () => import('../views/ShopShow/GoodsDetail.vue')
     },
-    {
-      path: '/Goods4User',
-      name: 'Goods4User',
-      component: () => import('../views/GoodsShow/UserGS.vue')
-    },
-    {
-      path: '/Goods4Shopkeeper',
-      name: 'Goods4Shopkeeper',
-      component: () => import('../views/GoodsShow/ShopkeeperGS.vue')
-    },
-
-    // 下述页面是为了调试方便的组件路径，最终需要封装到views中，因此不需要额外添加拦截器
-    // 提交项目前保证无组件路径
     {
       path: '/GoodsDetail4User/:goodsId',
       name: 'GoodsDetail4User',
@@ -108,38 +91,10 @@ const router = createRouter({
       path: '/GoodsRegister',
       name: 'GoodsRegister',
       component: () => import('../components/Dashboard/Goods/GoodsRegister.vue')
-    },
-    {
-      path: '/Avatar',
-      name: 'Avatar',
-      component: () => import('../components/Dashboard/User/UserAvatar.vue')
-    },
-    {
-      path: '/GoodsImg',
-      name: 'GoodsImg',
-      component: () => import('../components/Dashboard/Goods/GoodsImg.vue')
     }
-    ,
-    {
-      path: '/upload',
-      name: 'upload',     
-       component: () => import('../components/Dashboard/User/upload.vue')
-    },
-    {
-      path: '/GoodsShow',
-      name: 'GoodsShow',
-      component: () => import('../components/Dashboard/Goods/GoodsShow.vue')
-    },
-    {
-      path: '/WrapperGoods',
-      name: 'WrapperGoods',
-      component: () => import('../components/Dashboard/Wrapper/WrapperGoods.vue')
-    },
-    {
-      path: '/SetUserInfo',
-      name: 'SetUserInfo',
-      component: () => import('../components/Dashboard/User/SetUserInfo.vue')
-    }
+    
+    // 下述页面是为了调试方便的组件路径，最终需要封装到views中，因此不需要额外添加拦截器
+    // 提交项目前保证无组件路径
     
   ]
 })
