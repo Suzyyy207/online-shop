@@ -10,6 +10,17 @@ export function interceptor(Vue) {
     }
 }
 
+// 用户和商户复用的页面
+export function userorshopInterceptor(Vue) {
+    var localStorage = window.localStorage;
+
+    if(localStorage.getItem('usertype') != window.USER && localStorage.getItem('usertype') != window.MANAGER) {
+        Vue.$message.error("访问失败：请登入普通用户或商户账号！");
+        Vue.$router.push({name:'Login'});
+    }
+}
+
+
 // 不同类型用户之间不可互相访问页面
 export function userInterceptor(Vue) {
     var localStorage = window.localStorage;

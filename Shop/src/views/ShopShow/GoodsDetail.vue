@@ -9,6 +9,7 @@ import GoodsDetail from '../../components/ShopGoodsPage/GoodsDetail.vue';
 </template>
 
 <script>
+import { interceptor } from "../../interceptor";
 export default {
     data(){
         return {
@@ -19,6 +20,7 @@ export default {
         GoodsDetail
     },
     created() {
+        interceptor(this);
         console.log("detail")
         this.goodsId = this.$route.params.goodsId;
         console.log(this.goodsId);

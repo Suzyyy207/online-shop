@@ -80,7 +80,7 @@ export default {
       recharge: function() {
         var localStorage = window.localStorage;
         console.log(this.credit);
-        if (isNaN(Number(this.credit))|this.credit<=0){
+        if (isNaN(Number(this.credit))||this.credit<=0){
             this.$message.error("充值失败，请输入符合要求的正浮点数");
         } else {
             // 转换为两位小数
