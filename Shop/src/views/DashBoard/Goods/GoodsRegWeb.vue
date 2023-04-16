@@ -2,7 +2,6 @@
 <script setup>
 import navS from '../../../components/Public/Nav/ShopkeeperNav.vue'
 import goodsReg from '../../../components/Dashboard/Goods/GoodsRegister.vue'
-import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 

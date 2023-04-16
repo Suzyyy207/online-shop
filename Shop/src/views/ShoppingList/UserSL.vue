@@ -13,6 +13,16 @@ import { RouterLink, RouterView } from 'vue-router'
     </body>
 </template>
 
+<script>
+import { interceptor, userInterceptor } from "../../interceptor";
+export default{
+    created(){
+        interceptor(this);
+        userInterceptor(this);
+    }
+}
+</script>
+
 <style scoped>
 body{
     background-color: rgba(128,128,128,0.1);

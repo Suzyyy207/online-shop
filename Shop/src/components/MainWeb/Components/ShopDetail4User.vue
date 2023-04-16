@@ -23,6 +23,7 @@
   
 <script>
 import GoodsShow4User from "./GoodsShow4User.vue"
+import { interceptor,userorshopInterceptor } from "../../../interceptor"
 export default {
     data(){
         return {
@@ -37,6 +38,8 @@ export default {
         GoodsShow4User
     },
     created() {
+        interceptor(this);
+        userorshopInterceptor(this);
         this.getShopInfo();
     },
     methods: {
