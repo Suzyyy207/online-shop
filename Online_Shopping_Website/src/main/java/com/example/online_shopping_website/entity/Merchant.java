@@ -8,5 +8,5 @@ import java.io.Serializable;
 
 @Data
 public class Merchant extends User implements Serializable {
-    private float account;
+
 }

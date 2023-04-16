@@ -91,4 +91,6 @@ public interface ShopMapper {
     void TransferCapitalFromIntemediary(BigDecimal capital);
 
     void TransferCapitalToProfitAccount(BigDecimal capital);
+
+    List<Shop> GetAllDeletingShop();
 }

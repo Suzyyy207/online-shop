@@ -119,5 +119,10 @@ public interface UserMapper {
     int GetUidByShopname(String shopname);
     String DeleteShopAccountANDTransferBalanceToPrivateAccount(int uid);
 
+    BigDecimal GetShopAccountByUid(int uid);
+
+    void DeleteShopAccountByUid(int uid);
+
+    void TransferShopAccountBalanceToPrivateAccount(int uid, BigDecimal ShopAccountBalance);
 }
 

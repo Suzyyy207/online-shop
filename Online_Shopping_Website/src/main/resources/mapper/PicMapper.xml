@@ -16,4 +16,7 @@
     <delete id="picDelete">
         DELETE from goodspics WHERE goodsId = #{goodsId}
     </delete>
+    <update id="goodsIdUpdate">
+        UPDATE goodspics SET goodsId = 0-#{goodsId} WHERE goodsId = #{goosId};
+    </update>
 </mapper>

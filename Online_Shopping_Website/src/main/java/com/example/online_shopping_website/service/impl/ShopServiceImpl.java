@@ -78,7 +78,7 @@ public class ShopServiceImpl implements IShopService {
     @Override
     public List<Shop> GetAllNotAdmittedShop(){
         List<Shop> ShopList_a = shopMapper.ShowAllNotAdmittedShop();
-        List<Shop> ShopList_b = shopMapper.GetAllDeletedShop();
+        List<Shop> ShopList_b = shopMapper.GetAllDeletingShop();
         List<Shop> shoplist = new ArrayList<>();
         shoplist.addAll(ShopList_a);
         shoplist.addAll(ShopList_b);
@@ -107,11 +107,11 @@ public class ShopServiceImpl implements IShopService {
     }
 
     @Override
-    public JsonResult cancelRegister(String shopname, int is_admitted){
+    public JsonResult cancelRegister(String shopname, int cancelType){
         JsonResult result = new JsonResult<>(YES,"撤销成功");
         int admitted_now = shopMapper.GetShopIsAdmitted(shopname);
 
-        switch (is_admitted){
+        switch (cancelType){
             case registrationUnderReview:                        //1.用户提交了注册申请 2.注册申请被管理员拒绝
             case registrationRejected:                           //此时可以取消注册申请,清空该用户提交的商店注册信息
                 if(admitted_now == registrationUnderReview || admitted_now == registrationRejected) {
@@ -123,8 +123,8 @@ public class ShopServiceImpl implements IShopService {
                 break;                                           //1.用户提交了删除申请 2.删除申请被管理员拒绝
             case deletionUnderReview:                            //此时可以取消删除申请,商店is_admitted设为正常
             case deletionRejected:
-                if(is_admitted == deletionUnderReview || is_admitted == deletionRejected) {
-                    shopMapper.CancelShopUnregistyerByShopname(shopname, is_admitted);
+                if(admitted_now == deletionUnderReview || admitted_now == deletionRejected) {
+                    shopMapper.CancelShopUnregistyerByShopname(shopname, cancelType);
                 }else{              //商店现在的is_admitted 不符合删除条件
                     result.setState(NO);
                     result.setMessage("撤销失败");
@@ -173,11 +173,12 @@ public class ShopServiceImpl implements IShopService {
         switch (stateOfAdmit){
             case registrationUnderReview:
                 if(approveType == adminApproveRegistration) {
-                    shopMapper.SetShopNormal(shopname);
                     //管理员同意申请时，把注册资金从中间账户转账到商城利润账号
                     BigDecimal capital = shopMapper.GetCapitalByShopname(shopname);
                     shopMapper.TransferCapitalFromIntemediary(capital);
                     shopMapper.TransferCapitalToProfitAccount(capital);
+
+                    shopMapper.SetShopNormal(shopname);
                 }
                 else{
                     result.setState(NO);
@@ -186,9 +187,12 @@ public class ShopServiceImpl implements IShopService {
                 break;
             case deletionUnderReview:
                 if(approveType == adminApproveDeletion) {
-                    shopMapper.SetShopDeleted(shopname);
                     int uid = userMapper.GetUidByShopname(shopname);        //删除成功，商店账户自动注销，资金转移至商户个人账户
-                    userMapper.DeleteShopAccountANDTransferBalanceToPrivateAccount(uid);
+                    BigDecimal ShopAccountBalance = userMapper.GetShopAccountByUid(uid);
+                    userMapper.DeleteShopAccountByUid(uid);
+                    userMapper.TransferShopAccountBalanceToPrivateAccount(uid, ShopAccountBalance);
+                    //userMapper.DeleteShopAccountANDTransferBalanceToPrivateAccount(uid);
+                    shopMapper.SetShopDeleted(shopname);
                 }
                 else{
                     result.setState(NO);
