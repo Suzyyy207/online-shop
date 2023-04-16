@@ -94,6 +94,7 @@ export default {
             this.$axios.get('/getApprovingGoods')
             .then(res => {
                 this.approvingGoodsList = this.approvingGoodsList.concat(res.data.data);
+                console.log("getApprovingGoods")
                 console.log(this.approvingGoodsList)
             })
         },

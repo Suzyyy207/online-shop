@@ -47,4 +47,11 @@
             (#{username}, #{goodsId}, #{num})
     </insert>
 
+    <delete id="DeleteGoodsInCart">
+        DELETE FROM cart WHERE username = #{username} AND goodsId = #{goodsId};
+    </delete>
+
+<!--    <select id="getAllShopnameInCart" resultType="java.lang.String">-->
+<!--        SELECT shopname FROM cart WHERE  = #{}-->
+<!--    </select>-->
 </mapper>

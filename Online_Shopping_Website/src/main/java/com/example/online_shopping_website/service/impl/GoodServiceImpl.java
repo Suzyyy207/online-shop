@@ -125,11 +125,11 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setModifyStatus(good.getModifyStatus());
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
             for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
-                //System.out.println(good.getGoodsId());
+                //.out.println(good.getGoodsId());
 
                 byte[] imageData = pics.getPic();
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
-                System.out.println(base64Image.substring(0,100));
+                //System.out.println(base64Image.substring(0,100));
                 piclist.add(base64Image);
             }
             goodReturn.setGoodsAvatar(piclist);
@@ -141,26 +141,62 @@ public class GoodServiceImpl implements IGoodService {
     public List<GoodReturn> searchByModifyStatus(String shopname, int modifyStatus){
         List<Good> goodslist = goodMapper.SearchByModifyStatus(shopname,modifyStatus);
         List<GoodReturn> goodReturnList = new ArrayList<>();
-        for(Good good : goodslist){
-            List<String> piclist = new ArrayList<>();
-            GoodReturn goodReturn = new GoodReturn();
-            goodReturn.setGoodsPrice(good.getGoodsPrice());
-            goodReturn.setGoodsStock(good.getGoodsStock());
-            goodReturn.setGoodsId(good.getGoodsId());
-            goodReturn.setGoodsname(good.getGoodsname());
-            goodReturn.setIntroduction(good.getIntroduction());
-            goodReturn.setShopname(good.getShopname());
-            goodReturn.setStatus(good.getStatus());
-            goodReturn.setRegisterStatus(good.getRegisterStatus());
-            goodReturn.setModifyStatus(good.getModifyStatus());
-            goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
-            for(pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())){
-                byte[] imageData = pics.getPic();
-                String base64Image = Base64.getEncoder().encodeToString(imageData);
-                piclist.add(base64Image);
+        if(modifyStatus==2||modifyStatus==3) {
+            for (Good good : goodslist) {
+                List<String> piclist = new ArrayList<>();
+                GoodReturn goodReturn = new GoodReturn();
+                goodReturn.setGoodsPrice(good.getGoodsPrice());
+                goodReturn.setGoodsStock(good.getGoodsStock());
+                goodReturn.setGoodsId(good.getGoodsId());
+                goodReturn.setGoodsname(good.getGoodsname());
+                goodReturn.setIntroduction(good.getIntroduction());
+                goodReturn.setShopname(good.getShopname());
+                goodReturn.setStatus(good.getStatus());
+                goodReturn.setRegisterStatus(good.getRegisterStatus());
+                goodReturn.setModifyStatus(good.getModifyStatus());
+                goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+                for (pic pics : picMapper.searchPicByGoodsId(good.getGoodsId())) {
+                    byte[] imageData = pics.getPic();
+                    String base64Image = Base64.getEncoder().encodeToString(imageData);
+                    piclist.add(base64Image);
+                }
+                goodReturn.setGoodsAvatar(piclist);
+                goodReturnList.add(goodReturn);
             }
-            goodReturn.setGoodsAvatar(piclist);
-            goodReturnList.add(goodReturn);
+        }else if(modifyStatus ==1){
+            goodslist.clear();
+            for (int i = 1; i < 50; i++) {
+                Good result = goodMapper.setSearch(-i, shopname);
+                if (result != null) {
+                    goodslist.add(result);
+                }
+            }
+            for (Good good : goodslist) {
+                List<String> piclist = new ArrayList<>();
+                GoodReturn goodReturn = new GoodReturn();
+                goodReturn.setGoodsPrice(good.getGoodsPrice());
+                goodReturn.setGoodsStock(good.getGoodsStock());
+                goodReturn.setGoodsId(good.getGoodsId());
+                goodReturn.setGoodsname(good.getGoodsname());
+                goodReturn.setIntroduction(good.getIntroduction());
+                goodReturn.setShopname(good.getShopname());
+                if(good.getStatus()<0){
+                    goodReturn.setStatus(2);
+                }else goodReturn.setStatus(good.getStatus());
+                goodReturn.setRegisterStatus(good.getRegisterStatus());
+                goodReturn.setModifyStatus(good.getModifyStatus());
+                System.out.println(good.getModifyStatus());
+                goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
+                for (pic pics : picMapper.searchPicByGoodsId(good.getModifyStatus())) {
+                    byte[] imageData = pics.getPic();
+                    String base64Image = Base64.getEncoder().encodeToString(imageData);
+                    piclist.add(base64Image);
+
+                }
+                System.out.println(piclist.size());
+                goodReturn.setGoodsAvatar(piclist);
+                goodReturnList.add(goodReturn);
+            }
         }
         return goodReturnList;
     }
@@ -173,14 +209,12 @@ public class GoodServiceImpl implements IGoodService {
     public List<GoodReturn> getApprovingGoods(){
         List<Good> goodListA = goodMapper.SearchByRegisterStatusRegisterStatusOnly(0);
         List<Good> goodListB = goodMapper.SearchByModifyStatusModifyStatusOnly(1);
-        System.out.println(goodListA.size());
         List<Good> goodList = new ArrayList<>();
         goodList.addAll(goodListA);
         for(Good good :goodListB){
             Good goodAdd = goodMapper.StatusSearch(-good.getGoodsId());
             if(goodAdd!=null) goodList.add(goodAdd);
         }
-        System.out.println(goodList.size());
         List<GoodReturn> goodReturnList = new ArrayList<>();
         for(Good good : goodList){
             GoodReturn goodReturn = new GoodReturn();
@@ -190,13 +224,15 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setGoodsname(good.getGoodsname());
             goodReturn.setIntroduction(good.getIntroduction());
             goodReturn.setShopname(good.getShopname());
-            goodReturn.setStatus(good.getStatus());
+            if(good.getStatus()<0){
+                goodReturn.setStatus(2);
+            }else goodReturn.setStatus(good.getStatus());
             goodReturn.setRegisterStatus(good.getRegisterStatus());
             goodReturn.setModifyStatus(good.getModifyStatus());
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
             List<String> piclist = new ArrayList<>();
             if(good.getStatus()<0){
-                for (pic pics : picMapper.searchPicByGoodsId(-good.getGoodsId())) {
+                for (pic pics : picMapper.searchPicByGoodsId(good.getModifyStatus())) {
                     byte[] imageData = pics.getPic();
                     String base64Image = Base64.getEncoder().encodeToString(imageData);
                     piclist.add(base64Image);
@@ -240,21 +276,23 @@ public class GoodServiceImpl implements IGoodService {
             return 0;
         }
         if(status == 2 ){
-            List<Good> goodList =goodMapper.SearchByStatusStatusOnly(-goodsId);
-            Good good = goodList.get(0);
-            goodMapper.setDelete(-goodsId);
+            Good good = goodMapper.SearchByGoodsId(goodsId);
+            goodMapper.DeleteGoods(goodsId);
+            goodsId = -good.getRegisterStatus();
+            System.out.println("goodsApplicationApproved:goodsId:");
+            System.out.println(goodsId);
+            Good goodTrue = goodMapper.getGoodsByGoodsId(goodsId);
             goodMapper.UpdateIntroduction(goodsId,good.getIntroduction());
             goodMapper.UpdateGoodsStock(goodsId,good.getGoodsStock());
             goodMapper.UpdateGoodsname(goodsId,good.getGoodsname());
             goodMapper.UpdateGoodsCategory(goodsId,good.getGoodsCategory());
             goodMapper.UpdateGoodsPrice(goodsId,good.getGoodsPrice());
             goodMapper.UpdateStatus(goodsId,1);
-            goodMapper.UpdateRegisterStatus(goodsId,3);
-            List<pic> picList = picMapper.searchPicByGoodsId(-goodsId);
+            goodMapper.UpdateRegisterStatus(goodsId,1);
+            goodMapper.UpdateModifyStatus(goodsId,3);
+            List<pic> picList = picMapper.searchPicByGoodsId(good.getRegisterStatus());
             picMapper.picDelete(goodsId);
-            for (pic pics :picList){
-                picsUpload(goodsId,pics.getPic());
-            }
+            picMapper.goodsIdUpdate(-goodsId);
             return 0;
         }else {
             return 1;
@@ -267,9 +305,9 @@ public class GoodServiceImpl implements IGoodService {
             return 0;
         }
         if(status == 2 ){
+            Good good = goodMapper.SearchByGoodsId(goodsId);//good是样本
+            goodsId = -good.getModifyStatus();//goodsId现在是原来真的数据的ID
             goodMapper.UpdateModifyStatus(goodsId,2);
-            goodMapper.setDelete(-goodsId);
-            picMapper.picDelete(-goodsId);
             /*
              * TODO*/
 
@@ -282,8 +320,6 @@ public class GoodServiceImpl implements IGoodService {
     public int cancelApplication(int goodsId){
         Good good = goodMapper.SearchByGoodsId(goodsId);
         if(good.getStatus() == 0|| good.getStatus() == 4){
-            System.out.println(goodsId);
-            System.out.println(good.getStatus());
             goodMapper.DeleteGoods(goodsId);
             return 0;
         }
@@ -301,7 +337,6 @@ public class GoodServiceImpl implements IGoodService {
     public GoodReturn getEditingGoodsInfo(int goodsId){
         Good good = goodMapper.SearchByGoodsId(goodsId);
         GoodReturn goodReturn = new GoodReturn();
-        System.out.println(1);
         if(good.getStatus() == 1||good.getStatus() == 0){
             goodReturn.setGoodsPrice(good.getGoodsPrice());
             goodReturn.setGoodsStock(good.getGoodsStock());
@@ -315,7 +350,6 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setGoodsCategory(Arrays.asList(good.getGoodsCategory().split(";")));
             List<String> piclist = new ArrayList<>();
             List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
-            System.out.println(picList);
             for(pic pics : picList){
                 byte[] imageData = pics.getPic();
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
@@ -324,7 +358,6 @@ public class GoodServiceImpl implements IGoodService {
             goodReturn.setGoodsAvatar(piclist);
         }else if(good.getStatus() == 2){
             good = goodMapper.StatusSearch(-goodsId);
-            System.out.println(good.getStatus());
             goodReturn.setGoodsPrice(good.getGoodsPrice());
             goodReturn.setGoodsStock(good.getGoodsStock());
             goodReturn.setGoodsId(good.getGoodsId());
@@ -386,7 +419,6 @@ public class GoodServiceImpl implements IGoodService {
         goodReturn.setFavorites(good.getFavorites());
         List<String> piclist = new ArrayList<>();
         List<pic> picList = picMapper.searchPicByGoodsId(good.getGoodsId());
-        System.out.println(picList);
         for(pic pics : picList){
             byte[] imageData = pics.getPic();
             String base64Image = Base64.getEncoder().encodeToString(imageData);

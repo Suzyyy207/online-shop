@@ -58,9 +58,11 @@
     <select id="SearchByStatus" resultMap="GoodMap">
         SELECT * FROM goods where status = #{status} and shopname = #{shopname}
     </select>
+
     <select id="SearchByStatusStatusOnly" resultMap="GoodMap">
         SELECT * FROM goods where status = #{status}
     </select>
+
 
     <select id="SearchByRegisterStatus" resultMap="GoodMap">
         SELECT * FROM goods where registerStatus = #{registerStatus} and shopname = #{shopname}
@@ -104,12 +106,27 @@
     <select id="StatusSearch" resultMap="GoodMap">
         SELECT * FROM goods where status = #{status};
     </select>
+    <select id="RegisterStatusSearch" resultMap="GoodMap">
+        SELECT * FROM goods where registerStatus = #{registerStatus};
+    </select>
+
 
     <select id="GetShopnamByGoodsId" resultType="java.lang.String">
         SELECT shopname FROM goods WHERE goodsId = #{goodsId}
     </select>
 
+    <select id="GetGoodStatusByGoodsId" resultType="int">
+        SELECT status FROM goods WHERE goodsId = #{goodsId}
+    </select>
+
     <select id="getGoodsByGoodsId" resultMap="GoodMap">
         SELECT * from goods WHERE goodsId = #{goodsId};
+    </select>
+    <select id="setSearch" resultMap="GoodMap">
+        SELECT * FROM goods WHERE modifyStatus = #{modifyStatus} and shopname = #{shopname};
+    </select>
+
+    <select id="GetGoodsStockByGoodsId" resultType="int">
+        SELECT IFNULL(goodsStock, 0) FROM goods WHERE goodsId = #{goodsId}
     </select>
 </mapper>

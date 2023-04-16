@@ -62,7 +62,8 @@ export default {
             } else {
                 this.$axios.post("/setCartGoodsNum", {
                     username: localStorage.getItem("username"),
-                    goodsId: this.goods.goodsId
+                    goodsId: parseInt(this.goods.goodsId),
+                    num: this.count
                 })
                 .then((res) => {
                     this.$message.success("修改成功");
