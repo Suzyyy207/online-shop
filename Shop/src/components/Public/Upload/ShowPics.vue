@@ -52,11 +52,18 @@ export default {
 
 
 .showpics{
-    width:100%;
-    height: 100%;
+    width:80%;
+    height: 50%;
     background-color:rgba(128,128,128,0.3);
     margin-bottom: 10px;
+    margin-left: 20px;
 }
 
+.pages{
+    gap:0px;
+    display:flex;
+    flex-direction: column;
+    margin:0px;
+}
 
 </style>

@@ -14,7 +14,7 @@ export function interceptor(Vue) {
 export function userorshopInterceptor(Vue) {
     var localStorage = window.localStorage;
 
-    if(localStorage.getItem('usertype') != window.USER && localStorage.getItem('usertype') != window.MANAGER) {
+    if(localStorage.getItem('usertype') != window.USER && localStorage.getItem('usertype') != window.SHOPKEEPER) {
         Vue.$message.error("访问失败：请登入普通用户或商户账号！");
         Vue.$router.push({name:'Login'});
     }

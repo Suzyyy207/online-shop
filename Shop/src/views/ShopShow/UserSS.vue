@@ -13,7 +13,7 @@ import ShopDetail from '../../components/ShopGoodsPage/ShopDetail.vue'
 </template>
 
 <script>
-import { interceptor, userInterceptor } from "../../interceptor";
+import { interceptor, userInterceptor,userorshopInterceptor } from "../../interceptor";
 export default {
     data(){
         return {
@@ -25,7 +25,7 @@ export default {
     },
     created() {
         interceptor(this);
-        userInterceptor(this);
+        userorshopInterceptor(this);
         console.log("SS")
         this.shopname = this.$route.params.shopname;
         console.log(this.shopname);
