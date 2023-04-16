@@ -8,7 +8,9 @@ const dialogTableVisible = ref(false)
 <template>
   <div class="shop" :shop="shop">
     <a href="#" class="shop_link">
-      <img class="logo" src="@/assets/shop.png" alt="点击进入店铺详情页面"/>
+      <img v-if="shop.avatar" :src="'data:image/jpeg;base64,' + shop.avatar">
+      <img v-else class="logo" src="@/assets/shop.png"/>
+      
       <p class="shopname">{{shop.shopname}}</p>
       <p class="introdunction">{{shop.introduction}}</p>
 

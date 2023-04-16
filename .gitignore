@@ -1,0 +1,9 @@
+
+/.idea
+
+/design.md
+/test.md
+.DS_Store
+/Shop/node_modules
+
+application.properties

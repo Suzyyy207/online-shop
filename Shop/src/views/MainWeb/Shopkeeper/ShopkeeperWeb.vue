@@ -2,19 +2,11 @@
 <script setup>
 import WrapperUser from '../../../components/MainWeb/Wrapper/WrapperUser.vue'
 import SearchTop from '../../../components/MainWeb/Components/SearchU.vue'
+import Nav from '../../../components/Public/Nav/ShopkeeperNav.vue'
 </script>
 
 <template>
-    <header>
-        <p>Welcome!</p>
-        <nav>
-            <RouterLink to="/ShopkeeperWeb">首页</RouterLink>
-            <RouterLink to="#">购物车</RouterLink>
-            <RouterLink to="#">收藏夹</RouterLink>
-            <RouterLink to="/ShopDashboard">我的店铺</RouterLink>
-            <RouterLink to="/">退出登录</RouterLink>
-        </nav>
-    </header>
+    <Nav></Nav>
 
     <section>
         <SearchTop />
@@ -23,56 +15,22 @@ import SearchTop from '../../../components/MainWeb/Components/SearchU.vue'
     <section class="show">
         <h1 class="title">Let's have fun!</h1>
         <br>
-        <WrapperUser/>
+        <WrapperUser class="margin"/>
     </section>
 
 </template>
 
 <script>
-import { interceptor } from "../../../interceptor";
+import { interceptor, shopkeeperInterceptor } from "../../../interceptor";
 export default {
     created(){
         interceptor(this);
+        shopkeeperInterceptor(this);
     }
 }
 </script>
 
 <style scoped>
-
-/*页眉格式*/ 
-header {
-    background-color:#81A18B;
-    width: 100%;
-    padding:10px;
-    text-align: center;
-    display: grid;
-    grid-template-columns: 50%, 50%;
-    grid-row: 100%;
-}
-header p{
-    grid-column: 1/2;
-    text-align: left; 
-    margin-left: 20px;
-    padding: 0 1rem;
-    font-size: 20px;
-    color:white;
-    transition: 0.4s;
-}
-header nav{
-    grid-column: 2/3;
-    text-align: right; 
-}
-header nav a {
-    display: inline-block;
-    padding: 0 1rem;
-    font-size: 20px;
-    border-left: 1px solid var(--color-border);
-    color:white;
-    text-decoration: underline;
-    transition: 0.4s;
-    font-family: "Brush Script MT", cursive;
-
-}
 
 
 /*商家注册信息栏*/
@@ -93,4 +51,8 @@ header nav a {
     font-family: "Lucida Console", "Courier New", monospace;
 }
 
+.margin{
+    height: auto;
+    margin-bottom: 100px;
+}
 </style>

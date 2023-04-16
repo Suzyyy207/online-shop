@@ -25,6 +25,7 @@ body{
   animation-name:top;
   animation-timing-function: linear;
   animation-duration: 1s;
+  
 }
 
 @keyframes top {

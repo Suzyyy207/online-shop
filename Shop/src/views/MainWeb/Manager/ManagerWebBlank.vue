@@ -4,7 +4,12 @@
 </template>
 
 <script>
+import { interceptor, managerInterceptor } from "../../../interceptor";
 export default {
+    created(){
+        interceptor(this);
+        managerInterceptor(this);
+    },
     data (){
         this.$router.push({name:'ManagerWeb'});
     }

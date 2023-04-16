@@ -1,9 +1,12 @@
 <!--此组件用于为未注册店铺的商家提供注册UI-->
 <template>
     <div id="register" class="register">
-        <h1>店 铺 注 册</h1>
+        <h1 v-if="this.form.idnumDisabled">店铺信息修改</h1>
+        <h1 v-else>店 铺 注 册</h1>
+
+        <Avatar :type="1" ref="avatar" ></Avatar>
         <el-form :model="form" :rules="rules" ref="form" class="form">
-            <el-form-item prop="shopname" :class="{'input-error': isShopnameError}">
+            <el-form-item prop="shopname">
                 <el-input 
                     placeholder="店名（不超过12个字）" 
                     type="shopname" 
@@ -44,10 +47,11 @@
                 autocomplete="off"
                 :prefix-icon=" 1 ? 'Postcard' : ''"
                 Clearable
+                :disabled="this.form.idnumDisabled"
                 ></el-input>
             </el-form-item>
         
-            <el-form-item prop="introduction" :class="{'input-error': isIntroductionError}">
+            <el-form-item prop="introduction">
                 <el-input 
                     placeholder="店铺简介" 
                     type="introduction" 
@@ -58,7 +62,7 @@
                 ></el-input>
             </el-form-item>
 
-            <el-form-item prop="address" :class="{'input-error': isAddressError}">
+            <el-form-item prop="address">
                 <el-input 
                     placeholder="备案地址" 
                     type="address" 
@@ -83,12 +87,19 @@
                 <span class="input-requirement">启动资金不能少于1000，且保留2位小数 </span>
             </el-form-item>
 
-            <el-form-item label="注册日期" prop="date">
+            <el-form-item label="注册日期" prop="date" v-if="!this.form.idnumDisabled">
                 <el-date-picker 
                     v-model="form.date" 
                     type="date" 
                     readonly 
                     :default-value="new Date()"
+                ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="注册日期" prop="date" v-else>
+                <el-date-picker 
+                    v-model="form.date" 
+                    type="date" 
+                    readonly 
                 ></el-date-picker>
             </el-form-item>
 
@@ -116,15 +127,33 @@
               </el-col>
             </el-row>
 
-            <el-row>
+            <el-row v-if="!this.form.idnumDisabled">
               <el-col :span="12">
                 <el-form-item class="btn">
-                  <el-button type="primary" @click="register('form')" :disabled="isSubmitDisabled">注&nbsp;&nbsp;册</el-button>
+                  <el-button type="primary" @click="register('form')">注&nbsp;&nbsp;册</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item class="btn">
                   <el-button type="primary" @click="reset">重&nbsp;&nbsp;置</el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            
+            <el-row v-else>
+              <el-col :span="8">
+                <el-form-item class="btn">
+                  <el-button type="primary" @click="modifyShopInfo('form')">提交</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item class="btn">
+                  <el-button type="primary" @click="reset">重&nbsp;&nbsp;置</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col v-if="toModify" :span="8">
+                <el-form-item class="btn">
+                  <el-button type="primary" @click="cancel">返&nbsp;&nbsp;回</el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -139,6 +168,9 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { validateIdnum } from "../../../validate";
 import "../../../constant.js";
 import ValidCode from "./ValidCode.vue";
+import ShopDashboard from '../../../views/MainWeb/Shopkeeper/ShopDashboard.vue';
+import Avatar from '../../Public/Upload/Avatar.vue';
+
 const idnumValidator = (rule, value, callback) => {
   if (!value) {
     return callback(new Error("身份证号不能为空"));
@@ -158,7 +190,8 @@ const idnumValidator = (rule, value, callback) => {
       }
     },
     components:{
-      ValidCode
+      ValidCode,
+      Avatar
     },
     created() {
       this.modify();
@@ -185,8 +218,10 @@ const idnumValidator = (rule, value, callback) => {
           date: new Date(),
           username: "",
           agreement: "",
-          validCode: ""
+          validCode: "",
+          idnumDisabled: false
         },
+        toModify: false,
         validCode: "",
         rules: {
           shopname: [
@@ -227,16 +262,19 @@ const idnumValidator = (rule, value, callback) => {
     methods: {
       modify:function() {
         var localStorage = window.localStorage;
-        // TODO:goodstype处理
-        this.form.shopname = localStorage.getItem('shopname');
-        this.form.introduction = localStorage.getItem('introduction');
-        localStorage.removeItem("introduction");
-        this.form.address = localStorage.getItem('address');
-        localStorage.removeItem("address");
-        this.form.idnum = localStorage.getItem('idnum');
-        localStorage.removeItem("idnum");
-        this.form.capital = localStorage.getItem('capital');
-        localStorage.removeItem("capital");
+        if(localStorage.getItem("toModify")) {
+          this.form.shopname = localStorage.getItem('shopname');
+          this.form.goodstype = [localStorage.getItem('goodstype')];
+          this.form.introduction = localStorage.getItem('introduction');
+          this.form.address = localStorage.getItem('address');
+          this.form.idnum = localStorage.getItem('idnum');
+          this.form.idnumDisabled = true;
+          this.form.capital = localStorage.getItem('capital');
+          this.form.date = new Date(localStorage.getItem('date'));
+          this.toModify = true;
+          console.log(this.form.goodstype)
+        }
+        
       },
       register: function (form) {
         // 首先判断需要填写的信息是否已经完全填入
@@ -248,7 +286,7 @@ const idnumValidator = (rule, value, callback) => {
           // 校验通过
           if(valid){
             var localStorage = window.localStorage;
-            console.log(this.form)
+            console.log(this.form);
             this.$axios.post('/shopRegister', {
               shopname: this.form.shopname,
               goodstype: this.form.goodstype.join(';'),
@@ -262,18 +300,21 @@ const idnumValidator = (rule, value, callback) => {
             .then(res => {
               // 注册成功
               if(res.data.state == window.SUCCESS){
-                this.$message.success("注册成功，请耐心等待管理员审批");
 
                 // 对于商家，还需要在localStorage中额外储存商店名
                 var localStorage = window.localStorage;
                 localStorage.setItem("shopname",res.data.data.shopname);
+                
+                const avatarComponent = this.$refs.avatar;
+                avatarComponent.setShopAvatar();
+
+                this.$message.success("注册成功，请耐心等待管理员审批");
 
                 // 店铺注册成功后，导向ShopkeeperWeb主页面
                 setTimeout(() => {
                   this.$router.push({name:'ShopDashboardBlank'});
                 }, 1000);
               }
-              // 注册失败
               else {
                 this.$message.error(res.data.message);
               }
@@ -282,7 +323,57 @@ const idnumValidator = (rule, value, callback) => {
               console.log(err);
             })
           }
-          // 校验不通过
+          else {
+            this.$message.error("注册失败，请按照要求填写所有信息");
+          }
+        }))
+      },
+      modifyShopInfo: function (form) {
+        // 首先判断需要填写的信息是否已经完全填入
+        this.$refs[form].validate((valid=>{
+          if(this.form.agreement==""){
+            this.$message.error("必须同意店铺守则");
+            return;
+          }
+          // 校验通过
+          if(valid){
+            var localStorage = window.localStorage;
+            console.log(this.form);
+            this.$axios.post('/modifyShopInfo', {
+              newshopname: this.form.shopname,
+              goodstype: this.form.goodstype.join(';'),
+              introduction: this.form.introduction,
+              address: this.form.address,
+              capital: this.form.capital.toString(),
+              shopname: localStorage.getItem('shopname')
+            })
+            .then(res => {
+              if(res.data.state == window.SUCCESS){
+                this.$message.success("提交成功，请耐心等待管理员审批");
+
+                var localStorage = window.localStorage;
+                localStorage.setItem("shopname",res.data.data.shopname);
+
+                localStorage.removeItem('goodstype');
+                localStorage.removeItem('introduction');
+                localStorage.removeItem('address');
+                localStorage.removeItem('idnum');
+                localStorage.removeItem('capital');
+                localStorage.removeItem('date');
+
+                // 店铺注册成功后，导向ShopkeeperWeb主页面
+                setTimeout(() => {
+                  this.$router.push({name:'ShopDashboardBlank'});
+                }, 1000);
+              }
+              else {
+                this.$message.error(res.data.message);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            })
+          }
           else {
             this.$message.error("注册失败，请按照要求填写所有信息");
           }
@@ -290,7 +381,7 @@ const idnumValidator = (rule, value, callback) => {
       },
       reset: function () {
         ElMessageBox.confirm(
-          '你确定要重置输入信息吗',
+          '你确定要重置输入信息吗，将恢复店铺原信息',
           '', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -332,6 +423,10 @@ const idnumValidator = (rule, value, callback) => {
       },
       addZero(value) {
         return value < 10 ? `0${value}` : value; // 如果数字小于10，就在前面加0，比如9月就变成09月
+      },
+      cancel() {
+        localStorage.removeItem("toModify");
+        this.$router.go(0)
       }
     }
 }
@@ -340,7 +435,14 @@ const idnumValidator = (rule, value, callback) => {
 
 
 <style scoped>
-
+.register{
+  margin:20px 60px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  color: #303133;
+  border: 3px solid #ebeef5;
+}
 
 .register h1{
   text-align: center;
@@ -381,5 +483,6 @@ const idnumValidator = (rule, value, callback) => {
 .validcode{
   margin-top:30px;
 }
+
 
 </style>
