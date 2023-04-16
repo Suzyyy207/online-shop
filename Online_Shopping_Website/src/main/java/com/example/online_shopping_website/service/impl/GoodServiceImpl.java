@@ -165,10 +165,12 @@ public class GoodServiceImpl implements IGoodService {
             }
         }else if(modifyStatus ==1){
             goodslist.clear();
-            for (int i = 1; i < 50; i++) {
+            for (int i = 1; i < 100; i++) {
                 Good result = goodMapper.setSearch(-i, shopname);
                 if (result != null) {
-                    goodslist.add(result);
+                    if(goodMapper.getGoodsByGoodsId(-result.getRegisterStatus()).getModifyStatus()!=2) {
+                        goodslist.add(result);
+                    }
                 }
             }
             for (Good good : goodslist) {
