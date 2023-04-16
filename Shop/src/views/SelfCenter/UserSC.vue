@@ -3,7 +3,6 @@
 import InfoShow from '../../components/SelfCenter/InfoShow.vue'
 import OrderShow from '../../components/SelfCenter/OrderShow.vue'
 import Nav from '../../components/Public/Nav/UserNav.vue'
-import { RouterLink, RouterView } from 'vue-router'
 import SetUserInfo from '../../components/Dashboard/User/SetUserInfo.vue'
 </script>
 
@@ -32,11 +31,16 @@ import SetUserInfo from '../../components/Dashboard/User/SetUserInfo.vue'
 </template>
 
 <script>
+import { interceptor, userInterceptor } from "../../interceptor";
 export default{
     data() {
         return{
             state:0
         }
+    },
+    created(){
+        interceptor(this);
+        userInterceptor(this);
     }
 }
 </script>

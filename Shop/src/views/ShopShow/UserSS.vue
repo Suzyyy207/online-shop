@@ -1,7 +1,6 @@
 <script setup>
 import Nav from '../../components/Public/Nav/Nav.vue'
 import ShopDetail from '../../components/ShopGoodsPage/ShopDetail.vue'
-import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
@@ -14,6 +13,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <script>
+import { interceptor, userInterceptor } from "../../interceptor";
 export default {
     data(){
         return {
@@ -24,6 +24,8 @@ export default {
         ShopDetail
     },
     created() {
+        interceptor(this);
+        userInterceptor(this);
         console.log("SS")
         this.shopname = this.$route.params.shopname;
         console.log(this.shopname);

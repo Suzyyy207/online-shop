@@ -2,6 +2,7 @@ package com.example.online_shopping_website.service.impl;
 
 import com.example.online_shopping_website.entity.Good;
 import com.example.online_shopping_website.entity.GoodReturn;
+import com.example.online_shopping_website.entity.GoodSortByShop;
 import com.example.online_shopping_website.entity.pic;
 import com.example.online_shopping_website.mapper.CartMapper;
 import com.example.online_shopping_website.mapper.GoodMapper;
@@ -78,15 +79,17 @@ public class CartServiceImpl implements ICartService {
     public JsonResult getValidCart(String username){
         JsonResult result = new JsonResult<>(YES);
 
-        List<GoodReturn> validGoodsInCart = new ArrayList<>();
+        List<GoodSortByShop> ListgoodSortByShop = new ArrayList<>();    //包装类，包装shopname和List<GoodReturn>
+
         List<Integer> allGoodsId = cartMapper.GetAllGoodsIdInCartByUsername(username);
         for(Integer id : allGoodsId){
+            Boolean ShopOfGoodAlreadyInlist = Boolean.FALSE;        //判断商店所属的商品是否在ListgoodSortByShop中
+
             String shopname = goodMapper.GetShopnamByGoodsId(id);
             int shopAdmitted = shopMapper.GetShopAdmittedByShopname(shopname);
             int goodStatus = goodMapper.GetGoodStatusByGoodsId(id);
             if(shopAdmitted == 1 && goodStatus == 1){   //商店状态和商品状态都正常
                 Good good = goodMapper.getGoodsByGoodsId(id);
-
                 List<String> piclist = new ArrayList<>();
                 GoodReturn goodReturn = new GoodReturn();
                 goodReturn.setGoodsPrice(good.getGoodsPrice());
@@ -107,12 +110,35 @@ public class CartServiceImpl implements ICartService {
                     piclist.add(base64Image);
                 }
                 goodReturn.setGoodsAvatar(piclist);
-                validGoodsInCart.add(goodReturn);
+
+                int NumOfGoodsInCart = cartMapper.getGoodsNumberInCart(username, id);
+
+                //如果goodReturn的商品名，与ListgoodSortByShop中某一项的商店名一样，就加入该商店，否则就新建一个goodSortByShop对象
+                for(int i = 0; i < ListgoodSortByShop.size(); i++){
+                    if( ListgoodSortByShop.get(i).getShopname().equals(goodReturn.getShopname()) ) {
+                        ListgoodSortByShop.get(i).getGoodReturnList().add(goodReturn);
+                        ListgoodSortByShop.get(i).getGoodNums().add(NumOfGoodsInCart);
+                        ShopOfGoodAlreadyInlist = Boolean.TRUE;
+                        break;
+                    }
+                }
+                if(!ShopOfGoodAlreadyInlist){   //商店名没出现过，新加商店名
+                    String NewShopname = goodReturn.getShopname();
+                    List<GoodReturn> ListGoodReturn = new ArrayList<>();
+                    ListGoodReturn.add(goodReturn);
+                    List<Integer> goodsNumInCart = new ArrayList<>();
+                    goodsNumInCart.add(NumOfGoodsInCart);
+
+                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, ListGoodReturn, goodsNumInCart);
+                    ListgoodSortByShop.add(goodSortByShop);
+                    ShopOfGoodAlreadyInlist = Boolean.FALSE;
+                }
             }else{
                 ;
             }
         }
-        result.setData(validGoodsInCart);
+
+        result.setData(ListgoodSortByShop);
         return result;
     }
 
@@ -120,9 +146,13 @@ public class CartServiceImpl implements ICartService {
     public JsonResult getInvalidCart(String username){
         JsonResult result = new JsonResult<>(YES);
 
-        List<GoodReturn> invalidGoodsInCart = new ArrayList<>();
+        List<GoodSortByShop> ListgoodSortByShop = new ArrayList<>();    //包装类，包装shopname和List<GoodReturn>
+
+        //List<GoodReturn> invalidGoodsInCart = new ArrayList<>();
         List<Integer> allGoodsId = cartMapper.GetAllGoodsIdInCartByUsername(username);
         for(Integer id : allGoodsId){
+            Boolean ShopOfGoodAlreadyInlist = false;
+
             String shopname = goodMapper.GetShopnamByGoodsId(id);
             int shopAdmitted = shopMapper.GetShopAdmittedByShopname(shopname);
             int goodStatus = goodMapper.GetGoodStatusByGoodsId(id);
@@ -151,10 +181,35 @@ public class CartServiceImpl implements ICartService {
                     piclist.add(base64Image);
                 }
                 goodReturn.setGoodsAvatar(piclist);
-                invalidGoodsInCart.add(goodReturn);
+                //获取购物车中商品数量
+                int NumOfGoodsInCart = cartMapper.getGoodsNumberInCart(username, id);
+
+
+                //如果goodReturn的商店名，与ListgoodSortByShop中某一项的商店名，就加入该商店，否则就新建一个goodSortByShop对象
+                for(int i = 0; i < ListgoodSortByShop.size(); i++){
+                    if( ListgoodSortByShop.get(i).getShopname().equals(goodReturn.getShopname()) ) {
+                        ListgoodSortByShop.get(i).getGoodReturnList().add(goodReturn);
+                        ListgoodSortByShop.get(i).getGoodNums().add(NumOfGoodsInCart);
+                        ShopOfGoodAlreadyInlist = true;
+                        break;
+                    }
+                }
+                if(!ShopOfGoodAlreadyInlist){   //商店名没出现过，新加商店名
+                    String NewShopname = goodReturn.getShopname();
+                    List<GoodReturn> ListGoodReturn = new ArrayList<>();
+                    ListGoodReturn.add(goodReturn);
+                    List<Integer> goodsNumInCart = new ArrayList<>();
+                    goodsNumInCart.add(NumOfGoodsInCart);
+
+                    GoodSortByShop goodSortByShop = new GoodSortByShop(NewShopname, ListGoodReturn,goodsNumInCart);
+                    ListgoodSortByShop.add(goodSortByShop);
+                    ShopOfGoodAlreadyInlist = false;
+                }
+
+                //invalidGoodsInCart.add(goodReturn);
             }
         }
-        result.setData(invalidGoodsInCart);
+        result.setData(ListgoodSortByShop);
         return result;
     }
     @Override
@@ -164,5 +219,12 @@ public class CartServiceImpl implements ICartService {
         return result;
     }
 
-
+    @Override
+    public JsonResult deleteGoodsListFromCart(String username, List<Integer> goodsList){
+        for(Integer goodsId : goodsList){
+            cartMapper.DeleteGoodsInCart(username, goodsId);
+        }
+        JsonResult result = new JsonResult<>(YES);
+        return result;
+    }
 }

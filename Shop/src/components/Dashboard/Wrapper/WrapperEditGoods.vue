@@ -104,6 +104,8 @@ export default {
                 shopname: localStorage.getItem("shopname")
             }).then(res => {
                 this.editingGoodsList = res.data.data;
+                console.log("editingGoodsList")
+                console.log(this.editingGoodsList)
             })
         },
         getEditedGoods() {
@@ -111,7 +113,7 @@ export default {
             this.$axios.post("/getEditedGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
             }).then(res => {
-                this.registeredGoodsList = res.data.data;
+                this.editedGoodsList = res.data.data;
             })
         },
         getEditDeniedGoods() {
@@ -119,7 +121,7 @@ export default {
             this.$axios.post("/getEditDeniedGoodsByShopname", {
                 shopname: localStorage.getItem("shopname")
             }).then(res => {
-                this.registerationDeniedGoodsList = res.data.data;
+                this.editDeniedGoodsList = res.data.data;
             })
         },
         showGoodsDetail(arg) {

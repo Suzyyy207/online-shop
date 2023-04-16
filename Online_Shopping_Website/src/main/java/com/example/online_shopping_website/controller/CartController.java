@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 import static javax.security.auth.callback.ConfirmationCallback.*;
@@ -57,6 +58,14 @@ public class CartController {
         String username =(String)map.get("username");
         int goodsId = (int)map.get("goodsId");
         JsonResult result = cartService.deleteGoodsFromCart(username, goodsId);
+        return result;
+    }
+
+    @RequestMapping("/api/deleteGoodsListFromCart")
+    public JsonResult deleteGoodsListFromCart(@RequestBody Map<String,Object> map){
+        String username =(String)map.get("username");
+        List<Integer> goodsList = (List<Integer>)map.get("goodsList");
+        JsonResult result = cartService.deleteGoodsListFromCart(username, goodsList);
         return result;
     }
 }

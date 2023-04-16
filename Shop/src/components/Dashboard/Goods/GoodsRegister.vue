@@ -106,6 +106,7 @@
  
 <script>
 import "../../../constant";
+import { interceptor, shopkeeperInterceptor } from "../../../interceptor"
 export default {
     props: {
         goods: {
@@ -129,7 +130,9 @@ export default {
             addFormRules: {
                 goodsname:[
                     {required:true, message:'请输入商品名称', trigger: 'blur'},
-                    {required:true, message:'请输入商品名称', trigger: 'change'}
+                    {required:true, message:'请输入商品名称', trigger: 'change'},
+                    { required: true, max: 20, message: '商品名称不能超过20个字', trigger: 'blur' },
+                    { required: true, max: 20, message: '商品名称不能超过20个字', trigger: 'change' }
                 ],
                 goodsPrice:[
                     { required:true, validator: this.goodsPriceValidator, trigger: 'blur' }
@@ -151,6 +154,8 @@ export default {
         }
     },
     created(){
+        interceptor(this);
+        shopkeeperInterceptor(this);
         this.getGoodsInfo();
     },
     methods:{

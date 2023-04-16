@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class ShopServiceImpl implements IShopService {
             throw new idDuplicateException("该身份证号已经注册");
         }
         shopMapper.shopOpening(shop);
-        //注册资金转账到商城中间账号
+
+        //注册申请时，把注册资金转账到商城中间账户
         BigDecimal capital = new BigDecimal(shop.getCapital());
         shopMapper.TransferCapitalToIntemediaryAccount(capital);
     }
@@ -75,8 +77,12 @@ public class ShopServiceImpl implements IShopService {
     }
     @Override
     public List<Shop> GetAllNotAdmittedShop(){
-        List<Shop> ShopList = shopMapper.ShowAllNotAdmittedShop();
-        return ShopList;
+        List<Shop> ShopList_a = shopMapper.ShowAllNotAdmittedShop();
+        List<Shop> ShopList_b = shopMapper.GetAllDeletedShop();
+        List<Shop> shoplist = new ArrayList<>();
+        shoplist.addAll(ShopList_a);
+        shoplist.addAll(ShopList_b);
+        return shoplist;
     }
     @Override
     public Shop GetShopInformationFromUser(String username){
@@ -166,8 +172,13 @@ public class ShopServiceImpl implements IShopService {
         int stateOfAdmit = shopMapper.GetShopIsAdmitted(shopname);
         switch (stateOfAdmit){
             case registrationUnderReview:
-                if(approveType == adminApproveRegistration)
+                if(approveType == adminApproveRegistration) {
                     shopMapper.SetShopNormal(shopname);
+                    //管理员同意申请时，把注册资金从中间账户转账到商城利润账号
+                    BigDecimal capital = shopMapper.GetCapitalByShopname(shopname);
+                    shopMapper.TransferCapitalFromIntemediary(capital);
+                    shopMapper.TransferCapitalToProfitAccount(capital);
+                }
                 else{
                     result.setState(NO);
                     result.setMessage("批复失败，请重试");
