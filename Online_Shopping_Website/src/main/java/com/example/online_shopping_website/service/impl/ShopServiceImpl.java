@@ -107,11 +107,11 @@ public class ShopServiceImpl implements IShopService {
     }
 
     @Override
-    public JsonResult cancelRegister(String shopname, int is_admitted){
+    public JsonResult cancelRegister(String shopname, int cancelType){
         JsonResult result = new JsonResult<>(YES,"撤销成功");
         int admitted_now = shopMapper.GetShopIsAdmitted(shopname);
 
-        switch (is_admitted){
+        switch (cancelType){
             case registrationUnderReview:                        //1.用户提交了注册申请 2.注册申请被管理员拒绝
             case registrationRejected:                           //此时可以取消注册申请,清空该用户提交的商店注册信息
                 if(admitted_now == registrationUnderReview || admitted_now == registrationRejected) {
@@ -123,8 +123,8 @@ public class ShopServiceImpl implements IShopService {
                 break;                                           //1.用户提交了删除申请 2.删除申请被管理员拒绝
             case deletionUnderReview:                            //此时可以取消删除申请,商店is_admitted设为正常
             case deletionRejected:
-                if(is_admitted == deletionUnderReview || is_admitted == deletionRejected) {
-                    shopMapper.CancelShopUnregistyerByShopname(shopname, is_admitted);
+                if(admitted_now == deletionUnderReview || admitted_now == deletionRejected) {
+                    shopMapper.CancelShopUnregistyerByShopname(shopname, cancelType);
                 }else{              //商店现在的is_admitted 不符合删除条件
                     result.setState(NO);
                     result.setMessage("撤销失败");
